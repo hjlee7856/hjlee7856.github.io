@@ -1,4 +1,4 @@
-import { Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
@@ -32,13 +32,16 @@ export async function getStaticProps({ params }: any) {
 
 export default function BlogPostPage({ mdxSource, meta }: any) {
   return (
-    <Container maxWidth="md" className="prose dark:prose-invert">
-      <Typography variant="h3" gutterBottom>
-        {meta.title}
-      </Typography>
-      <Typography variant="body2" color="textSecondary">
-        {meta.date}
-      </Typography>
+    <Container maxWidth="md">
+      <Box mb={4}>
+        <Typography variant="h3" gutterBottom>
+          {meta.title}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" gutterBottom>
+          {meta.date}
+        </Typography>
+      </Box>
+
       <MDXRemote {...mdxSource} />
     </Container>
   );

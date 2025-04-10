@@ -1,7 +1,9 @@
+import { Header } from '@/components/header';
 import createEmotionCache from '@/createEmotionCache';
 import { pretendard } from '@/styles/fonts';
 import '@/styles/globals.css';
 import { CacheProvider } from '@emotion/react';
+import { Container } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
@@ -19,9 +21,11 @@ export default function App({ Component, pageProps }: AppProps) {
     <CacheProvider value={clientSideEmotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className={pretendard.className}>
+
+        <Container maxWidth="lg" className={pretendard.className}>
+          <Header />
           <Component {...pageProps} />
-        </div>
+        </Container>
       </ThemeProvider>
     </CacheProvider>
   );
