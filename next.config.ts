@@ -1,12 +1,20 @@
-import type { NextConfig } from "next";
+import createMDX from '@next/mdx';
+import type { NextConfig } from 'next';
+
+// MDX 확장자 인식 설정
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+});
 
 const nextConfig: NextConfig = {
-  output: "export", // 정적 HTML로 변환
-  basePath: "", // 퍼스널 페이지용 → 빈 문자열
-  trailingSlash: true, // GitHub Pages 호환
+  output: 'export',
+  basePath: '',
+  trailingSlash: true,
   images: {
     unoptimized: true,
   },
+  // MDX를 위한 page 확장자 등록
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);
