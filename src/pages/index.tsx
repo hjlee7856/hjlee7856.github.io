@@ -1,4 +1,3 @@
-import { adminAutoLogin } from '@/utils/adminAuth';
 import { getPostsMetaBatch } from '@/utils/postMeta';
 import {
   Box,
@@ -81,7 +80,6 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
       const metas = await getPostsMetaBatch(posts.map((post) => post.slug));
       setPostMetas(metas);
     };
-    adminAutoLogin();
     fetchPostMeta();
   }, []);
 
