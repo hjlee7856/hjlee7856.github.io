@@ -6,6 +6,7 @@ export const Header = () => {
     <AppBar position="sticky" color="primary">
       <Toolbar>
         <Box display={'flex'} justifyContent={'space-between'} width={'100%'}>
+          {/* 타이틀 */}
           <Link href={`/`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Typography variant="h6" color="inherit">
               블로그

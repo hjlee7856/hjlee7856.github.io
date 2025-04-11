@@ -1,38 +1,20 @@
-import { getPostsMetaBatch } from '@/utils/postMeta';
-import {
-  Box,
-  Card,
-  CardContent,
-  Container,
-  Pagination,
-  Tab,
-  Tabs,
-  Typography,
-} from '@mui/material';
+import { PostListCard } from '@/components/postListCard';
+import { categories } from '@/constants/category';
+import { postsDirectory } from '@/constants/directory';
+import { useCategory } from '@/hooks/useCategory';
+import { useFireMeta } from '@/hooks/useFireMeta';
+import { usePagination } from '@/hooks/usePagenation';
+import { Box, Container, Pagination, Tab, Tabs } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
 import Link from 'next/link';
 import path from 'path';
-import { useEffect, useState } from 'react';
-
-type PostMeta = {
-  slug: string;
-  title: string;
-  date: string;
-  category: string;
-};
-
-const categories = [
-  { title: '전체', categoryName: '' },
-  { title: '개발 일지', categoryName: 'development' },
-  { title: '에러 로그', categoryName: 'error' },
-];
 
 export async function getStaticProps() {
-  const files = fs.readdirSync(path.join('posts'));
+  const files = fs.readdirSync(postsDirectory);
   const posts: PostMeta[] = files.map((filename) => {
     const slug = filename.replace('.mdx', '');
-    const markdownWithMeta = fs.readFileSync(path.join('posts', filename), 'utf-8');
+    const markdownWithMeta = fs.readFileSync(path.join(postsDirectory, filename), 'utf-8');
     const { data: frontmatter } = matter(markdownWithMeta);
     return {
       slug,
@@ -52,89 +34,45 @@ export async function getStaticProps() {
 }
 
 export default function Home({ posts }: { posts: PostMeta[] }) {
-  // 카테고리
-  const [category, setCategory] = useState('');
-  const [value, setValue] = useState(0);
-  // 페이지네이션
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 10; // 페이지당 표시할 포스트 수
-  const changeCategory = (event: React.SyntheticEvent, idx: number) => {
-    setValue(idx);
-    setCategory(categories[idx].categoryName);
-    setCurrentPage(1); // 카테고리 변경 시 첫 페이지로 리셋
-  };
-  // 카테고리 필터링 후 페이지네이션 적용
-  const filteredPosts = posts.filter((post) => category === '' || post.category === category);
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const currentPosts = filteredPosts.slice(
-    (currentPage - 1) * postsPerPage,
-    currentPage * postsPerPage
-  );
-  // firebase
-  const [postMetas, setPostMetas] = useState<{ [key: string]: { views: number; likes: number } }>(
-    {}
-  );
-
-  useEffect(() => {
-    const fetchPostMeta = async () => {
-      const metas = await getPostsMetaBatch(posts.map((post) => post.slug));
-      setPostMetas(metas);
-    };
-    fetchPostMeta();
-  }, []);
+  // 카테고리 커스텀 훅
+  const { filteredPosts, changeCategory, value } = useCategory(posts);
+  // 페이지네이션 커스텀 훅
+  const { currentPosts, totalPages, currentPage, setCurrentPage } = usePagination(filteredPosts);
+  // 파이어스토어에 저장된 메타정보 가져오는 훅
+  const { fireMetas } = useFireMeta(posts);
 
   return (
     <Container sx={{ px: '0 !important', py: 0 }}>
+      {/* 카테고리 */}
       <Box display="flex" justifyContent="flex-start" my={2}>
-        <Tabs value={value} onChange={changeCategory}>
+        <Tabs
+          value={value}
+          onChange={(e, idx) => {
+            changeCategory(e, idx);
+            setCurrentPage(1);
+          }}
+        >
           {categories.map((category) => (
             <Tab key={category.categoryName} label={category.title} />
           ))}
         </Tabs>
       </Box>
-
+      {/* 포스트 리스트 */}
       {currentPosts.map((post) => (
         <Link
           href={`/posts/${post.slug}`}
           style={{ textDecoration: 'none', color: 'inherit' }}
           key={post.slug}
         >
-          <Card
-            variant="outlined"
-            sx={{
-              my: 2,
-              borderRadius: '8px',
-              '&:hover': {
-                cursor: 'pointer',
-              },
-            }}
-          >
-            <CardContent>
-              <Typography variant="h5" color="primary" gutterBottom>
-                {post.title}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" gutterBottom>
-                {post.date}
-              </Typography>
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2" color="textSecondary">
-                  조회수: {postMetas[post.slug]?.views || 0}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  좋아요: {postMetas[post.slug]?.likes || 0}
-                </Typography>
-              </Box>
-            </CardContent>
-          </Card>
+          <PostListCard post={post} postMetas={fireMetas} />
         </Link>
       ))}
-
-      {/* MUI Pagination 컴포넌트 */}
+      {/* 페이지네이션 */}
       <Box display="flex" justifyContent="center" my={3}>
         <Pagination
-          count={totalPages} // 총 페이지 수
-          page={currentPage} // 현재 페이지
-          onChange={(event, value) => setCurrentPage(value)} // 페이지 변경 시
+          count={totalPages}
+          page={currentPage}
+          onChange={(event, value) => setCurrentPage(value)}
           color="primary"
           shape="rounded"
         />

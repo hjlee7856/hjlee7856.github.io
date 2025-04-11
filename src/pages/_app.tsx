@@ -21,7 +21,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <CacheProvider value={clientSideEmotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-
         <Container maxWidth="lg" className={pretendard.className}>
           <Header />
           <Component {...pageProps} />

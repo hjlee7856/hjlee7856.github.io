@@ -11,7 +11,7 @@ import {
   where,
 } from 'firebase/firestore';
 
-export const getPostsMetaBatch = async (slugs: string[]) => {
+export const getPostsMetas = async (slugs: string[]) => {
   const metas: any = {};
 
   // postsMeta 컬렉션에서 슬러그에 해당하는 문서들을 가져오는 쿼리 작성
