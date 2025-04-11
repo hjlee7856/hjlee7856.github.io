@@ -38,10 +38,10 @@ export default function BlogPostPage({ mdxSource, meta, slug }: any) {
 
   useEffect(() => {
     const fetchPostMeta = async () => {
+      await incrementView(slug);
       const data: any = await getPostMeta(slug);
       setFireMeta(data);
     };
-    incrementView(slug);
     fetchPostMeta();
   }, [slug]);
 
