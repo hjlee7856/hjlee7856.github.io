@@ -1,5 +1,4 @@
 // lib/firebase.ts
-import { getAnalytics } from 'firebase/analytics';
 import { getApp, getApps, initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
@@ -15,7 +14,6 @@ const firebaseConfig = {
 
 // 앱 중복 초기화 방지
 export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const analytics = getAnalytics(app);
 
 // Firestore 인스턴스 export
 export const db = getFirestore(app);

@@ -1,4 +1,5 @@
 import { adminAutoLogin } from '@/utils/adminAuth';
+import { getPostsMetaBatch } from '@/utils/postMeta';
 import {
   Box,
   Card,
@@ -70,10 +71,18 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
     (currentPage - 1) * postsPerPage,
     currentPage * postsPerPage
   );
-  // firebase 로그인
+  // firebase
+  const [postMetas, setPostMetas] = useState<{ [key: string]: { views: number; likes: number } }>(
+    {}
+  );
 
   useEffect(() => {
+    const fetchPostMeta = async () => {
+      const metas = await getPostsMetaBatch(posts.map((post) => post.slug));
+      setPostMetas(metas);
+    };
     adminAutoLogin();
+    fetchPostMeta();
   }, []);
 
   return (
@@ -109,6 +118,14 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
               <Typography variant="body2" color="textSecondary" gutterBottom>
                 {post.date}
               </Typography>
+              <Box display="flex" justifyContent="space-between">
+                <Typography variant="body2" color="textSecondary">
+                  조회수: {postMetas[post.slug]?.views || 0}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  좋아요: {postMetas[post.slug]?.likes || 0}
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
         </Link>
