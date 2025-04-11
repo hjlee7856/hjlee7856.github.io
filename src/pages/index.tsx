@@ -1,3 +1,4 @@
+import { adminAutoLogin } from '@/utils/adminAuth';
 import {
   Box,
   Card,
@@ -12,7 +13,7 @@ import fs from 'fs';
 import matter from 'gray-matter';
 import Link from 'next/link';
 import path from 'path';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type PostMeta = {
   slug: string;
@@ -23,7 +24,8 @@ type PostMeta = {
 
 const categories = [
   { title: '전체', categoryName: '' },
-  { title: '에러 로그', categoryName: 'errorLog' },
+  { title: '개발 일지', categoryName: 'development' },
+  { title: '에러 로그', categoryName: 'error' },
 ];
 
 export async function getStaticProps() {
@@ -39,7 +41,6 @@ export async function getStaticProps() {
       category: frontmatter.category,
     };
   });
-
   // 날짜 최신순 정렬
   posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -51,17 +52,17 @@ export async function getStaticProps() {
 }
 
 export default function Home({ posts }: { posts: PostMeta[] }) {
+  // 카테고리
   const [category, setCategory] = useState('');
   const [value, setValue] = useState(0);
+  // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 1; // 페이지당 표시할 포스트 수
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-    setCategory(categories[newValue].categoryName);
+  const postsPerPage = 10; // 페이지당 표시할 포스트 수
+  const changeCategory = (event: React.SyntheticEvent, idx: number) => {
+    setValue(idx);
+    setCategory(categories[idx].categoryName);
     setCurrentPage(1); // 카테고리 변경 시 첫 페이지로 리셋
   };
-
   // 카테고리 필터링 후 페이지네이션 적용
   const filteredPosts = posts.filter((post) => category === '' || post.category === category);
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -69,11 +70,16 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
     (currentPage - 1) * postsPerPage,
     currentPage * postsPerPage
   );
+  // firebase 로그인
+
+  useEffect(() => {
+    adminAutoLogin();
+  }, []);
 
   return (
     <Container sx={{ px: '0 !important', py: 0 }}>
       <Box display="flex" justifyContent="flex-start" my={2}>
-        <Tabs value={value} onChange={handleChange}>
+        <Tabs value={value} onChange={changeCategory}>
           {categories.map((category) => (
             <Tab key={category.categoryName} label={category.title} />
           ))}
