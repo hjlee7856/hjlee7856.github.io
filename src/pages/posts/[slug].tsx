@@ -23,23 +23,26 @@ export async function getStaticProps({ params }: any) {
   const source = fs.readFileSync(fullPath, 'utf-8');
   const { content, data: meta } = matter(source);
   const mdxSource: MDXRemoteSerializeResult = await serialize(content);
-  const data: any = await getPostMeta(slug);
+
   return {
     props: {
       slug,
-      data,
       mdxSource,
       meta,
     },
   };
 }
 
-export default function BlogPostPage({ mdxSource, meta, data, slug }: any) {
+export default function BlogPostPage({ mdxSource, meta, slug }: any) {
   const [fireMeta, setFireMeta] = useState({ views: 0, likes: 0 });
 
   useEffect(() => {
-    setFireMeta(data);
+    const fetchPostMeta = async () => {
+      const data: any = await getPostMeta(slug);
+      setFireMeta(data);
+    };
     incrementView(slug);
+    fetchPostMeta();
   }, [slug]);
 
   return (
