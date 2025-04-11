@@ -1,5 +1,10 @@
+interface FireStorePostMetas {
+  [key: string]: FireStorePostMeta;
+}
+
 interface FireStorePostMeta {
-  [key: string]: { views: number; likes: number };
+  views: number;
+  likes: number;
 }
 
 interface PostMeta {

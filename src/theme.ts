@@ -1,11 +1,10 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
+  typography: {
+    fontFamily: 'Pretendard, sans-serif',
   },
+  palette: {},
 });
 
 export default theme;

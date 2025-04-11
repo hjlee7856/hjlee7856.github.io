@@ -2,7 +2,7 @@ import { getPostsMetas } from '@/utils/postMeta';
 import { useEffect, useState } from 'react';
 
 export const useFireMeta = (posts: PostMeta[]) => {
-  const [fireMetas, setFireMetas] = useState<FireStorePostMeta>({});
+  const [fireMetas, setFireMetas] = useState<FireStorePostMetas>({});
 
   useEffect(() => {
     const fetchPostMeta = async () => {

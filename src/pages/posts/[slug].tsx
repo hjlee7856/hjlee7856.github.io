@@ -1,5 +1,6 @@
 import { postsDirectory } from '@/constants/directory';
 import { useFetchPostMeta } from '@/hooks/useFetchPostMeta';
+import { usePost } from '@/hooks/usePost';
 import { Box, Container, Typography } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
@@ -35,6 +36,8 @@ export async function getStaticProps({ params }: any) {
 export default function BlogPostPage({ mdxSource, meta, slug }: any) {
   // 파이어 스토어에 저장된 메타 정보 가져오고, 조회수 올리기
   const fireMeta = useFetchPostMeta(slug);
+  const { handleLike, likeActive } = usePost(slug, fireMeta);
+
   return (
     <Container maxWidth="md">
       {/* 페이지 헤더 */}
@@ -46,8 +49,8 @@ export default function BlogPostPage({ mdxSource, meta, slug }: any) {
           {meta.date}
         </Typography>
       </Box>
-      <p>조회수: {fireMeta.views}</p>
-      <p>좋아요: {fireMeta.likes}</p>
+      <p>조회수: {fireMeta?.views}</p>
+      <p>좋아요: {fireMeta?.likes}</p>
       {/* 컨텐츠 */}
       <MDXRemote {...mdxSource} />
     </Container>

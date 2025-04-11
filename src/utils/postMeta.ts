@@ -67,11 +67,26 @@ export const incrementLike = async (slug: string) => {
 
   if (!snap.exists()) {
     await setDoc(ref, {
-      likes: 0, // 최초 좋아요 0
+      likes: 0,
     });
   } else {
     await updateDoc(ref, {
       likes: increment(1),
+    });
+  }
+};
+
+export const decrementLike = async (slug: string) => {
+  const ref = doc(db, 'postsMeta', slug);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) {
+    await setDoc(ref, {
+      views: 0,
+    });
+  } else {
+    await updateDoc(ref, {
+      likes: increment(-1),
     });
   }
 };
