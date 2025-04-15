@@ -1,9 +1,9 @@
+import { PostCard } from '@/components/postCard';
 import { categories } from '@/constants/categorys';
 import { files, postsDirectory } from '@/constants/files';
-import { PostCard } from '@/pages/blog/components/postCard/postCard';
-import { useCategory } from '@/pages/blog/hooks/useCategory';
-import { usePostMetas } from '@/pages/blog/hooks/useMetas';
-import { usePagination } from '@/pages/blog/hooks/usePagenation';
+import { useCategory } from '@/hooks/useCategory';
+import { usePostMetas } from '@/hooks/useMetas';
+import { usePagination } from '@/hooks/usePagenation';
 import { Box, Container, Pagination, Tab, Tabs } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';

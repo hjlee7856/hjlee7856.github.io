@@ -1,6 +1,6 @@
 import { files, postsDirectory } from '@/constants/files';
-import { useGetPostMeta } from '@/pages/blog/posts/hooks/useFetchPostMeta';
-import { useViewCount } from '@/pages/blog/posts/hooks/useViewCount';
+import { useGetPostMeta } from '@/hooks/useFetchPostMeta';
+import { useViewCount } from '@/hooks/useViewCount';
 import { Box, Container, Typography } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';

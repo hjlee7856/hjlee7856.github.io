@@ -1,5 +1,5 @@
-import { usePost } from '@/pages/blog/components/postCard/usePostCard';
-import { usePostMetas } from '@/pages/blog/hooks/useMetas';
+import { usePostMetas } from '@/hooks/useMetas';
+import { usePost } from '@/hooks/usePostCard';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityIcon from '@mui/icons-material/Visibility';
