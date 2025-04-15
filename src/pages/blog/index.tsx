@@ -2,13 +2,12 @@ import { PostCard } from '@/components/postCard';
 import { categories } from '@/constants/categorys';
 import { files, postsDirectory } from '@/constants/files';
 import { useCategory } from '@/hooks/useCategory';
-import { usePostMetas } from '@/hooks/useMetas';
 import { usePagination } from '@/hooks/usePagenation';
+import { usePostMetaMap } from '@/hooks/usePostMetaMap';
 import { Box, Container, Pagination, Tab, Tabs } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
-import { useEffect } from 'react';
 
 export async function getStaticProps() {
   // 포스트들 가져오기
@@ -19,14 +18,17 @@ export async function getStaticProps() {
     return {
       slug,
       title: meta.title,
-      date: meta.date,
+      subTitle: meta.subTitle,
+      author: meta.author,
+      thumbnail: meta.thumbnail,
+      createdAt: new Date().toISOString(),
       category: meta.category,
       viewCount: 0,
       likeCount: 0,
     };
   });
   // 날짜 최신순 정렬
-  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   // 포스트 반환
   return {
     props: {
@@ -36,16 +38,12 @@ export async function getStaticProps() {
 }
 
 export default function Home({ posts }: { posts: PostMeta[] }) {
+  // 페이지네이션 필터 훅
+  const { currentPage, setCurrentPage, totalPages, perPage } = usePagination(posts.length);
   // 메타정보들 가져오는 훅
-  const { postWithMeta, fetchPostMeta } = usePostMetas(posts);
+  const { postWithMeta } = usePostMetaMap(posts, currentPage, perPage);
   // 카테고리 필터 훅
   const { filteredPosts, changeCategory, value } = useCategory(postWithMeta);
-  // 페이지네이션 필터 훅
-  const { currentPosts, totalPages, currentPage, setCurrentPage } = usePagination(filteredPosts);
-
-  useEffect(() => {
-    fetchPostMeta();
-  }, [filteredPosts]);
 
   return (
     <Box>
@@ -59,14 +57,14 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
           }}
         >
           {categories.map((category, idx) => (
-            <Tab key={idx} label={category.title} />
+            <Tab key={idx} label={category.categoryName} />
           ))}
         </Tabs>
       </Box>
       {/* 포스트 리스트 */}
-      <Container>
-        {currentPosts.map((post, idx) => (
-          <PostCard post={post} posts={currentPosts} key={idx} />
+      <Container sx={{ paddingX: '0 !important' }}>
+        {filteredPosts.map((post, idx) => (
+          <PostCard post={post} key={idx} />
         ))}
       </Container>
       {/* 페이지네이션 */}

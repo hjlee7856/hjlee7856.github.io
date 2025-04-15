@@ -1,7 +1,10 @@
 interface PostMeta {
   slug: string;
   title: string;
-  date: string;
+  subTitle: string;
+  author: string;
+  thumbnail: string;
+  createdAt: Timestamp;
   category: string;
   viewCount: number;
   likeCount: number;

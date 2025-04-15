@@ -1,15 +1,14 @@
-import { usePostMetas } from '@/hooks/useMetas';
-import { usePost } from '@/hooks/usePostCard';
+import { usePost as useLike } from '@/hooks/usePostCard';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box, Card, CardContent, Typography } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-export const PostCard = ({ post, posts }: { post: PostMeta; posts: PostMeta[] }) => {
+export const PostCard = ({ post }: { post: PostMeta }) => {
   const router = useRouter();
-  const { handleLike, likeActive } = usePost(post);
-  const { fetchPostMeta } = usePostMetas(posts);
+  const { handleLike, likeActive } = useLike(post);
 
   return (
     <Card
@@ -27,12 +26,19 @@ export const PostCard = ({ post, posts }: { post: PostMeta; posts: PostMeta[] })
         <Typography variant="h5" color="grey.900" fontWeight={'bold'} gutterBottom>
           {post.title}
         </Typography>
-        <Typography variant="h6" color="grey.500" gutterBottom>
-          {post.title}
+        <Typography variant="body1" color="grey.500" gutterBottom>
+          {post.subTitle}
         </Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
-          작성일: {post.date}
+          {post.createdAt.toDate().toLocaleString()}
         </Typography>
+        <Typography variant="body1" color="grey.900" gutterBottom>
+          {post.author}
+        </Typography>
+        <Typography variant="body1" color="grey.900" gutterBottom>
+          {post.category}
+        </Typography>
+        <Image src={post.thumbnail} alt={'썸네일 이미지'} width={150} height={150} />
 
         <Box display="flex" gap={1} alignItems="center" zIndex={2}>
           {/* 조회수 */}
@@ -51,7 +57,6 @@ export const PostCard = ({ post, posts }: { post: PostMeta; posts: PostMeta[] })
             onClick={(e) => {
               e.stopPropagation();
               handleLike();
-              fetchPostMeta();
             }}
           >
             {likeActive ? (

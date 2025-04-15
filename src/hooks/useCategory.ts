@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 export const useCategory = (posts: PostMeta[]) => {
   const [filteredPosts, setFillteredPosts] = useState<PostMeta[]>([]);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('전체');
   const [value, setValue] = useState(0);
   const changeCategory = (event: React.SyntheticEvent, idx: number) => {
     setValue(idx);
@@ -11,7 +11,7 @@ export const useCategory = (posts: PostMeta[]) => {
   };
 
   useEffect(() => {
-    setFillteredPosts(posts.filter((post) => category === '' || post.category === category));
+    setFillteredPosts(posts.filter((post) => category === '전체' || post.category === category));
   }, [posts, category]);
 
   return { filteredPosts, changeCategory, value };
