@@ -1,5 +1,6 @@
 import { Header } from '@/components/header';
 import createEmotionCache from '@/createEmotionCache';
+import { useAuthListener } from '@/hooks/useAuthListener';
 import { pretendard } from '@/styles/fonts';
 import '@/styles/globals.css';
 import theme from '@/theme';
@@ -12,11 +13,13 @@ import type { AppProps } from 'next/app';
 const clientSideEmotionCache = createEmotionCache();
 
 export default function App({ Component, pageProps }: AppProps) {
+  useAuthListener();
+
   return (
     <CacheProvider value={clientSideEmotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Container maxWidth="lg" className={pretendard.className}>
+        <Container maxWidth="lg" className={pretendard.className} sx={{ padding: 0 }}>
           <Header />
           <Component {...pageProps} />
         </Container>

@@ -1,28 +1,27 @@
-import { usePost } from '@/hooks/usePost';
+import { usePost } from '@/pages/blog/components/postCard/usePostCard';
+import { usePostMetas } from '@/pages/blog/hooks/useMetas';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box, Card, CardContent, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 
-export const PostListCard = ({
-  post,
-  postMetas,
-}: {
-  post: PostMeta;
-  postMetas: FireStorePostMetas;
-}) => {
-  const meta = postMetas?.[post.slug];
-  const { handleLike, likeActive } = usePost(post.slug, meta);
+export const PostCard = ({ post, posts }: { post: PostMeta; posts: PostMeta[] }) => {
+  const router = useRouter();
+  const { handleLike, likeActive } = usePost(post);
+  const { fetchPostMeta } = usePostMetas(posts);
+
   return (
     <Card
       variant="outlined"
       sx={{
-        my: 2,
+        my: 1,
         borderRadius: '8px',
         '&:hover': {
           cursor: 'pointer',
         },
       }}
+      onClick={() => router.push(`/blog/posts/${post.slug}`)}
     >
       <CardContent>
         <Typography variant="h5" color="grey.900" fontWeight={'bold'} gutterBottom>
@@ -32,25 +31,36 @@ export const PostListCard = ({
           {post.title}
         </Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
-          {post.date}
+          작성일: {post.date}
         </Typography>
-        <Box display="flex" gap={1} alignItems="center">
+
+        <Box display="flex" gap={1} alignItems="center" zIndex={2}>
           {/* 조회수 */}
           <Box display="flex" gap={0.5} alignItems="center">
             <VisibilityIcon color="disabled" fontSize="small" />
             <Typography variant="body2" color="textSecondary">
-              {meta?.views || 0}
+              {post.viewCount}
             </Typography>
           </Box>
+
           {/* 좋아요 */}
-          <Box display="flex" gap={0.5} alignItems="center" onClick={handleLike}>
+          <Box
+            display="flex"
+            gap={0.5}
+            alignItems="center"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike();
+              fetchPostMeta();
+            }}
+          >
             {likeActive ? (
               <FavoriteIcon color="disabled" fontSize="small" />
             ) : (
               <FavoriteBorderIcon color="disabled" fontSize="small" />
             )}
             <Typography variant="body2" color="textSecondary">
-              {meta?.likes || 0}
+              {post.likeCount}
             </Typography>
           </Box>
         </Box>
