@@ -4,7 +4,7 @@ import { db } from '@/firestore/firesbase';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-export const useComment = (slug: string, comment: Comment) => {
+export const useComment = (slug: string) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const commentsRef = collection(db, 'posts', slug, 'comments');
