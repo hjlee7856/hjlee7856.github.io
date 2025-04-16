@@ -13,8 +13,8 @@ export const useComment = (slug: string) => {
 
   const handleDelete = async (commentId: string) => {
     const ok = window.confirm('댓글을 삭제하시겠습니까?');
-    deleteComment(slug, commentId);
     if (!ok) return;
+    deleteComment(slug, commentId);
   };
 
   const handleEdit = async (commentId: string) => {
