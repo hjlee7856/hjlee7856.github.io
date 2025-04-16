@@ -45,11 +45,13 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
   // 카테고리 필터 훅
   const { filteredPosts, changeCategory, value } = useCategory(postWithMeta);
   // 정렬
-  filteredPosts.sort((a, b) => {
-    const timeA = a.createdAt.toDate().getTime() ?? 0;
-    const timeB = b.createdAt.toDate().getTime() ?? 0;
-    return timeB - timeA;
-  });
+  if (filteredPosts.length > 0) {
+    filteredPosts.sort((a, b) => {
+      const timeA = a.createdAt.toDate().getTime() ?? 0;
+      const timeB = b.createdAt.toDate().getTime() ?? 0;
+      return timeB - timeA;
+    });
+  }
 
   return (
     <Container>

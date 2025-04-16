@@ -12,7 +12,6 @@ export const signInWithGoogle = async () => {
     return user;
   } catch (error) {
     console.error('❌ 로그인 실패:', error);
-    throw error;
   }
 };
 

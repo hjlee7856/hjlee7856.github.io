@@ -1,7 +1,7 @@
 import DropDownMenu from '@/components/dropdownMenu';
 import { logoutWithGoogle, signInWithGoogle } from '@/firestore/auth';
 import useUserStore from '@/store/userStore';
-import { AppBar, Avatar, Box, MenuItem, Toolbar, Typography } from '@mui/material';
+import { AppBar, Avatar, Box, Button, MenuItem, Toolbar, Typography } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -37,17 +37,16 @@ export const Header = () => {
           </Link>
           {/* 비 로그인 */}
           {!isLoggedIn && (
-            <Box>
-              <Link href={`/`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <Image
-                  src={'/image/icon_google_login.png'}
-                  alt="구글 로그인"
-                  width={32}
-                  height={32}
-                  onClick={handleLogin}
-                  style={{ bottom: '-4px', position: 'relative' }}
-                />
-              </Link>
+            <Box
+              sx={{ width: '32px', height: '32px', cursor: 'pointer', position: 'relative' }}
+              onClick={handleLogin}
+            >
+              <Image
+                src={'/image/icon_google_login.png'}
+                alt="구글 로그인"
+                fill
+                style={{ bottom: '-4px' }}
+              />
             </Box>
           )}
           {/* 로그인 */}
@@ -65,8 +64,7 @@ export const Header = () => {
                   <MenuItem
                     key="logout"
                     onClick={handleLogout}
-                    component={Link}
-                    href="/blog"
+                    component={Button}
                     sx={{ textDecoration: 'none', color: 'inherit' }}
                   >
                     로그아웃
