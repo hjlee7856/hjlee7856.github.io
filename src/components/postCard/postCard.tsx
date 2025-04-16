@@ -27,12 +27,24 @@ export const PostCard = ({ post }: { post: PostMeta }) => {
             display={'flex'}
             flexDirection={'column'}
             justifyContent={'space-between'}
-            mr={2}
+            sx={{ mr: { xs: 0, sm: 2 } }}
           >
-            <PostCardTitle post={post} />
+            <Box
+              sx={{ display: { xs: 'flex' }, flex: { xs: '1' }, flexDirection: { xs: 'row' } }}
+              justifyContent={'space-between'}
+            >
+              <PostCardTitle post={post} />
+              {/* 모바일 썸네일 */}
+              <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                <PostCardThumbnail post={post} />
+              </Box>
+            </Box>
             <PostCardMeta post={post} />
           </Box>
-          <PostCardThumbnail post={post} />
+          {/* PC 썸네일 */}
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <PostCardThumbnail post={post} />
+          </Box>
         </Box>
       </CardContent>
     </Card>

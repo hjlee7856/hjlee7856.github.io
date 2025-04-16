@@ -9,7 +9,7 @@ export const PostCardThumbnail = ({ post }: { post: PostMeta }) => {
       position={'relative'}
       borderRadius={'8px'}
       overflow={'hidden'}
-      m={2}
+      sx={{ margin: { xs: 0, sm: 1 } }}
     >
       <Image src={post.thumbnail} alt={'썸네일 이미지'} fill />
     </Box>

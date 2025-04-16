@@ -4,7 +4,7 @@ import { files, postsDirectory } from '@/constants/files';
 import { useCategory } from '@/hooks/useCategory';
 import { usePagination } from '@/hooks/usePagenation';
 import { usePostMetaMap } from '@/hooks/usePostMetaMap';
-import { Box, Pagination, Tab, Tabs } from '@mui/material';
+import { Box, Container, Pagination, Tab, Tabs } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
@@ -44,9 +44,15 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
   const { postWithMeta } = usePostMetaMap(posts, currentPage, perPage);
   // 카테고리 필터 훅
   const { filteredPosts, changeCategory, value } = useCategory(postWithMeta);
+  // 정렬
+  filteredPosts.sort((a, b) => {
+    const timeA = a.createdAt.toDate().getTime() ?? 0;
+    const timeB = b.createdAt.toDate().getTime() ?? 0;
+    return timeB - timeA;
+  });
 
   return (
-    <Box>
+    <Container>
       {/* 카테고리 */}
       <Box display="flex" justifyContent="flex-start" my={1}>
         <Tabs
@@ -73,6 +79,6 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
           shape="rounded"
         />
       </Box>
-    </Box>
+    </Container>
   );
 }
