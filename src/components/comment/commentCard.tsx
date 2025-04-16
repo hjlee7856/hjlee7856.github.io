@@ -10,7 +10,7 @@ interface Props {
 
 export const CommentCard = ({ comment, slug }: Props) => {
   const { editContent, setEditContent, handleEdit, setEditingId, editingId, handleDelete } =
-    useComment(slug, comment);
+    useComment(slug);
   const { user: currentUser } = useUserStore();
   const isAuthor = currentUser?.uid === comment.user.uid;
   const isEditing = editingId === comment.id;
