@@ -1,19 +1,10 @@
-import { addComment } from '@/firestore/comments';
+import { useComment } from '@/hooks/useComment';
 import useUserStore from '@/store/userStore';
 import { Avatar, Box, Button, TextField } from '@mui/material';
-import { useState } from 'react';
 
 export const CommentInput = ({ slug }: { slug: string }) => {
   const { user: currentUser } = useUserStore();
-  const [input, setInput] = useState('');
-
-  const handleSubmit = async () => {
-    if (!input.trim()) return;
-    if (!currentUser) return;
-    addComment(slug, input, currentUser);
-    setInput('');
-  };
-
+  const { input, setInput, handleSubmit } = useComment(slug);
   return (
     <Box display="flex" alignItems="flex-start" gap={2} mb={2}>
       <Avatar src={currentUser?.photo ?? ''}>{currentUser?.name?.[0] ?? '이'}</Avatar>
