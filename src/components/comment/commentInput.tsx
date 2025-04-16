@@ -1,24 +1,16 @@
-import { db } from '@/firestore/firesbase';
+import { addComment } from '@/firestore/comments';
 import useUserStore from '@/store/userStore';
 import { Avatar, Box, Button, TextField } from '@mui/material';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { useState } from 'react';
 
 export const CommentInput = ({ slug }: { slug: string }) => {
   const { user: currentUser } = useUserStore();
   const [input, setInput] = useState('');
 
-  const commentsRef = collection(db, 'posts', slug, 'comments');
-
   const handleSubmit = async () => {
     if (!input.trim()) return;
-
-    await addDoc(commentsRef, {
-      content: input,
-      createdAt: Timestamp.now(),
-      user: currentUser,
-    });
-
+    if (!currentUser) return;
+    addComment(slug, input, currentUser);
     setInput('');
   };
 

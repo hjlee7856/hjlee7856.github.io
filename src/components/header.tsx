@@ -30,7 +30,7 @@ export const Header = () => {
       <Toolbar>
         <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} width={'100%'}>
           {/* 타이틀 */}
-          <Link href={`/blog`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link href={`/`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Typography variant="h6" color="inherit">
               블로그
             </Typography>

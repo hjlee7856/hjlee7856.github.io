@@ -3,7 +3,7 @@ import { decrementLike, hasUserLiked, incrementLike } from '@/firestore/likes';
 import useUserStore from '@/store/userStore';
 import { useEffect, useState } from 'react';
 
-export const usePost = (post: PostMeta) => {
+export const useLike = (post: PostMeta) => {
   const [likeActive, setLikeActive] = useState(false);
   const { user } = useUserStore();
 

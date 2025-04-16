@@ -1,5 +1,5 @@
 import { Comment } from '@/components/comment/comment';
-import { CommentCard } from '@/components/comment/list/card';
+import { CommentCard } from '@/components/comment/commentCard';
 import { Stack } from '@mui/material';
 
 interface Props {
@@ -12,8 +12,8 @@ interface Props {
 export const CommentCardList = ({ slug, comments, start, perPage }: Props) => {
   return (
     <Stack spacing={2}>
-      {comments.slice(start, start + perPage).map((comment) => {
-        return <CommentCard comment={comment} slug={slug} />;
+      {comments.slice(start, start + perPage).map((comment, idx) => {
+        return <CommentCard comment={comment} slug={slug} key={idx} />;
       })}
     </Stack>
   );

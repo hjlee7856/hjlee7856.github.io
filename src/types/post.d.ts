@@ -8,4 +8,5 @@ interface PostMeta {
   category: string;
   viewCount: number;
   likeCount: number;
+  commentCount: number;
 }

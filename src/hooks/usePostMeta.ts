@@ -30,6 +30,7 @@ export const usePostMeta = (slug: string, meta: mdxMeta) => {
           slug: data.slug,
           viewCount: data.viewCount,
           likeCount: data.likeCount,
+          commentCount: data.commentCount,
         });
       }
     });

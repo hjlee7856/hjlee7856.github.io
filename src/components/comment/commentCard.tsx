@@ -1,9 +1,7 @@
 import { Comment } from '@/components/comment/comment';
-import { db } from '@/firestore/firesbase';
+import { useComment } from '@/hooks/useComment';
 import useUserStore from '@/store/userStore';
 import { Avatar, Box, Button, Card, TextField, Typography } from '@mui/material';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { useState } from 'react';
 
 interface Props {
   comment: Comment;
@@ -11,26 +9,11 @@ interface Props {
 }
 
 export const CommentCard = ({ comment, slug }: Props) => {
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editContent, setEditContent] = useState('');
+  const { editContent, setEditContent, handleEdit, setEditingId, editingId, handleDelete } =
+    useComment(slug, comment);
   const { user: currentUser } = useUserStore();
-
   const isAuthor = currentUser?.uid === comment.user.uid;
   const isEditing = editingId === comment.id;
-
-  const handleDelete = async (commentId: string) => {
-    const ok = window.confirm('댓글을 삭제하시겠습니까?');
-    if (!ok) return;
-    await deleteDoc(doc(db, 'posts', slug, 'comments', commentId));
-  };
-
-  const handleEdit = async (commentId: string) => {
-    if (!editContent.trim()) return;
-    await updateDoc(doc(db, 'posts', slug, 'comments', commentId), {
-      content: editContent,
-    });
-    setEditingId(null);
-  };
 
   return (
     <Card variant="outlined" key={comment.id} sx={{ p: 2 }}>

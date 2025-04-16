@@ -28,6 +28,12 @@ export const usePostMetaMap = (posts: PostMeta[], currentPage: number, perPage: 
         ...post,
         ...metaMap[post.slug],
       }));
+      // 시간 및 날짜로 정렬
+      updated.sort((a, b) => {
+        const timeA = a.createdAt.toDate().getTime() ?? 0;
+        const timeB = b.createdAt.toDate().getTime() ?? 0;
+        return timeB - timeA;
+      });
       setPostWithMeta(updated);
     });
 

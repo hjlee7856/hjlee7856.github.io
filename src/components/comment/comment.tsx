@@ -1,10 +1,9 @@
-import { CommentInput } from '@/components/comment/Input';
-import { CommentCardList } from '@/components/comment/list/cardList';
-import { db } from '@/firestore/firesbase';
+import { CommentCardList } from '@/components/comment/commentCardList';
+import { CommentInput } from '@/components/comment/commentInput';
+import { useComment } from '@/hooks/useComment';
 import { usePagination } from '@/hooks/usePagenation';
 import { Box, CircularProgress, Pagination, Typography } from '@mui/material';
-import { collection, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { Timestamp } from 'firebase/firestore';
 
 export type Comment = {
   id: string;
@@ -22,28 +21,11 @@ interface Props {
 }
 
 export default function CommentSection({ slug }: Props) {
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [loading, setLoading] = useState(true);
-
+  // 코멘트 훅
+  const { loading, comments } = useComment(slug);
   // 페이지네이션 필터 훅
   const { currentPage, setCurrentPage, totalPages, perPage } = usePagination(comments.length);
   const start = (currentPage - 1) * perPage;
-
-  const commentsRef = collection(db, 'posts', slug, 'comments');
-
-  useEffect(() => {
-    const q = query(commentsRef, orderBy('createdAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const list: Comment[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as Omit<Comment, 'id'>),
-      }));
-      setComments(list);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [slug]);
 
   return (
     <Box>
