@@ -34,9 +34,6 @@ export default function DropDownMenu({ menuBtn, menuItem }: Props) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
         sx={{
           display: 'flex',
           justifyContent: 'center',

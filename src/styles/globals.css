@@ -5,3 +5,8 @@
 html {
   font-family: 'Pretendard', sans-serif;
 }
+
+.MuiMenu-list {
+  padding-top: 0;
+  padding-bottom: 0;
+}

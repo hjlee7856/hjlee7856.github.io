@@ -17,7 +17,7 @@ export const PostHeader = ({ postMeta }: { postMeta: PostMeta }) => {
       </Box>
       {/* 타이틀 */}
       <Typography
-        variant="h3"
+        variant="h5"
         fontWeight={'bold'}
         gutterBottom
         sx={{
@@ -35,7 +35,9 @@ export const PostHeader = ({ postMeta }: { postMeta: PostMeta }) => {
       </Box>
       {/* 작성자, 작성일 */}
       <Box mb={2}>
-        <Typography variant="body1">{postMeta.author}</Typography>
+        <Typography variant="body1" fontWeight={'bold'}>
+          {postMeta.author}
+        </Typography>
         <Typography variant="body2" color="textSecondary">
           {postMeta.createdAt.toDate().toLocaleString()}
         </Typography>

@@ -2,15 +2,13 @@ import { Box, Typography } from '@mui/material';
 
 export const PostCardTitle = ({ post }: { post: PostMeta }) => {
   return (
-    <Box>
+    <Box position={'relative'} width={'100%'}>
       {/* 타이틀, 서브타이틀 */}
       <Typography
-        variant="h5"
-        color="textPrimary"
-        fontWeight={'bold'}
+        variant="h6"
         gutterBottom
         sx={{
-          maxWidth: '100%',
+          maxWidth: '95%',
           wordBreak: 'break-word',
           display: '-webkit-box',
           WebkitLineClamp: 3,
@@ -21,11 +19,11 @@ export const PostCardTitle = ({ post }: { post: PostMeta }) => {
         {post.title}
       </Typography>
       <Typography
-        variant="body1"
+        variant="subtitle1"
         color="textSecondary"
         gutterBottom
         sx={{
-          maxWidth: '100%',
+          maxWidth: '95%',
           wordBreak: 'break-word',
           display: '-webkit-box',
           WebkitLineClamp: 3,

@@ -1,11 +1,11 @@
+import { CategoryTab } from '@/components/categoryTab';
 import LoadingOverlay from '@/components/loadingOverlay';
 import { PostCardList } from '@/components/postList/postCardList';
-import { categories } from '@/constants/categorys';
 import { files, postsDirectory } from '@/constants/files';
 import { useCategory } from '@/hooks/useCategory';
 import { usePagination } from '@/hooks/usePagenation';
 import { usePostMetaMap } from '@/hooks/usePostMetaMap';
-import { Box, Container, Pagination, Tab, Tabs } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
@@ -45,7 +45,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
   // 메타정보들 가져오는 훅
   const { postWithMeta } = usePostMetaMap(posts, currentPage, perPage);
   // 카테고리 필터 훅
-  const { filteredPosts, changeCategory, value } = useCategory(postWithMeta);
+  const { filteredPosts, changeCategory, selectIdx } = useCategory(postWithMeta);
 
   if (!posts) return <LoadingOverlay />;
 
@@ -61,21 +61,13 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
   }
 
   return (
-    <Container>
+    <Box>
       {/* 카테고리 */}
-      <Box display="flex" justifyContent="flex-start" my={1}>
-        <Tabs
-          value={value}
-          onChange={(e, idx) => {
-            changeCategory(e, idx);
-            setCurrentPage(1);
-          }}
-        >
-          {categories.map((category, idx) => (
-            <Tab key={idx} label={category.categoryName} />
-          ))}
-        </Tabs>
-      </Box>
+      <CategoryTab
+        changeCategory={changeCategory}
+        setCurrentPage={setCurrentPage}
+        value={selectIdx}
+      />
       {/* 포스트 리스트 */}
       <PostCardList filteredPosts={filteredPosts} />
       {/* 페이지네이션 */}
@@ -88,6 +80,6 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
           shape="rounded"
         />
       </Box>
-    </Container>
+    </Box>
   );
 }

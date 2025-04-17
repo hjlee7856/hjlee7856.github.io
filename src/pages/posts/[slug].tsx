@@ -1,6 +1,6 @@
 import CommentSection from '@/components/comment/commentSection';
-import { PostHeader } from '@/components/post/postHeader';
 import LoadingOverlay from '@/components/loadingOverlay';
+import { PostHeader } from '@/components/post/postHeader';
 import { files, postsDirectory } from '@/constants/files';
 import { usePostMeta } from '@/hooks/usePostMeta';
 import { useViewCount } from '@/hooks/useViewCount';
@@ -44,10 +44,8 @@ export default function BlogPostPage({ mdxSource, meta, slug }: any) {
 
   if (!postMeta) return <LoadingOverlay />;
 
-  console.log(JSON.stringify(postMeta));
-
   return (
-    <Box paddingInline={2}>
+    <Box paddingInline={2} paddingTop={'1px'}>
       {/* 포스트 헤더 */}
       <PostHeader postMeta={postMeta} />
       {/* 컨텐츠 */}

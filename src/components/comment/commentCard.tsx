@@ -25,7 +25,9 @@ export const CommentCard = ({ comment, slug }: Props) => {
             window.open(`mailto:${comment.user.email}`);
           }}
         />
-        <Typography fontWeight="bold">{comment.user.name}</Typography>
+        <Typography variant="body1" fontWeight="bold">
+          {comment.user.name}
+        </Typography>
         <Typography variant="body2" color="text.secondary">
           {comment.createdAt.toDate().toLocaleString()}
         </Typography>

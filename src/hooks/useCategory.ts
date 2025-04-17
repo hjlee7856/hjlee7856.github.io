@@ -1,18 +1,23 @@
 import { categories } from '@/constants/categorys';
+import useCategoryStore from '@/store/categoryStore';
 import { useEffect, useState } from 'react';
 
-export const useCategory = (posts: PostMeta[]) => {
+export const useCategory = (posts?: PostMeta[]) => {
   const [filteredPosts, setFillteredPosts] = useState<PostMeta[]>([]);
-  const [category, setCategory] = useState('전체');
-  const [value, setValue] = useState(0);
+
+  const { selectCategory, setCategory, selectIdx, setIndex } = useCategoryStore();
+
   const changeCategory = (event: React.SyntheticEvent, idx: number) => {
-    setValue(idx);
+    setIndex(idx);
     setCategory(categories[idx].categoryName);
   };
 
   useEffect(() => {
-    setFillteredPosts(posts.filter((post) => category === '전체' || post.category === category));
-  }, [posts, category]);
+    if (!posts) return;
+    setFillteredPosts(
+      posts.filter((post) => selectCategory === '전체' || post.category === selectCategory)
+    );
+  }, [posts, selectCategory]);
 
-  return { filteredPosts, changeCategory, value };
+  return { filteredPosts, changeCategory, selectIdx };
 };
