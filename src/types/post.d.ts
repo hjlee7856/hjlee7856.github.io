@@ -4,6 +4,7 @@ interface PostMeta {
   subTitle: string;
   author: string;
   thumbnail: string;
+  tags: string[];
   createdAt: Timestamp;
   category: string;
   viewCount: number;

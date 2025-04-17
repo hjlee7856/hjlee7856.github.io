@@ -1,4 +1,4 @@
-import { Comment } from '@/components/comment/comment';
+import { Comment } from '@/components/comment/commentSection';
 import { addComment, deleteComment, editComment } from '@/firestore/comments';
 import { db } from '@/firestore/firesbase';
 import useUserStore from '@/store/userStore';

@@ -5,7 +5,7 @@ import { AppBar, Avatar, Box, Button, MenuItem, Toolbar, Typography } from '@mui
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const Header = () => {
+export const AppHeader = () => {
   const { user, isLoggedIn } = useUserStore();
 
   const handleLogin = async () => {
@@ -38,14 +38,21 @@ export const Header = () => {
           {/* 비 로그인 */}
           {!isLoggedIn && (
             <Box
-              sx={{ width: '32px', height: '32px', cursor: 'pointer', position: 'relative' }}
+              sx={{
+                width: '32px',
+                height: '32px',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
               onClick={handleLogin}
             >
               <Image
                 src={'/image/icon_google_login.png'}
                 alt="구글 로그인"
                 fill
-                style={{ bottom: '-4px' }}
+                sizes="32px"
+                priority
               />
             </Box>
           )}

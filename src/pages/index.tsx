@@ -1,4 +1,5 @@
-import { PostCardList } from '@/components/postCard/postCardList';
+import LoadingOverlay from '@/components/loadingOverlay';
+import { PostCardList } from '@/components/postList/postCardList';
 import { categories } from '@/constants/categorys';
 import { files, postsDirectory } from '@/constants/files';
 import { useCategory } from '@/hooks/useCategory';
@@ -21,6 +22,7 @@ export async function getStaticProps() {
       subTitle: meta.subTitle,
       author: meta.author,
       thumbnail: meta.thumbnail,
+      tags: String(meta.tags).split(','),
       createdAt: new Date().toISOString(),
       category: meta.category,
       viewCount: 0,
@@ -44,13 +46,18 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
   const { postWithMeta } = usePostMetaMap(posts, currentPage, perPage);
   // 카테고리 필터 훅
   const { filteredPosts, changeCategory, value } = useCategory(postWithMeta);
+
+  if (!posts) return <LoadingOverlay />;
+
   // 정렬
   if (filteredPosts.length > 0) {
-    filteredPosts.sort((a, b) => {
-      const timeA = a.createdAt.toDate().getTime() ?? 0;
-      const timeB = b.createdAt.toDate().getTime() ?? 0;
-      return timeB - timeA;
-    });
+    filteredPosts
+      .filter((post) => post.createdAt && typeof post.createdAt.toDate === 'function')
+      .sort((a, b) => {
+        const timeA = a.createdAt.toDate().getTime() ?? 0;
+        const timeB = b.createdAt.toDate().getTime() ?? 0;
+        return timeB - timeA;
+      });
   }
 
   return (

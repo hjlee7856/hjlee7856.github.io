@@ -2,7 +2,7 @@ import { CommentCardList } from '@/components/comment/commentCardList';
 import { CommentInput } from '@/components/comment/commentInput';
 import { useComment } from '@/hooks/useComment';
 import { usePagination } from '@/hooks/usePagenation';
-import { Box, CircularProgress, Pagination, Typography } from '@mui/material';
+import { Box, Divider, Pagination, Typography } from '@mui/material';
 import { Timestamp } from 'firebase/firestore';
 
 export type Comment = {
@@ -11,6 +11,7 @@ export type Comment = {
   createdAt: Timestamp;
   user: {
     name: string;
+    email: string;
     photo?: string;
     uid: string;
   };
@@ -18,9 +19,10 @@ export type Comment = {
 
 interface Props {
   slug: string;
+  postMeta: PostMeta;
 }
 
-export default function CommentSection({ slug }: Props) {
+export default function CommentSection({ slug, postMeta }: Props) {
   // 코멘트 훅
   const { loading, comments } = useComment(slug);
   // 페이지네이션 필터 훅
@@ -28,21 +30,22 @@ export default function CommentSection({ slug }: Props) {
   const start = (currentPage - 1) * perPage;
 
   return (
-    <Box>
-      {/* 타이틀 */}
-      <Typography variant="h5" fontWeight={'bold'} mb={2} mt={2} gutterBottom>
-        Comment
-      </Typography>
-
+    <Box mt={8}>
+      {/* 댓글 개수, 문의 */}
+      <Divider />
+      <Box display={'flex'} justifyContent={'space-between'} flexDirection={'row'}>
+        <Typography variant="body1" mb={2} mt={2} gutterBottom>
+          댓글 {postMeta.commentCount}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" mb={2} mt={2} gutterBottom>
+          댓글 관련 문의: jacker97@naver.com
+        </Typography>
+      </Box>
       {/* 댓글 입력 */}
       <CommentInput slug={slug} />
 
       {/* 댓글 리스트 */}
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <CommentCardList slug={slug} comments={comments} start={start} perPage={perPage} />
-      )}
+      <CommentCardList slug={slug} comments={comments} start={start} perPage={perPage} />
 
       {/* 페이지네이션 */}
       <Box display="flex" justifyContent="center" my={3}>

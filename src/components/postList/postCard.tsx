@@ -1,6 +1,6 @@
-import { PostCardMeta } from '@/components/postCard/postCardMeta';
-import { PostCardThumbnail } from '@/components/postCard/postCardThumbnail';
-import { PostCardTitle } from '@/components/postCard/postCardTitle';
+import { PostCardMeta } from '@/components/postList/postCardMeta';
+import { PostCardThumbnail } from '@/components/postList/postCardThumbnail';
+import { PostCardTitle } from '@/components/postList/postCardTitle';
 
 import { Box, Card, CardContent } from '@mui/material';
 import { useRouter } from 'next/router';

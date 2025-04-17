@@ -1,18 +1,27 @@
 import { db } from '@/firestore/firesbase';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-type mdxMeta = {
+type MdxMeta = {
   title: string;
   subTitle: string;
   author: string;
   thumbnail: string;
   date: string;
   category: string;
+  tags: string;
 };
 
-export const usePostMeta = (slug: string, meta: mdxMeta) => {
-  const [postMetaFromFireStore, setPostMetaFromFireStore] = useState<PostMeta | null>(null);
+type MeteData = {
+  slug: string;
+  createdAt: Timestamp;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
+};
+
+export const usePostMeta = (slug: string, meta: MdxMeta) => {
+  const [postMetaFromFireStore, setPostMetaFromFireStore] = useState<PostMeta>();
 
   useEffect(() => {
     const ref = doc(db, 'posts', slug);
@@ -20,17 +29,17 @@ export const usePostMeta = (slug: string, meta: mdxMeta) => {
     const unsubscribe = onSnapshot(ref, (snap) => {
       if (snap.exists()) {
         const data = snap.data();
-        setPostMetaFromFireStore({
-          category: meta.category,
-          title: meta.title,
-          subTitle: meta.subTitle,
-          author: meta.author,
-          thumbnail: meta.thumbnail,
-          createdAt: data.createdAt,
+        const metaDataFromFS: MeteData = {
           slug: data.slug,
+          createdAt: data.createdAt,
           viewCount: data.viewCount,
           likeCount: data.likeCount,
           commentCount: data.commentCount,
+        };
+        setPostMetaFromFireStore({
+          ...meta,
+          tags: meta.tags.split(','),
+          ...metaDataFromFS,
         });
       }
     });

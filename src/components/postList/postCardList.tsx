@@ -1,4 +1,4 @@
-import { PostCard } from '@/components/postCard/postCard';
+import { PostCard } from '@/components/postList/postCard';
 import { Container } from '@mui/material';
 
 export const PostCardList = ({ filteredPosts }: { filteredPosts: PostMeta[] }) => {

@@ -1,13 +1,14 @@
-import CommentSection from '@/components/comment/comment';
+import CommentSection from '@/components/comment/commentSection';
+import { PostHeader } from '@/components/post/postHeader';
+import LoadingOverlay from '@/components/loadingOverlay';
 import { files, postsDirectory } from '@/constants/files';
 import { usePostMeta } from '@/hooks/usePostMeta';
 import { useViewCount } from '@/hooks/useViewCount';
-import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
-import Image from 'next/image';
 import path from 'path';
 
 export async function getStaticPaths() {
@@ -41,37 +42,18 @@ export default function BlogPostPage({ mdxSource, meta, slug }: any) {
   // 파이어 스토어에 저장된 메타 정보 가져와서 합치기
   const postMeta = usePostMeta(slug, meta);
 
-  if (!postMeta) return <CircularProgress />;
+  if (!postMeta) return <LoadingOverlay />;
+
+  console.log(JSON.stringify(postMeta));
 
   return (
-    <Container maxWidth="md">
-      {/* 페이지 헤더 */}
-      <Box mb={4} mt={2}>
-        <Typography variant="h4" fontWeight={'bold'} gutterBottom>
-          {postMeta.title}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          {postMeta.createdAt.toDate().toLocaleString()}
-        </Typography>
-        <Image src={postMeta.thumbnail} alt={'썸네일 이미지'} width={150} height={150} />
-      </Box>
-      {postMeta && (
-        <Box gap={0}>
-          <Typography sx={{ m: 1 }} variant="body2">
-            조회수: {postMeta.viewCount}
-          </Typography>
-          <Typography sx={{ m: 1 }} variant="body2">
-            좋아요: {postMeta.likeCount}
-          </Typography>
-        </Box>
-      )}
-
+    <Box paddingInline={2}>
+      {/* 포스트 헤더 */}
+      <PostHeader postMeta={postMeta} />
       {/* 컨텐츠 */}
       <MDXRemote {...mdxSource} />
-
       {/* 댓글 */}
-      <Divider />
-      <CommentSection slug={slug} />
-    </Container>
+      <CommentSection slug={slug} postMeta={postMeta} />
+    </Box>
   );
 }

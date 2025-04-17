@@ -1,4 +1,4 @@
-import { Header } from '@/components/header';
+import { AppHeader } from '@/components/app/appHeader';
 import createEmotionCache from '@/createEmotionCache';
 import { useAuthListener } from '@/hooks/useAuthListener';
 import { pretendard } from '@/styles/fonts';
@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="lg" className={pretendard.className} sx={{ padding: 0 }}>
-          <Header />
+          <AppHeader />
           <Component {...pageProps} />
         </Container>
       </ThemeProvider>

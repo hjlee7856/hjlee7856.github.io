@@ -1,5 +1,5 @@
-import { Comment } from '@/components/comment/comment';
 import { CommentCard } from '@/components/comment/commentCard';
+import { Comment } from '@/components/comment/commentSection';
 import { Stack } from '@mui/material';
 
 interface Props {

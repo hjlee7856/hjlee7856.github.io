@@ -1,4 +1,4 @@
-import { Comment } from '@/components/comment/comment';
+import { Comment } from '@/components/comment/commentSection';
 import { useComment } from '@/hooks/useComment';
 import useUserStore from '@/store/userStore';
 import { Avatar, Box, Button, Card, TextField, Typography } from '@mui/material';
@@ -18,7 +18,13 @@ export const CommentCard = ({ comment, slug }: Props) => {
   return (
     <Card variant="outlined" key={comment.id} sx={{ p: 2 }}>
       <Box display="flex" alignItems="center" gap={1} mb={1}>
-        <Avatar src={comment.user.photo}>{comment.user.name[0]}</Avatar>
+        <Avatar
+          src={comment.user.photo}
+          sx={{ cursor: 'pointer' }}
+          onClick={() => {
+            window.open(`mailto:${comment.user.email}`);
+          }}
+        />
         <Typography fontWeight="bold">{comment.user.name}</Typography>
         <Typography variant="body2" color="text.secondary">
           {comment.createdAt.toDate().toLocaleString()}
