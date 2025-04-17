@@ -14,13 +14,13 @@ export const PostCardMeta = ({ post }: { post: PostMeta }) => {
       {/* 작성자, 작성일 */}
       <Box display="flex" gap={0.5} alignItems="center">
         <Typography variant="body2" color="textSecondary">
-          {post.author}
+          {post.createdAt && dayjs(post.createdAt.toDate()).format('YYYY년 MM월 DD일')}
         </Typography>
         <Typography variant="body2" color="textSecondary">
           •
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {post.createdAt && dayjs(post.createdAt.toDate()).format('YYYY. MM. DD.')}
+          {post.author}
         </Typography>
       </Box>
       {/* 조회수, 좋아요, 댓글 */}

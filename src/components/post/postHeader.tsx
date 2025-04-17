@@ -4,7 +4,7 @@ import Image from 'next/image';
 export const PostHeader = ({ postMeta }: { postMeta: PostMeta }) => {
   return (
     <Box mt={4} mb={8}>
-      {/* 썸네일 */}
+      {/* 썸네일 16:9 */}
       <Box
         width="100%"
         paddingTop="56.25%"
@@ -16,7 +16,15 @@ export const PostHeader = ({ postMeta }: { postMeta: PostMeta }) => {
         <Image src={postMeta.thumbnail} alt={'썸네일 이미지'} fill style={{ objectFit: 'cover' }} />
       </Box>
       {/* 타이틀 */}
-      <Typography variant="h3" fontWeight={'bold'} gutterBottom>
+      <Typography
+        variant="h3"
+        fontWeight={'bold'}
+        gutterBottom
+        sx={{
+          maxWidth: '100%',
+          wordBreak: 'break-word',
+        }}
+      >
         {postMeta.title}
       </Typography>
       {/* 태그 */}

@@ -35,14 +35,19 @@ export const PostCard = ({ post }: { post: PostMeta }) => {
             >
               <PostCardTitle post={post} />
               {/* 모바일 썸네일 */}
-              <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+              <Box sx={{ display: { xs: 'flex', sm: 'none' }, alignItems: 'center' }}>
                 <PostCardThumbnail post={post} />
               </Box>
             </Box>
             <PostCardMeta post={post} />
           </Box>
           {/* PC 썸네일 */}
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Box
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              alignItems: 'center',
+            }}
+          >
             <PostCardThumbnail post={post} />
           </Box>
         </Box>
