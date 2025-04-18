@@ -4,7 +4,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 
 export const PostCardMeta = ({ post }: { post: PostMeta }) => {
   const { handleLike, likeActive } = useLike(post);
@@ -25,7 +24,7 @@ export const PostCardMeta = ({ post }: { post: PostMeta }) => {
           •
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {post.createdAt && dayjs(post.createdAt.toDate()).format('YYYY년 MM월 DD일')}
+          {post.createdAt.toLocaleString()}
         </Typography>
       </Box>
       {/* 조회수, 좋아요, 댓글 */}

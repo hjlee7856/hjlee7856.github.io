@@ -12,7 +12,7 @@ export type Comment = {
   createdAt: Timestamp;
   uid: string;
   user?: {
-    name: string;
+    displayName: string;
     email: string;
     photoURL?: string;
     uid: string;

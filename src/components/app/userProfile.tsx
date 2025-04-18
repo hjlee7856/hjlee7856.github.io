@@ -1,5 +1,5 @@
 import DropDownMenu from '@/components/dropdownMenu';
-import { logoutWithGoogle } from '@/firestore/auth';
+import { logoutWithFireAuth } from '@/firestore/auth';
 import useUserStore from '@/store/userStore';
 import { Avatar, Box, Button, MenuItem } from '@mui/material';
 
@@ -12,7 +12,7 @@ export const UserProfile = (props: Props) => {
 
   const handleLogout = async () => {
     try {
-      await logoutWithGoogle();
+      await logoutWithFireAuth();
       if (props.handleDrawer) props.handleDrawer();
     } catch (error: any) {
       console.error('❌ 로그아웃 실패:', error?.code, error?.message, error);
@@ -29,7 +29,7 @@ export const UserProfile = (props: Props) => {
         justifyContent={'center'}
       >
         <DropDownMenu
-          menuBtn={<Avatar alt={user?.name ?? ''} src={user?.photo ?? ''} />}
+          menuBtn={<Avatar alt={user?.name ?? ''} src={user?.photoURL ?? ''} />}
           menuItem={[
             <MenuItem
               key="logout"

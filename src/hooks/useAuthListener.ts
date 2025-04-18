@@ -1,3 +1,4 @@
+import { updateAuth } from '@/firestore/auth';
 import { auth } from '@/firestore/firesbase';
 import useUserStore from '@/store/userStore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -12,9 +13,11 @@ export const useAuthListener = () => {
         setUser({
           uid: user.uid,
           email: user.email,
-          name: user.displayName,
-          photo: user.photoURL,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          providerId: user.providerData[0].providerId.replace('.com', ''),
         });
+        updateAuth(user);
       } else {
         setUser(null);
       }

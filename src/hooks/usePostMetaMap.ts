@@ -1,4 +1,3 @@
-// usePostMetas.ts
 import { db } from '@/firestore/firesbase';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -10,34 +9,42 @@ export const usePostMetaMap = (posts: PostMeta[], currentPage: number, perPage: 
     if (!posts.length) return;
 
     const postsMetaRef = collection(db, 'posts');
-
-    // 페이지에 맞게 슬라이스
     const start = (currentPage - 1) * perPage;
     const currentPosts = posts.slice(start, start + perPage);
     const slugs = currentPosts.map((post) => post.slug);
 
-    // Firestore where('slug', 'in', [...])은 최대 10개 제한
     const q = query(postsMetaRef, where('slug', 'in', slugs));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const metaMap: Record<string, any> = {};
-      snapshot.forEach((doc) => {
-        metaMap[doc.id] = doc.data();
-      });
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        try {
+          const metaMap: Record<string, any> = {};
+          snapshot.forEach((doc) => {
+            metaMap[doc.id] = doc.data();
+          });
 
-      // slug 기준으로 병합
-      const updated = posts
-        .map((post) => ({
-          ...post,
-          ...metaMap[post.slug],
-        }))
-        .sort((a, b) => {
-          const aTime = a.createdAt?.toMillis?.() ?? 0;
-          const bTime = b.createdAt?.toMillis?.() ?? 0;
-          return bTime - aTime; // 내림차순 (최신순)
-        });
+          const updated = posts
+            .map((post) => {
+              const meta = metaMap[post.slug];
+              return {
+                ...post,
+                ...meta,
+                createdAt: meta?.createdAt?.toDate?.() ?? null,
+              };
+            })
+            .sort((a, b) => {
+              const aTime = a.createdAt?.getTime?.() ?? 0;
+              const bTime = b.createdAt?.getTime?.() ?? 0;
+              return bTime - aTime;
+            });
 
-      setPostWithMeta(updated);
-    });
+          setPostWithMeta(updated);
+        } catch (error) {}
+      },
+      (error) => {
+        // onSnapshot 자체 에러 처리
+      }
+    );
 
     return () => unsubscribe();
   }, [posts, currentPage]);

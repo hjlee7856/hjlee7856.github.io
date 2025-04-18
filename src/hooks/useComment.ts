@@ -43,11 +43,10 @@ export const useComment = (slug: string) => {
         ...(doc.data() as Omit<Comment, 'id' | 'user'>),
       }));
 
-      const commentsWithUser: Comment[] = await Promise.all(
+      const commentsWithUser: any[] = await Promise.all(
         commentList.map(async (comment) => {
           const userRef = doc(db, 'users', comment.uid);
           const userSnap = await getDoc(userRef);
-
           return {
             ...comment,
             user: userSnap.exists() ? (userSnap.data() as Comment['user']) : undefined,

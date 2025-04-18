@@ -1,5 +1,5 @@
 import { db } from '@/firestore/firesbase';
-import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 type MdxMeta = {
@@ -14,7 +14,7 @@ type MdxMeta = {
 
 type MeteData = {
   slug: string;
-  createdAt: Timestamp;
+  createdAt: Date;
   viewCount: number;
   likeCount: number;
   commentCount: number;
@@ -31,7 +31,7 @@ export const usePostMeta = (slug: string, meta: MdxMeta) => {
         const data = snap.data();
         const metaDataFromFS: MeteData = {
           slug: data.slug,
-          createdAt: data.createdAt,
+          createdAt: data.createdAt.toDate(),
           viewCount: data.viewCount,
           likeCount: data.likeCount,
           commentCount: data.commentCount,

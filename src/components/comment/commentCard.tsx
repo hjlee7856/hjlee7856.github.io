@@ -14,28 +14,30 @@ export const CommentCard = ({ comment, slug }: Props) => {
   const { user: currentUser } = useUserStore();
   const isEditing = editingId === comment.id;
 
-  if (!comment.user) return;
+  if (!comment.user) return null;
+
   const isAuthor = currentUser?.uid === comment.user.uid;
+  const createdAt = comment.createdAt.toDate();
+  const formattedDate = createdAt.toLocaleString();
 
   return (
     <Card variant="outlined" key={comment.id} sx={{ p: 2 }}>
       <Box display="flex" alignItems="center" gap={1} mb={1}>
         <Avatar
-          src={comment.user.photoURL}
+          src={comment.user.photoURL ?? undefined}
           sx={{ cursor: 'pointer' }}
           onClick={() => {
-            window.open(`mailto:${comment.user!.email}`);
+            window.open(`mailto:${comment.user?.email}`);
           }}
         />
         <Typography variant="body1" fontWeight="bold">
-          {comment.user.name}
+          {comment.user.displayName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {comment.createdAt.toDate().toLocaleString()}
+          {formattedDate}
         </Typography>
       </Box>
 
-      {/* 수정 중이면 input, 아니면 텍스트 */}
       {isEditing ? (
         <Box display="flex" flexDirection="column" gap={1}>
           <TextField
@@ -57,7 +59,6 @@ export const CommentCard = ({ comment, slug }: Props) => {
         <Typography>{comment.content}</Typography>
       )}
 
-      {/* 본인 댓글이면 수정/삭제 */}
       {isAuthor && !isEditing && (
         <Box display="flex" gap={1} mt={1} justifyContent={'flex-end'}>
           <Button

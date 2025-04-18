@@ -1,20 +1,12 @@
 import { db } from '@/firestore/firesbase';
 import { User } from '@/store/userStore';
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  increment,
-  Timestamp,
-  updateDoc,
-} from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, increment, updateDoc } from 'firebase/firestore';
 
 export const addComment = async (slug: string, input: string, currentUser: User) => {
   const commentsRef = collection(db, 'posts', slug, 'comments');
   await addDoc(commentsRef, {
     content: input,
-    createdAt: Timestamp.now(),
+    createdAt: new Date(),
     uid: currentUser.uid,
   });
   const postRef = doc(db, 'posts', slug);

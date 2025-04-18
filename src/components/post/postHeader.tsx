@@ -39,7 +39,7 @@ export const PostHeader = ({ postMeta }: { postMeta: PostMeta }) => {
           {postMeta.author}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {postMeta.createdAt.toDate().toLocaleString()}
+          {postMeta.createdAt.toLocaleString()}
         </Typography>
       </Box>
       <Divider />

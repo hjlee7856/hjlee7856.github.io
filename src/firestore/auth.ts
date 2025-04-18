@@ -1,13 +1,21 @@
 // lib/auth.ts
 import { auth, db } from '@/firestore/firesbase';
-import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+
+import {
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  User,
+} from 'firebase/auth';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 export const signInFireAuth = async (providerType: string) => {
   let provider = null;
   if (providerType === 'google') provider = new GoogleAuthProvider();
   if (providerType === 'github') provider = new GithubAuthProvider();
-  if (provider === null) return;
+
+  if (!provider) return;
 
   try {
     const result = await signInWithPopup(auth, provider);
@@ -32,10 +40,25 @@ export const signInFireAuth = async (providerType: string) => {
   }
 };
 
-export const logoutWithGoogle = async () => {
+export const logoutWithFireAuth = async () => {
   try {
     await signOut(auth);
   } catch (error: any) {
     return false;
+  }
+};
+
+export const updateAuth = async (user: User) => {
+  // 저장된 유저정보 갱신
+  const userRef = doc(db, 'users', user.uid);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists()) {
+    await updateDoc(userRef, {
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      providerId: user.providerData[0].providerId.replace('.com', ''),
+    });
   }
 };

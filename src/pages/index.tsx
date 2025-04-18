@@ -23,7 +23,7 @@ export async function getStaticProps() {
       author: meta.author,
       thumbnail: meta.thumbnail,
       tags: String(meta.tags).split(','),
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toLocaleString(),
       category: meta.category,
       viewCount: 0,
       likeCount: 0,
