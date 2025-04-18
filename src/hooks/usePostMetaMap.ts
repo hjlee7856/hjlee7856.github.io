@@ -1,4 +1,5 @@
 import { db } from '@/firestore/firesbase';
+import { initPostMeta } from '@/firestore/initPostMeta';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
@@ -7,6 +8,8 @@ export const usePostMetaMap = (posts: PostMeta[], currentPage: number, perPage: 
 
   useEffect(() => {
     if (!posts.length) return;
+
+    initPostMeta(posts);
 
     const postsMetaRef = collection(db, 'posts');
     const start = (currentPage - 1) * perPage;

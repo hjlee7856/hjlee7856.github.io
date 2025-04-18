@@ -1,4 +1,3 @@
-import { initPostMeta } from '@/firestore/initPostMeta';
 import { decrementLike, hasUserLiked, incrementLike } from '@/firestore/likes';
 import useUserStore from '@/store/userStore';
 import { useEffect, useState } from 'react';
@@ -8,9 +7,6 @@ export const useLike = (post: PostMeta) => {
   const { user } = useUserStore();
 
   useEffect(() => {
-    // 없으면 포스트 메타데이터 문서 생성하기
-    initPostMeta(post.slug);
-
     const getLike = async () => {
       if (!user?.uid) {
         setLikeActive(false);
