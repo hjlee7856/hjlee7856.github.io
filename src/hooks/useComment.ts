@@ -2,7 +2,7 @@ import { Comment } from '@/components/comment/commentSection';
 import { addComment, deleteComment, editComment } from '@/firestore/comments';
 import { db } from '@/firestore/firesbase';
 import useUserStore from '@/store/userStore';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 export const useComment = (slug: string) => {
@@ -17,11 +17,13 @@ export const useComment = (slug: string) => {
   const handleDelete = async (commentId: string) => {
     const ok = window.confirm('댓글을 삭제하시겠습니까?');
     if (!ok) return;
+    if (!currentUser) return;
     deleteComment(slug, commentId);
   };
 
   const handleEdit = async (commentId: string) => {
     if (!editContent.trim()) return;
+    if (!currentUser) return;
     editComment(slug, commentId, editContent);
     setEditingId(null);
   };
@@ -35,12 +37,25 @@ export const useComment = (slug: string) => {
 
   useEffect(() => {
     const q = query(commentsRef, orderBy('createdAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const list: Comment[] = snapshot.docs.map((doc) => ({
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
+      const commentList = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...(doc.data() as Omit<Comment, 'id'>),
+        ...(doc.data() as Omit<Comment, 'id' | 'user'>),
       }));
-      setComments(list);
+
+      const commentsWithUser: Comment[] = await Promise.all(
+        commentList.map(async (comment) => {
+          const userRef = doc(db, 'users', comment.uid);
+          const userSnap = await getDoc(userRef);
+
+          return {
+            ...comment,
+            user: userSnap.exists() ? (userSnap.data() as Comment['user']) : undefined,
+          };
+        })
+      );
+
+      setComments(commentsWithUser);
       setLoading(false);
     });
 

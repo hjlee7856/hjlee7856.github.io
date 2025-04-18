@@ -49,17 +49,6 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
 
   if (!posts) return <LoadingOverlay />;
 
-  // 정렬
-  if (filteredPosts.length > 0) {
-    filteredPosts
-      .filter((post) => post.createdAt && typeof post.createdAt.toDate === 'function')
-      .sort((a, b) => {
-        const timeA = a.createdAt.toDate().getTime() ?? 0;
-        const timeB = b.createdAt.toDate().getTime() ?? 0;
-        return timeB - timeA;
-      });
-  }
-
   return (
     <Box>
       {/* 카테고리 */}

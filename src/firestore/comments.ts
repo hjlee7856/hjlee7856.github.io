@@ -15,7 +15,7 @@ export const addComment = async (slug: string, input: string, currentUser: User)
   await addDoc(commentsRef, {
     content: input,
     createdAt: Timestamp.now(),
-    user: currentUser,
+    uid: currentUser.uid,
   });
   const postRef = doc(db, 'posts', slug);
   await updateDoc(postRef, {

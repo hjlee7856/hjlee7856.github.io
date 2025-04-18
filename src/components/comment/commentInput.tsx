@@ -6,7 +6,7 @@ export const CommentInput = ({ slug }: { slug: string }) => {
   const { user: currentUser } = useUserStore();
   const { input, setInput, handleSubmit } = useComment(slug);
   return (
-    <Box display="flex" alignItems="flex-start" gap={2} mb={2}>
+    <Box display="flex" gap={2} mb={2} alignItems="center" justifyContent="center">
       <Avatar src={currentUser?.photo ?? ''}>{currentUser?.name?.[0] ?? '이'}</Avatar>
       <TextField
         fullWidth

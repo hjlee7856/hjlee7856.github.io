@@ -13,6 +13,7 @@ import type { AppProps } from 'next/app';
 const clientSideEmotionCache = createEmotionCache();
 
 export default function App({ Component, pageProps }: AppProps) {
+  // 로그인 체크
   useAuthListener();
 
   return (
@@ -25,7 +26,10 @@ export default function App({ Component, pageProps }: AppProps) {
           sx={{ padding: '0 !important' }}
         >
           <AppHeader />
-          <Container maxWidth="lg" sx={{ mt: { xs: 8, sm: 9 } }}>
+          <Container
+            maxWidth="lg"
+            sx={{ position: 'relative', minHeight: '80vh', mt: { xs: 8, sm: 9 } }}
+          >
             <Component {...pageProps} />
           </Container>
         </Container>

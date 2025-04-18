@@ -17,23 +17,30 @@ export const usePostMetaMap = (posts: PostMeta[], currentPage: number, perPage: 
     const slugs = currentPosts.map((post) => post.slug);
 
     // Firestore where('slug', 'in', [...])은 최대 10개 제한
-    const unsubscribe = onSnapshot(query(postsMetaRef, where('slug', 'in', slugs)), (snapshot) => {
+    const q = query(postsMetaRef, where('slug', 'in', slugs));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       const metaMap: Record<string, any> = {};
       snapshot.forEach((doc) => {
         metaMap[doc.id] = doc.data();
       });
 
       // slug 기준으로 병합
-      const updated = posts.map((post) => ({
-        ...post,
-        ...metaMap[post.slug],
-      }));
+      const updated = posts
+        .map((post) => ({
+          ...post,
+          ...metaMap[post.slug],
+        }))
+        .sort((a, b) => {
+          const aTime = a.createdAt?.toMillis?.() ?? 0;
+          const bTime = b.createdAt?.toMillis?.() ?? 0;
+          return bTime - aTime; // 내림차순 (최신순)
+        });
 
       setPostWithMeta(updated);
     });
 
     return () => unsubscribe();
-  }, [posts]);
+  }, [posts, currentPage]);
 
   return { postWithMeta };
 };

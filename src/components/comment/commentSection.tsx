@@ -1,5 +1,6 @@
 import { CommentCardList } from '@/components/comment/commentCardList';
 import { CommentInput } from '@/components/comment/commentInput';
+import LoadingOverlay from '@/components/loadingOverlay';
 import { useComment } from '@/hooks/useComment';
 import { usePagination } from '@/hooks/usePagenation';
 import { Box, Divider, Pagination, Typography } from '@mui/material';
@@ -9,10 +10,11 @@ export type Comment = {
   id: string;
   content: string;
   createdAt: Timestamp;
-  user: {
+  uid: string;
+  user?: {
     name: string;
     email: string;
-    photo?: string;
+    photoURL?: string;
     uid: string;
   };
 };
@@ -29,11 +31,18 @@ export default function CommentSection({ slug, postMeta }: Props) {
   const { currentPage, setCurrentPage, totalPages, perPage } = usePagination(comments.length);
   const start = (currentPage - 1) * perPage;
 
+  if (loading) return <LoadingOverlay />;
+
   return (
     <Box mt={8}>
       {/* 댓글 개수, 문의 */}
       <Divider />
-      <Box display={'flex'} justifyContent={'space-between'} flexDirection={'row'}>
+      <Box
+        display={'flex'}
+        justifyContent={'space-between'}
+        flexDirection={'row'}
+        alignItems={'center'}
+      >
         <Typography variant="subtitle1" fontWeight={'bold'} mb={2} mt={2} gutterBottom>
           댓글 {postMeta.commentCount}
         </Typography>

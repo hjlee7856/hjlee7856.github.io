@@ -1,14 +1,31 @@
 // lib/auth.ts
-import { auth } from '@/firestore/firesbase';
-import { GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { auth, db } from '@/firestore/firesbase';
+import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-export const signInWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
+export const signInFireAuth = async (providerType: string) => {
+  let provider = null;
+  if (providerType === 'google') provider = new GoogleAuthProvider();
+  if (providerType === 'github') provider = new GithubAuthProvider();
+  if (provider === null) return;
 
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    console.log('✅ 로그인 성공:', user);
+    // 회원가입 및 로그인 처리
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+    // 이미 가입한 사람이면 무시
+    if (userSnap.exists()) return;
+    // 미가입 사람이면 계정 생성
+    await setDoc(userRef, {
+      uid: user.uid,
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      providerId: user.providerData[0].providerId.replace('.com', ''),
+      createdAt: new Date(),
+    });
     return user;
   } catch (error) {
     console.error('❌ 로그인 실패:', error);
@@ -18,7 +35,6 @@ export const signInWithGoogle = async () => {
 export const logoutWithGoogle = async () => {
   try {
     await signOut(auth);
-    console.log('✅ 로그아웃 성공');
   } catch (error: any) {
     console.error('❌ 로그아웃 실패:', error?.code, error?.message, error);
   }

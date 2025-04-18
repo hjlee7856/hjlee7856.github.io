@@ -12,17 +12,19 @@ export const CommentCard = ({ comment, slug }: Props) => {
   const { editContent, setEditContent, handleEdit, setEditingId, editingId, handleDelete } =
     useComment(slug);
   const { user: currentUser } = useUserStore();
-  const isAuthor = currentUser?.uid === comment.user.uid;
   const isEditing = editingId === comment.id;
+
+  if (!comment.user) return;
+  const isAuthor = currentUser?.uid === comment.user.uid;
 
   return (
     <Card variant="outlined" key={comment.id} sx={{ p: 2 }}>
       <Box display="flex" alignItems="center" gap={1} mb={1}>
         <Avatar
-          src={comment.user.photo}
+          src={comment.user.photoURL}
           sx={{ cursor: 'pointer' }}
           onClick={() => {
-            window.open(`mailto:${comment.user.email}`);
+            window.open(`mailto:${comment.user!.email}`);
           }}
         />
         <Typography variant="body1" fontWeight="bold">

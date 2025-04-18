@@ -24,10 +24,13 @@ export default function MobileNav() {
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation">
+      <Typography ml={1} variant="subtitle1" fontWeight="bold">
+        회원정보
+      </Typography>
       {/* 프로필 */}
-      <Box display={'flex'} flex={1} gap={1} alignItems={'center'} justifyContent={'center'} py={1}>
-        <UserProfile bar={true} />
-        {user?.name && <Typography>{user?.name} 님 안녕하세요.</Typography>}
+      <Box display={'flex'} flex={1} gap={1} alignItems={'center'} py={1} ml={2}>
+        <UserProfile handleDrawer={toggleDrawer(false)} />
+        {user?.name && <Typography>{user?.name}님 안녕하세요.</Typography>}
       </Box>
       <Divider />
       {/* 카테고리 */}
