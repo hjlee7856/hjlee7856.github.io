@@ -57,15 +57,17 @@ export default function CommentSection({ slug, postMeta }: Props) {
       <CommentCardList slug={slug} comments={comments} start={start} perPage={perPage} />
 
       {/* 페이지네이션 */}
-      <Box display="flex" justifyContent="center" my={3}>
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={(event, value) => setCurrentPage(value)}
-          color="primary"
-          shape="rounded"
-        />
-      </Box>
+      {comments.length > 0 && (
+        <Box display="flex" justifyContent="center" my={3}>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={(event, value) => setCurrentPage(value)}
+            color="primary"
+            shape="rounded"
+          />
+        </Box>
+      )}
     </Box>
   );
 }

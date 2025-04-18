@@ -29,7 +29,7 @@ export const UserProfile = (props: Props) => {
         justifyContent={'center'}
       >
         <DropDownMenu
-          menuBtn={<Avatar alt={user?.name ?? ''} src={user?.photoURL ?? ''} />}
+          menuBtn={<Avatar alt={user?.displayName ?? ''} src={user?.photoURL ?? ''} />}
           menuItem={[
             <MenuItem
               key="logout"

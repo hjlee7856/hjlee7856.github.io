@@ -37,7 +37,7 @@ export default function MobileNav() {
       {/* 프로필 */}
       <Box display={'flex'} flex={1} gap={1} alignItems={'center'} py={1} ml={2}>
         <UserProfile handleDrawer={toggleDrawer(false)} />
-        {user?.name && <Typography>{user?.name}님 안녕하세요.</Typography>}
+        {user?.displayName && <Typography>{user?.displayName}님 안녕하세요.</Typography>}
       </Box>
       <Divider />
       {/* 카테고리 */}

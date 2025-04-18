@@ -12,7 +12,7 @@ import path from 'path';
 
 export async function getStaticProps() {
   // 포스트들 가져오기
-  const posts: PostMeta[] = files.map((filename) => {
+  const posts: any[] = files.map((filename) => {
     const slug = filename.replace('.mdx', '');
     const markdownWithMeta = fs.readFileSync(path.join(postsDirectory, filename), 'utf-8');
     const { data: meta } = matter(markdownWithMeta);
@@ -23,7 +23,7 @@ export async function getStaticProps() {
       author: meta.author,
       thumbnail: meta.thumbnail,
       tags: String(meta.tags).split(','),
-      createdAt: new Date().toLocaleString(),
+      createdAt: new Date().toISOString(),
       category: meta.category,
       viewCount: 0,
       likeCount: 0,

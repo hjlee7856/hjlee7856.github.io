@@ -24,7 +24,7 @@ export const PostCardMeta = ({ post }: { post: PostMeta }) => {
           •
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {post.createdAt.toLocaleString()}
+          {post.createdAt && post.createdAt.toLocaleString()}
         </Typography>
       </Box>
       {/* 조회수, 좋아요, 댓글 */}
