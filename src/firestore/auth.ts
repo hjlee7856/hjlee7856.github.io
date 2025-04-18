@@ -15,18 +15,18 @@ export const signInFireAuth = async (providerType: string) => {
     // 회원가입 및 로그인 처리
     const userRef = doc(db, 'users', user.uid);
     const userSnap = await getDoc(userRef);
-    // 이미 가입한 사람이면 무시
-    if (userSnap.exists()) return;
     // 미가입 사람이면 계정 생성
-    await setDoc(userRef, {
-      uid: user.uid,
-      name: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-      providerId: user.providerData[0].providerId.replace('.com', ''),
-      createdAt: new Date(),
-    });
-    return user;
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        providerId: user.providerData[0].providerId.replace('.com', ''),
+        createdAt: new Date(),
+      });
+    }
+    return true;
   } catch (error) {
     return false;
   }

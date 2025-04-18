@@ -1,3 +1,4 @@
+import AppFooter from '@/components/app/appFooter';
 import { AppHeader } from '@/components/app/appHeader';
 import createEmotionCache from '@/createEmotionCache';
 import { useAuthListener } from '@/hooks/useAuthListener';
@@ -28,10 +29,11 @@ export default function App({ Component, pageProps }: AppProps) {
           <AppHeader />
           <Container
             maxWidth="lg"
-            sx={{ position: 'relative', minHeight: '66vh', mt: { xs: 8, sm: 9 } }}
+            sx={{ position: 'relative', minHeight: '70vh', mt: { xs: 8, sm: 9 } }}
           >
             <Component {...pageProps} />
           </Container>
+          <AppFooter />
         </Container>
       </ThemeProvider>
     </CacheProvider>

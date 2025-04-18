@@ -2,9 +2,11 @@ import { AppLogo } from '@/components/app/appLogo';
 import MobileNav from '@/components/app/mobileNav';
 
 import { UserProfile } from '@/components/app/userProfile';
-import { AppBar, Box, Container, Divider, Toolbar } from '@mui/material';
+import useUserStore from '@/store/userStore';
+import { AppBar, Box, Container, Divider, Link, Toolbar } from '@mui/material';
 
 export const AppHeader = () => {
+  const { isLoggedIn } = useUserStore();
   return (
     <AppBar color="inherit" sx={{ boxShadow: 'none' }}>
       <Toolbar>
@@ -20,6 +22,12 @@ export const AppHeader = () => {
             <MobileNav />
             {/* 로고 */}
             <AppLogo />
+            {/* 로그인 링크 */}
+            {!isLoggedIn && (
+              <Link href="/login" color="text.secondary" underline="hover">
+                로그인
+              </Link>
+            )}
             {/* 프로필 */}
             <UserProfile />
           </Box>

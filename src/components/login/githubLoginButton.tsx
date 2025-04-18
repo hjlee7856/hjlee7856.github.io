@@ -18,7 +18,7 @@ export const GithubLoginButton = () => {
       onClick={handleLogin}
       sx={{
         border: '1px solid black',
-        width: '200px',
+        width: { xs: '200px', sm: '240px' },
         height: '40px',
         color: 'black',
       }}
