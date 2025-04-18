@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <AppHeader />
           <Container
             maxWidth="lg"
-            sx={{ position: 'relative', minHeight: '80vh', mt: { xs: 8, sm: 9 } }}
+            sx={{ position: 'relative', minHeight: '66vh', mt: { xs: 8, sm: 9 } }}
           >
             <Component {...pageProps} />
           </Container>

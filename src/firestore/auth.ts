@@ -28,7 +28,7 @@ export const signInFireAuth = async (providerType: string) => {
     });
     return user;
   } catch (error) {
-    console.error('❌ 로그인 실패:', error);
+    return false;
   }
 };
 
@@ -36,6 +36,6 @@ export const logoutWithGoogle = async () => {
   try {
     await signOut(auth);
   } catch (error: any) {
-    console.error('❌ 로그아웃 실패:', error?.code, error?.message, error);
+    return false;
   }
 };

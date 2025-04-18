@@ -6,12 +6,13 @@ const Login = () => {
   return (
     <Box
       width={'100%'}
-      height={'80vh'}
+      height={'66vh'}
       display={'flex'}
       flexDirection={'column'}
       alignItems={'center'}
       gap={2}
       mt={20}
+      overflow={'hidden'}
     >
       <Typography variant="h4" fontWeight={'bold'}>
         로그인

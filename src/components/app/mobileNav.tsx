@@ -11,15 +11,22 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 
 export default function MobileNav() {
   const [open, setOpen] = React.useState(false);
   const { changeCategory } = useCategory();
   const { user } = useUserStore();
+  const router = useRouter();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
+  };
+
+  const handleCategory = (e: React.SyntheticEvent, idx: number) => {
+    changeCategory(e, idx);
+    router.push('/');
   };
 
   const DrawerList = (
@@ -40,7 +47,7 @@ export default function MobileNav() {
         </Typography>
         {categories.map((category, idx) => (
           <ListItem key={idx} disablePadding>
-            <ListItemButton onClick={(e) => changeCategory(e, idx)}>
+            <ListItemButton onClick={(e) => handleCategory(e, idx)}>
               <ListItemText primary={category.categoryName} />
             </ListItemButton>
           </ListItem>
