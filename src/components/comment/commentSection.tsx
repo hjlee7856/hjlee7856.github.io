@@ -16,6 +16,7 @@ export type Comment = {
     email: string;
     photoURL?: string;
     uid: string;
+    disabled: boolean;
   };
 };
 

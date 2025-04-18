@@ -6,7 +6,8 @@ export type User = {
   email: string | null;
   photoURL: string | null;
   providerId: string;
-  createdAt?: string;
+  createdAt: string;
+  disabled: boolean;
 };
 
 type UserStore = {

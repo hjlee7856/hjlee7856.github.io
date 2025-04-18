@@ -3,11 +3,11 @@ import { Box, List, ListItem, ListItemText, Typography } from '@mui/material';
 const ServiceTerms = () => {
   return (
     <Box sx={{ pt: { xs: 4, sm: 8 }, pb: { xs: 1, sm: 4 } }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom textAlign={'center'}>
         서비스 이용약관
       </Typography>
 
-      <Typography variant="body1" paragraph>
+      <Typography variant="body1" paragraph textAlign={'center'} mb={4}>
         본 이용약관(이하 "약관")은 사용자(이하 "회원")가 본 웹사이트(이하 "서비스")를 이용함에 있어
         회사(또는 개인 개발자, 이하 "운영자")와 회원 간의 권리, 의무 및 책임사항을 규정함을 목적으로
         합니다.

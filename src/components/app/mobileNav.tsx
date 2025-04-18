@@ -1,9 +1,9 @@
-import { UserProfile } from '@/components/app/userProfile';
+import { UserProfile } from '@/components/userProfile';
 import { categories } from '@/constants/categorys';
 import { useCategory } from '@/hooks/useCategory';
 import useUserStore from '@/store/userStore';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Typography } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -38,6 +38,11 @@ export default function MobileNav() {
       <Box display={'flex'} flex={1} gap={1} alignItems={'center'} py={1} ml={2}>
         <UserProfile handleDrawer={toggleDrawer(false)} />
         {user?.displayName && <Typography>{user?.displayName}님 안녕하세요.</Typography>}
+        {!user && (
+          <Link href="/login" color="black" underline="hover">
+            로그인
+          </Link>
+        )}
       </Box>
       <Divider />
       {/* 카테고리 */}
@@ -52,6 +57,23 @@ export default function MobileNav() {
             </ListItemButton>
           </ListItem>
         ))}
+      </List>
+      <Divider />
+      {/* 약관 */}
+      <List onClick={toggleDrawer(false)}>
+        <Typography ml={1} variant="subtitle1" fontWeight="bold">
+          약관
+        </Typography>
+        <ListItem disablePadding>
+          <Link href="/terms/privacy" color="black" underline="hover" ml={2} mb={1}>
+            <ListItemText primary={'개인정보처리방침'} />
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link href="/terms/service" color="black" underline="hover" ml={2}>
+            <ListItemText primary={'서비스이용약관'} />
+          </Link>
+        </ListItem>
       </List>
       <Divider />
     </Box>

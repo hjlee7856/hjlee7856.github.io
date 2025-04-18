@@ -1,23 +1,27 @@
-import { updateAuth } from '@/firestore/auth';
-import { auth } from '@/firestore/firesbase';
+import { auth, db } from '@/firestore/firesbase';
 import useUserStore from '@/store/userStore';
 import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 
 export const useAuthListener = () => {
   const setUser = useUserStore((state: { setUser: any }) => state.setUser);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        // DB에서 로그인 한 유저의 데이터 가져옴
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        const data = userSnap.data();
+        if (!data) return;
         setUser({
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          providerId: user.providerData[0].providerId.replace('.com', ''),
+          uid: data.uid,
+          email: data.email,
+          displayName: data.displayName,
+          photoURL: data.photoURL,
+          providerId: data.providerId.replace('.com', ''),
         });
-        updateAuth(user);
       } else {
         setUser(null);
       }

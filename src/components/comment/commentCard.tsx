@@ -22,22 +22,23 @@ export const CommentCard = ({ comment, slug }: Props) => {
 
   return (
     <Card variant="outlined" key={comment.id} sx={{ p: 2 }}>
+      {/* 작성자, 작성일 */}
       <Box display="flex" alignItems="center" gap={1} mb={1}>
         <Avatar
-          src={comment.user.photoURL ?? undefined}
+          src={!comment.user.disabled ? comment.user.photoURL : ''}
           sx={{ cursor: 'pointer' }}
           onClick={() => {
             window.open(`mailto:${comment.user?.email}`);
           }}
         />
         <Typography variant="body1" fontWeight="bold">
-          {comment.user.displayName}
+          {!comment.user.disabled ? comment.user.displayName : '탈퇴한 회원'}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {formattedDate}
         </Typography>
       </Box>
-
+      {/* 수정시 저장, 취소 버튼 */}
       {isEditing ? (
         <Box display="flex" flexDirection="column" gap={1}>
           <TextField
@@ -56,9 +57,10 @@ export const CommentCard = ({ comment, slug }: Props) => {
           </Box>
         </Box>
       ) : (
+        // 내용
         <Typography>{comment.content}</Typography>
       )}
-
+      {/* 수정, 삭제 버튼 */}
       {isAuthor && !isEditing && (
         <Box display="flex" gap={1} mt={1} justifyContent={'flex-end'}>
           <Button

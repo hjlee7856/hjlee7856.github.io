@@ -1,5 +1,6 @@
 import DropDownMenu from '@/components/dropdownMenu';
 import { logoutWithFireAuth } from '@/firestore/auth';
+import { deleteUser } from '@/firestore/user';
 import useUserStore from '@/store/userStore';
 import { Avatar, Box, Button, MenuItem } from '@mui/material';
 
@@ -42,6 +43,20 @@ export const UserProfile = (props: Props) => {
               }}
             >
               로그아웃
+            </MenuItem>,
+            <MenuItem
+              key="logout"
+              onClick={() => {
+                deleteUser(user);
+              }}
+              component={Button}
+              sx={{
+                textDecoration: 'none',
+                color: 'inherit',
+                py: { xs: 0, sm: 1.5 },
+              }}
+            >
+              회원탈퇴
             </MenuItem>,
           ]}
         />

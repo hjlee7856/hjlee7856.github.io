@@ -1,7 +1,7 @@
 import { AppLogo } from '@/components/app/appLogo';
 import MobileNav from '@/components/app/mobileNav';
 
-import { UserProfile } from '@/components/app/userProfile';
+import { UserProfile } from '@/components/userProfile';
 import useUserStore from '@/store/userStore';
 import { AppBar, Box, Container, Divider, Link, Toolbar } from '@mui/material';
 

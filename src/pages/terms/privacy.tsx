@@ -3,11 +3,11 @@ import { Box, List, ListItem, ListItemText, Typography } from '@mui/material';
 const PrivacyTerms = () => {
   return (
     <Box sx={{ pt: { xs: 4, sm: 8 }, pb: { xs: 1, sm: 4 } }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom textAlign={'center'}>
         개인정보 처리방침
       </Typography>
 
-      <Typography variant="body1" paragraph>
+      <Typography variant="body1" paragraph textAlign={'center'} mb={4}>
         본 웹사이트(이하 "서비스")는 사용자(이하 "회원")의 개인정보를 소중히 여기며, 아래와 같은
         방침에 따라 개인정보를 수집·이용 및 보호합니다.
       </Typography>
