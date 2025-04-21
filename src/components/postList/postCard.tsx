@@ -21,7 +21,7 @@ export const PostCard = ({ post }: { post: PostMeta }) => {
       onClick={() => router.push(`/posts/${post.slug}`)}
     >
       <CardContent sx={{ pb: '16px !important' }}>
-        <Box display={'flex'} justifyContent={'space-between'}>
+        <Box display={'flex'} justifyContent={'space-between'} minWidth={''}>
           <Box
             flex={1}
             display={'flex'}

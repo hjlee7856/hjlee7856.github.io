@@ -1,5 +1,5 @@
-import { AppLogo } from '@/components/app/appLogo';
-import MobileNav from '@/components/app/mobileNav';
+import { AppLogo } from '@/components/app/appHeader/appLogo';
+import MobileNav from '@/components/app/appHeader/mobileNav';
 
 import { UserProfile } from '@/components/userProfile';
 import useUserStore from '@/store/userStore';

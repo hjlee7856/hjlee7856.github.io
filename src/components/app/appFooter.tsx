@@ -23,10 +23,14 @@ const AppFooter = () => {
             alignItems={'center'}
           >
             <Link href="/terms/privacy" color="text.secondary" underline="hover">
-              개인정보처리방침
+              <Typography variant="body2" color="text.secondary">
+                개인정보처리방침
+              </Typography>
             </Link>
             <Link href="/terms/service" color="text.secondary" underline="hover">
-              서비스이용약관
+              <Typography variant="body2" color="text.secondary">
+                서비스이용약관
+              </Typography>
             </Link>
             <Link
               href="https://github.com/hjlee7856/hjlee7856.github.io"
@@ -38,7 +42,9 @@ const AppFooter = () => {
                 endIcon={<LaunchIcon sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />}
                 sx={{ color: 'rgba(0, 0, 0, 0.6)', p: '0' }}
               >
-                Github
+                <Typography variant="body2" color="text.secondary">
+                  Github
+                </Typography>
               </Button>
             </Link>
           </Stack>

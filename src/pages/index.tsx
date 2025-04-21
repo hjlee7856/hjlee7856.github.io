@@ -1,14 +1,15 @@
-import PostIndexAside from '@/components/app/appAside';
+import PostIndexAside from '@/components/app/appAside/appAside';
 import { CategoryTab } from '@/components/categoryTab';
 import LoadingOverlay from '@/components/loadingOverlay';
 import { PostCardList } from '@/components/postList/postCardList';
+import { ABOUT_TEXT } from '@/constants/about';
 import { files, postsDirectory } from '@/constants/files';
 import { useCategory } from '@/hooks/useCategory';
 import { usePagination } from '@/hooks/usePagenation';
 import { usePopularPosts } from '@/hooks/usePopularPosts';
 import { useRecentPosts } from '@/hooks/usePopularPosts copy';
 import { usePostMetaMap } from '@/hooks/usePostMetaMap';
-import { Box, Pagination } from '@mui/material';
+import { Box, Divider, Pagination } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
 import path from 'path';
@@ -58,7 +59,7 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
 
   return (
     <Box display={'flex'}>
-      <Box>
+      <Box flex={1}>
         {/* 카테고리 */}
         <CategoryTab
           changeCategory={changeCategory}
@@ -78,12 +79,14 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
           />
         </Box>
       </Box>
-      {/* Aside */}
-      <PostIndexAside
-        popularPosts={popularPosts}
-        recentPosts={recentPosts}
-        about="이 블로그는 프론트엔드 개발 지식을 공유합니다."
+      {/* 세로 Divider */}
+      <Divider
+        orientation="vertical"
+        flexItem
+        sx={{ mx: 4, display: { xs: 'none', sm: 'block' } }}
       />
+      {/* Aside */}
+      <PostIndexAside popularPosts={popularPosts} recentPosts={recentPosts} about={ABOUT_TEXT} />
     </Box>
   );
 }
