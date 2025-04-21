@@ -9,12 +9,12 @@ const utilities = [
     path: '/utils/local-money-converter',
   },
   {
-    title: '미정',
-    description: '미정',
-    path: '/utils/local-money-converter',
+    title: '업무 보고 생성기',
+    description: '업무 보고를 템플릿으로 쉽게 만들어 보세요.',
+    path: '/utils/work-report-maker',
   },
   {
-    title: '미정',
+    title: '미정2',
     description: '미정',
     path: '/utils/local-money-converter',
   },
@@ -32,7 +32,7 @@ const UtilPage = () => {
           sx={{ flexDirection: { xs: 'column', sm: 'row' } }}
         >
           {utilities.map((util) => (
-            <Grid key={util.title} flex={1} sx={{ height: '240px' }}>
+            <Grid key={util.title} flex={1} sx={{ height: '160px' }}>
               <Card sx={{ height: '100%' }}>
                 <CardActionArea
                   onClick={() => router.push(util.path)}
