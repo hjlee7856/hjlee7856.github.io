@@ -1,3 +1,4 @@
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box, Card, CardContent, Divider, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -29,7 +30,7 @@ export const PostList = ({
                     router.push(`/posts/${post.slug}`);
                   }}
                 >
-                  <Typography variant="body1" sx={{ width: '150px' }} noWrap>
+                  <Typography variant="body1" sx={{ maxWidth: '240px' }} noWrap>
                     {post.title}
                   </Typography>
                   {type === 'recent' && (
@@ -37,7 +38,7 @@ export const PostList = ({
                       {post.createdAt.toLocaleDateString()}
                     </Typography>
                   )}
-                  {type === 'popular' && (
+                  {type === 'mostView' && (
                     <Box
                       display="flex"
                       gap={0.5}
@@ -48,6 +49,20 @@ export const PostList = ({
                       <VisibilityIcon color="disabled" fontSize="small" />
                       <Typography variant="body2" color="textSecondary">
                         {post.viewCount}
+                      </Typography>
+                    </Box>
+                  )}
+                  {type === 'popular' && (
+                    <Box
+                      display="flex"
+                      gap={0.5}
+                      alignItems="center"
+                      justifyContent={'flex-end'}
+                      width={'50px'}
+                    >
+                      <FavoriteIcon color="disabled" fontSize="small" />
+                      <Typography variant="body2" color="textSecondary">
+                        {post.likeCount}
                       </Typography>
                     </Box>
                   )}

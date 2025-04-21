@@ -26,6 +26,7 @@ export const CommentCard = ({ comment, slug }: Props) => {
       <Box display="flex" alignItems="center" gap={1} mb={1}>
         <Avatar
           src={!comment.user.disabled ? comment.user.photoURL : ''}
+          alt={comment.user.displayName[0]}
           sx={{ cursor: 'pointer' }}
           onClick={() => {
             window.open(`mailto:${comment.user?.email}`);

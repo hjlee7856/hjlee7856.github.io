@@ -3,12 +3,13 @@ import { PostList } from '@/components/app/appAside/postList';
 import { Box } from '@mui/material';
 
 interface AsideProps {
+  mostViewPosts: PostMeta[];
   popularPosts: PostMeta[];
   recentPosts: PostMeta[];
   about: string;
 }
 
-const PostIndexAside = ({ popularPosts, recentPosts, about }: AsideProps) => {
+const PostIndexAside = ({ mostViewPosts, popularPosts, recentPosts, about }: AsideProps) => {
   return (
     <Box
       component="aside"
@@ -17,6 +18,7 @@ const PostIndexAside = ({ popularPosts, recentPosts, about }: AsideProps) => {
     >
       <AboutSection about={about} />
       <PostList title="인기 포스트" posts={popularPosts} type="popular" />
+      <PostList title="최다조회 포스트" posts={mostViewPosts} type="mostView" />
       <PostList title="최근 포스트" posts={recentPosts} type="recent" />
     </Box>
   );

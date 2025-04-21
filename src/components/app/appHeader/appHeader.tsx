@@ -22,12 +22,23 @@ export const AppHeader = () => {
             <MobileNav />
             {/* 로고 */}
             <AppLogo />
-            {/* 로그인 링크 */}
-            {!isLoggedIn && (
-              <Link href="/login" color="text.secondary" underline="hover">
-                로그인
+            <Box display={'flex'} gap={2}>
+              {/* 유틸리티 링크 */}
+              <Link
+                href="/utils"
+                color="text.secondary"
+                underline="hover"
+                sx={{ display: { xs: 'none', sm: 'block' } }}
+              >
+                유틸리티
               </Link>
-            )}
+              {/* 로그인 링크 */}
+              {!isLoggedIn && (
+                <Link href="/login" color="text.secondary" underline="hover">
+                  로그인
+                </Link>
+              )}
+            </Box>
             {/* 프로필 */}
             <UserProfile />
           </Box>

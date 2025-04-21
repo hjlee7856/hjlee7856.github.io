@@ -5,10 +5,11 @@ import { PostCardList } from '@/components/postList/postCardList';
 import { ABOUT_TEXT } from '@/constants/about';
 import { files, postsDirectory } from '@/constants/files';
 import { useCategory } from '@/hooks/useCategory';
+import { useMostViewPosts } from '@/hooks/useMostViewPosts';
 import { usePagination } from '@/hooks/usePagenation';
 import { usePopularPosts } from '@/hooks/usePopularPosts';
-import { useRecentPosts } from '@/hooks/usePopularPosts copy';
 import { usePostMetaMap } from '@/hooks/usePostMetaMap';
+import { useRecentPosts } from '@/hooks/useRecentPosts';
 import { Box, Divider, Pagination } from '@mui/material';
 import fs from 'fs';
 import matter from 'gray-matter';
@@ -43,17 +44,19 @@ export async function getStaticProps() {
   };
 }
 
-export default function Home({ posts }: { posts: PostMeta[] }) {
+export default function Blog({ posts }: { posts: PostMeta[] }) {
   // 페이지네이션 필터 훅
   const { currentPage, setCurrentPage, totalPages, perPage } = usePagination(posts.length);
   // 메타정보들 가져오는 훅
   const { postWithMeta } = usePostMetaMap(posts, currentPage, perPage);
   // 카테고리 필터 훅
   const { filteredPosts, changeCategory, selectIdx } = useCategory(postWithMeta);
-  // 최다 조회글
+  // 인기 작성글
   const { popularPosts } = usePopularPosts();
   // 최근 작성글
   const { recentPosts } = useRecentPosts();
+  // 최다 조회글
+  const { mostViewPosts } = useMostViewPosts();
 
   if (!posts) return <LoadingOverlay />;
 
@@ -86,7 +89,12 @@ export default function Home({ posts }: { posts: PostMeta[] }) {
         sx={{ mx: 4, display: { xs: 'none', sm: 'block' } }}
       />
       {/* Aside */}
-      <PostIndexAside popularPosts={popularPosts} recentPosts={recentPosts} about={ABOUT_TEXT} />
+      <PostIndexAside
+        popularPosts={popularPosts}
+        mostViewPosts={mostViewPosts}
+        recentPosts={recentPosts}
+        about={ABOUT_TEXT}
+      />
     </Box>
   );
 }

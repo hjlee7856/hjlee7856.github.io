@@ -1,19 +1,17 @@
 import { GithubLoginButton } from '@/components/login/githubLoginButton';
 import { GoogleLoginButton } from '@/components/login/googleLoginButton';
-import { Box, Typography } from '@mui/material';
+import { PageLayout } from '@/components/pageLayout';
+import { Box } from '@mui/material';
 
-const Login = () => {
+const LoginPage = () => {
   return (
-    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'100%'} mt={22}>
-      <Typography variant="h4" fontWeight={'bold'}>
-        로그인
-      </Typography>
+    <PageLayout title={'로그인'}>
       <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={2} mt={3}>
         <GoogleLoginButton />
         <GithubLoginButton />
       </Box>
-    </Box>
+    </PageLayout>
   );
 };
 
-export default Login;
+export default LoginPage;

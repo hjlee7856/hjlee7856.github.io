@@ -36,7 +36,7 @@ export async function getStaticProps({ params }: any) {
   };
 }
 
-export default function BlogPostPage({ mdxSource, meta, slug }: any) {
+export default function PostPage({ mdxSource, meta, slug }: any) {
   // 조회수 증가
   useViewCount(slug);
   // 파이어 스토어에 저장된 메타 정보 가져와서 합치기
