@@ -86,7 +86,7 @@ export default function Blog({ posts }: { posts: PostMeta[] }) {
       <Divider
         orientation="vertical"
         flexItem
-        sx={{ mx: 4, display: { xs: 'none', sm: 'block' } }}
+        sx={{ mx: 3, display: { xs: 'none', sm: 'block' } }}
       />
       {/* Aside */}
       <PostIndexAside

@@ -22,7 +22,7 @@ export const AppHeader = () => {
             <MobileNav />
             {/* 로고 */}
             <AppLogo />
-            <Box display={'flex'} gap={2}>
+            <Box display={'flex'} gap={2} alignItems={'center'}>
               {/* 유틸리티 링크 */}
               <Link
                 href="/utils"
@@ -38,9 +38,9 @@ export const AppHeader = () => {
                   로그인
                 </Link>
               )}
+              {/* 프로필 */}
+              <UserProfile />
             </Box>
-            {/* 프로필 */}
-            <UserProfile />
           </Box>
         </Container>
       </Toolbar>
