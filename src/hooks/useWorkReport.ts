@@ -1,4 +1,8 @@
-import { useState } from 'react';
+import { editWorkReport, getWorkReport } from '@/firestore/workReport';
+import useUserStore from '@/store/userStore';
+import { useEffect, useState } from 'react';
+
+const STORAGE_KEY = 'workReportData';
 
 export const useWorkReport = () => {
   const [reportData, setReportData] = useState<Record<string, Record<string, string[]>>>({});
@@ -7,80 +11,55 @@ export const useWorkReport = () => {
   >({});
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const { user: currentUser } = useUserStore();
+
+  // ✅ Firestore 또는 LocalStorage에서 불러오기
+  useEffect(() => {
+    const loadData = async () => {
+      if (currentUser) {
+        const data = await getWorkReport(currentUser);
+        if (data) {
+          setReportData(data);
+        }
+      } else {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          setReportData(JSON.parse(saved));
+        }
+      }
+    };
+
+    loadData();
+  }, [currentUser]);
+
+  useEffect(() => {
+    const saveData = async () => {
+      if (currentUser) {
+        await editWorkReport(JSON.stringify(reportData), currentUser);
+      } else {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(reportData));
+      }
+    };
+
+    saveData();
+  }, [reportData, currentUser]);
 
   const handleAdd = (section: string, category: string, content: string) => {
-    if (!section || !category) return;
+    if (!section || !category || !content.trim()) return;
     setReportData((prev) => {
       const newData = { ...prev };
-      if (!newData[section]) newData[section] = {};
-      if (!newData[section][category]) newData[section][category] = [];
-      newData[section][category].push(content);
+      newData[section] = newData[section] || {};
+      newData[section][category] = [...(newData[section][category] || []), content];
       return newData;
     });
   };
-
-  const handleCopy = async () => {
-    const text = generateText();
-    await navigator.clipboard.writeText(text);
-    setOpenSnackbar(true); // 토스트 알림 열기
-  };
-
-  const generateText = () => {
-    return Object.entries(reportData)
-      .sort(([a], [b]) => {
-        // 가나다 순으로 정렬 (금일, 익일 순서)
-        return a.localeCompare(b);
-      })
-      .map(([section, categories]) => {
-        // 타이틀
-        const sectionTitle = `*[${section}]*`;
-
-        const categoryText = Object.entries(categories)
-          .map(([cat, items]) => {
-            const validItems = items.filter((item) => item.trim() !== '');
-            // 항목만 있으면 항목만
-            if (validItems.length === 0) return `● ${cat}`;
-
-            // 내용
-            const itemList = validItems.map((item) => `    ○ ${item}`).join('\n');
-
-            // 내용을 항목이 존재하면 아래에 붙이고 없으면 항목과 같이
-            return cat.trim() ? `● ${cat}\n${itemList}` : itemList;
-          })
-          .join('\n');
-
-        if (!categoryText) return ''; // 이 섹션 안에 아무 카테고리도 없으면 출력 안함
-
-        // 합쳐서 출력
-        return `${sectionTitle}\n${categoryText}`;
-      })
-      .join('\n\n')
-      .trim();
-  };
-
-  const text = generateText();
-
-  const allContentItems = Object.entries(reportData).flatMap(([section, categories]) =>
-    Object.entries(categories).flatMap(([category, items]) =>
-      items.map((item) => ({
-        section,
-        category,
-        content: item,
-      }))
-    )
-  );
 
   const handleDelete = (section: string, category: string, content: string) => {
     setReportData((prev) => {
       const newData = { ...prev };
       newData[section][category] = newData[section][category].filter((item) => item !== content);
-
-      if (newData[section][category].length === 0) {
-        delete newData[section][category];
-      }
-      if (Object.keys(newData[section]).length === 0) {
-        delete newData[section];
-      }
+      if (newData[section][category].length === 0) delete newData[section][category];
+      if (Object.keys(newData[section]).length === 0) delete newData[section];
       return newData;
     });
   };
@@ -99,34 +78,31 @@ export const useWorkReport = () => {
     }));
   };
 
-  const handleSaveEdit = (
-    originalSection: string,
-    originalCategory: string,
-    originalContent: string
-  ) => {
+  const handleSaveEdit = (originalContent: string, overrideSection?: string) => {
     const newValues = editingMap[originalContent];
     if (!newValues) return;
 
-    const { section: newSection, category: newCategory, content: newContent } = newValues;
+    const original = allContentItems.find((item) => item.content === originalContent);
+    if (!original) return;
+
+    const newSection = overrideSection || newValues.section;
+    const newCategory = newValues.category;
+    const newContent = newValues.content;
 
     setReportData((prev) => {
       const newData = { ...prev };
 
-      // 원래 위치에서 삭제
-      newData[originalSection][originalCategory] = newData[originalSection][
-        originalCategory
+      // 기존 삭제
+      newData[original.section][original.category] = newData[original.section][
+        original.category
       ].filter((item) => item !== originalContent);
-      if (newData[originalSection][originalCategory].length === 0) {
-        delete newData[originalSection][originalCategory];
-      }
-      if (Object.keys(newData[originalSection]).length === 0) {
-        delete newData[originalSection];
-      }
+      if (newData[original.section][original.category].length === 0)
+        delete newData[original.section][original.category];
+      if (Object.keys(newData[original.section]).length === 0) delete newData[original.section];
 
-      // 새 위치에 추가
-      if (!newData[newSection]) newData[newSection] = {};
-      if (!newData[newSection][newCategory]) newData[newSection][newCategory] = [];
-      newData[newSection][newCategory].push(newContent);
+      // 새로 추가
+      newData[newSection] = newData[newSection] || {};
+      newData[newSection][newCategory] = [...(newData[newSection][newCategory] || []), newContent];
 
       return newData;
     });
@@ -136,9 +112,45 @@ export const useWorkReport = () => {
       delete newMap[originalContent];
       return newMap;
     });
-
-    setEditingKey(null);
   };
+
+  const handleCopy = async () => {
+    const text = generateText();
+    await navigator.clipboard.writeText(text);
+    setOpenSnackbar(true);
+  };
+
+  const generateText = () => {
+    return Object.entries(reportData)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([section, categories]) => {
+        const sectionTitle = `*[${section}]*`;
+        const categoryText = Object.entries(categories)
+          .map(([cat, items]) => {
+            const validItems = items.filter((item) => item.trim() !== '');
+            if (validItems.length === 0) return `● ${cat}`;
+            const itemList = validItems.map((item) => `    ○ ${item}`).join('\n');
+            return cat.trim() ? `● ${cat}\n${itemList}` : itemList;
+          })
+          .join('\n');
+        return categoryText ? `${sectionTitle}\n${categoryText}` : '';
+      })
+      .filter(Boolean)
+      .join('\n\n')
+      .trim();
+  };
+
+  const text = generateText();
+
+  const allContentItems = Object.entries(reportData).flatMap(([section, categories]) =>
+    Object.entries(categories).flatMap(([category, items]) =>
+      items.map((item) => ({
+        section,
+        category,
+        content: item,
+      }))
+    )
+  );
 
   return {
     handleAdd,

@@ -1,7 +1,10 @@
 import { AddWorkReportList } from '@/components/workReportMaker/list/addTable';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import NorthIcon from '@mui/icons-material/North';
 import SaveIcon from '@mui/icons-material/Save';
+import SouthIcon from '@mui/icons-material/South';
+
 import { blue } from '@mui/material/colors';
 
 import {
@@ -24,16 +27,15 @@ interface Props {
     React.SetStateAction<Record<string, { section: string; category: string; content: string }>>
   >;
   editingKey: string | null;
-  setEditingKey: (key: string) => void;
+  setEditingKey: (key: string | null) => void;
   handleEditChange: (
     originalContent: string,
     field: 'section' | 'category' | 'content',
     value: string
   ) => void;
   handleSaveEdit: (
-    originalSection: string,
-    originalCategory: string,
-    originalContent: string
+    originalContent: string,
+    overrideSection?: string // 새로운 섹션으로 이동하고 싶을 때 사용
   ) => void;
   handleDelete: (section: string, category: string, content: string) => void;
   section: string;
@@ -69,7 +71,39 @@ export const WorkReportList = (props: Props) => {
                   backgroundColor: isEditing ? blue[50] : '',
                 }}
               >
-                <TableCell sx={{ width: '120px' }}>{item.section}</TableCell>
+                <TableCell sx={{ width: '160px' }}>
+                  <Box display="flex" flexDirection="row" gap={1} alignItems="center">
+                    {item.section}
+
+                    {/* 금일이면 아래 버튼만, 익일이면 위 버튼만 */}
+                    {isEditing && (
+                      <>
+                        {item.section === '금일 진행 사항' && (
+                          <IconButton
+                            onClick={() => {
+                              props.handleEditChange(item.content, 'section', '익일 예정 사항');
+                              props.handleSaveEdit(item.content, '익일 예정 사항');
+                            }}
+                            size="small"
+                          >
+                            <SouthIcon fontSize="small" />
+                          </IconButton>
+                        )}
+                        {item.section === '익일 예정 사항' && (
+                          <IconButton
+                            onClick={() => {
+                              props.handleEditChange(item.content, 'section', '금일 진행 사항');
+                              props.handleSaveEdit(item.content, '금일 진행 사항');
+                            }}
+                            size="small"
+                          >
+                            <NorthIcon fontSize="small" />
+                          </IconButton>
+                        )}
+                      </>
+                    )}
+                  </Box>
+                </TableCell>
                 <TableCell sx={{ wordBreak: 'break-all' }}>
                   {isEditing ? (
                     <TextField
@@ -107,9 +141,10 @@ export const WorkReportList = (props: Props) => {
                 <TableCell align="center">
                   {isEditing ? (
                     <IconButton
-                      onClick={() =>
-                        props.handleSaveEdit(item.section, item.category, item.content)
-                      }
+                      onClick={() => {
+                        props.handleSaveEdit(item.content);
+                        props.setEditingKey(null);
+                      }}
                       size="small"
                     >
                       <SaveIcon fontSize="small" />
