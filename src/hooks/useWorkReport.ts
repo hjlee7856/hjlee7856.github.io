@@ -45,7 +45,7 @@ export const useWorkReport = () => {
   }, [reportData, currentUser]);
 
   const handleAdd = (section: string, category: string, content: string) => {
-    if (!section || !category || !content.trim()) return;
+    if (!section || !category) return;
     setReportData((prev) => {
       const newData = { ...prev };
       newData[section] = newData[section] || {};
@@ -135,7 +135,6 @@ export const useWorkReport = () => {
           .join('\n');
         return categoryText ? `${sectionTitle}\n${categoryText}` : '';
       })
-      .filter(Boolean)
       .join('\n\n')
       .trim();
   };
