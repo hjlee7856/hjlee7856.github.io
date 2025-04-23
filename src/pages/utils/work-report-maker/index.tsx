@@ -27,9 +27,8 @@ const WorkReportMaker = () => {
         <WorkReportTitle />
         <Divider />
         <Box display="flex" sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
-          <Box display="flex" flexDirection="column" gap={2} flex={2}>
+          <Box display="flex" flexDirection="column" gap={8} flex={2}>
             <WorkReportList
-              title="금일 진행 사항"
               allContentItems={allContentItems.filter((item) => item.section === '금일 진행 사항')}
               editingMap={editingMap}
               setEditingMap={setEditingMap}
@@ -41,10 +40,7 @@ const WorkReportMaker = () => {
               section={'금일 진행 사항'}
               handleAdd={handleAdd}
             />
-            {/* Mobile */}
-            <Divider sx={{ my: 1, display: { xs: 'block', sm: 'none' } }} />
             <WorkReportList
-              title="익일 예정 사항"
               allContentItems={allContentItems.filter((item) => item.section === '익일 예정 사항')}
               editingMap={editingMap}
               setEditingMap={setEditingMap}
@@ -72,7 +68,7 @@ const WorkReportMaker = () => {
         open={openSnackbar}
         autoHideDuration={2000}
         onClose={() => setOpenSnackbar(false)}
-        message="보고서가 복사되었습니다."
+        message="보고서가 클립보드에 복사되었습니다."
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       />
     </Box>

@@ -1,4 +1,3 @@
-// lib/firebase.ts
 import { getAnalytics, isSupported } from 'firebase/analytics';
 import { getApp, getApps, initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
@@ -22,12 +21,13 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 // Google Analytics 인스턴스 (브라우저 환경에서만 실행)
-export const analytics =
-  typeof window !== 'undefined'
-    ? await (async () => {
-        if (await isSupported()) {
-          return getAnalytics(app);
-        }
-        return null;
-      })()
-    : null;
+export let analytics: ReturnType<typeof getAnalytics> | null = null;
+
+if (typeof window !== 'undefined') {
+  const initializeAnalytics = async () => {
+    if (await isSupported()) {
+      analytics = getAnalytics(app);
+    }
+  };
+  initializeAnalytics(); // 비동기 함수 호출
+}

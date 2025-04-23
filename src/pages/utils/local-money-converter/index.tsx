@@ -44,7 +44,7 @@ const numberToKorean = (num: number): string => {
     unitIdx++;
   }
 
-  return result + ' 원';
+  return result;
 };
 
 const LocalMoneyConverter = () => {
@@ -107,9 +107,14 @@ const LocalMoneyConverter = () => {
         />
 
         {converted && (
-          <Box display="flex" alignItems="center">
+          <Box
+            display="flex"
+            alignItems="center"
+            sx={{ borderRadius: 2, backgroundColor: '#f5f5f5', p: 1, cursor: 'pointer' }}
+            onClick={handleCopy}
+          >
             <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-              {converted}
+              {converted + ' 원'}
             </Typography>
             <IconButton onClick={handleCopy}>
               <ContentCopyIcon />
@@ -122,7 +127,7 @@ const LocalMoneyConverter = () => {
         open={toastOpen}
         autoHideDuration={2000}
         onClose={() => setToastOpen(false)}
-        message="복사되었습니다"
+        message="금액이 클립보드에 복사되었습니다"
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       />
     </Box>

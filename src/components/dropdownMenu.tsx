@@ -1,32 +1,26 @@
-import { Box } from '@mui/material';
-import Menu from '@mui/material/Menu';
+import { Menu } from '@mui/material';
 import * as React from 'react';
 
 interface Props {
   menuBtn: React.ReactNode;
-  menuItem: React.ReactNode[];
+  menuItems: React.ReactNode[];
 }
 
-export default function DropDownMenu({ menuBtn, menuItem }: Props) {
+export default function DropDownMenu({ menuBtn, menuItems }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   return (
-    <div>
-      <div
-        id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-        style={{ cursor: 'pointer' }}
-      >
+    <>
+      <div onClick={handleClick} style={{ display: 'inline-flex', cursor: 'pointer' }}>
         {menuBtn}
       </div>
       <Menu
@@ -34,18 +28,11 @@ export default function DropDownMenu({ menuBtn, menuItem }: Props) {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: '4px',
-          width: '160px',
-        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        {menuItem.map((item, idx) => (
-          <Box key={idx}>{item}</Box>
-        ))}
+        {menuItems}
       </Menu>
-    </div>
+    </>
   );
 }

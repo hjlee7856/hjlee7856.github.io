@@ -7,7 +7,7 @@ export const GithubLoginButton = () => {
   const router = useRouter();
   const handleLogin = async () => {
     try {
-      if (await signInFireAuth('github')) router.push('/');
+      if (await signInFireAuth('github')) router.back();
     } catch (e) {
       alert('로그인 중 에러가 발생했습니다.');
     }

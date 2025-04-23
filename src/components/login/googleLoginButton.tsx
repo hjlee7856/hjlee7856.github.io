@@ -7,7 +7,7 @@ export const GoogleLoginButton = () => {
   const router = useRouter();
   const handleLogin = async () => {
     try {
-      if (await signInFireAuth('google')) router.push('/');
+      if (await signInFireAuth('google')) router.back();
     } catch (e) {
       alert('로그인 중 에러가 발생했습니다.');
     }

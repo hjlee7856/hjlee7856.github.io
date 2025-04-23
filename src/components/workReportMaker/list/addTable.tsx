@@ -1,12 +1,12 @@
-import AddIcon from '@mui/icons-material/Add';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { IconButton, TableCell, TableRow, TextField } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import { IconButton, TableCell, TableRow, TextField, Tooltip } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { useState } from 'react';
-
 interface Props {
   section: string;
   handleAdd: (section: string, category: string, content: string) => void;
+  setIsAdding: (isAdding: boolean) => void;
 }
 
 export const AddWorkReportList = (props: Props) => {
@@ -16,11 +16,13 @@ export const AddWorkReportList = (props: Props) => {
   const handleAddLocal = () => {
     props.handleAdd(props.section, localCategory, localContent);
     handleResetLocal();
+    props.setIsAdding(false);
   };
 
   const handleResetLocal = () => {
     setLocalCategory('');
     setLocalContent('');
+    props.setIsAdding(false);
   };
 
   return (
@@ -29,7 +31,6 @@ export const AddWorkReportList = (props: Props) => {
         backgroundColor: green[50],
       }}
     >
-      <TableCell>{props.section}</TableCell>
       <TableCell>
         <TextField
           error={localCategory === ''}
@@ -52,12 +53,16 @@ export const AddWorkReportList = (props: Props) => {
         />
       </TableCell>
       <TableCell align="center">
-        <IconButton onClick={handleAddLocal} size="small">
-          <AddIcon fontSize="small" />
-        </IconButton>
-        <IconButton onClick={handleResetLocal} size="small">
-          <RestartAltIcon fontSize="small" />
-        </IconButton>
+        <Tooltip title="저장">
+          <IconButton onClick={handleAddLocal} size="small">
+            <SaveIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="취소">
+          <IconButton onClick={handleResetLocal} size="small">
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       </TableCell>
     </TableRow>
   );

@@ -1,6 +1,6 @@
 // components/common/Footer.tsx
 import LaunchIcon from '@mui/icons-material/Launch';
-import { Box, Button, Container, Link, Stack, Typography } from '@mui/material';
+import { Box, Container, IconButton, Link, Stack, Typography } from '@mui/material';
 
 const AppFooter = () => {
   return (
@@ -17,6 +17,7 @@ const AppFooter = () => {
           </Typography>
 
           <Stack
+            display={'flex'}
             sx={{ flexDirection: 'row' }}
             gap={2}
             justifyContent={'center'}
@@ -37,15 +38,14 @@ const AppFooter = () => {
               target="_blank"
               color="text.secondary"
               underline="hover"
+              sx={{ display: 'flex', alignItems: 'center' }}
             >
-              <Button
-                endIcon={<LaunchIcon sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />}
-                sx={{ color: 'rgba(0, 0, 0, 0.6)', p: '0' }}
-              >
-                <Typography variant="body2" color="text.secondary">
-                  Github
-                </Typography>
-              </Button>
+              <Typography variant="body2" color="text.secondary">
+                Github
+              </Typography>
+              <IconButton sx={{ pl: '4px' }}>
+                <LaunchIcon sx={{ color: 'rgba(0, 0, 0, 0.6)' }} fontSize="small" />
+              </IconButton>
             </Link>
           </Stack>
         </Stack>

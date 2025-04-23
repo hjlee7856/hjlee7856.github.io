@@ -2,7 +2,7 @@ import DropDownMenu from '@/components/dropdownMenu';
 import { logoutWithFireAuth } from '@/firestore/auth';
 import { deleteUser } from '@/firestore/user';
 import useUserStore from '@/store/userStore';
-import { Avatar, Box, Button, MenuItem } from '@mui/material';
+import { Avatar, Box, IconButton, MenuItem } from '@mui/material';
 
 interface Props {
   handleDrawer?: () => void;
@@ -30,30 +30,19 @@ export const UserProfile = (props: Props) => {
         justifyContent={'center'}
       >
         <DropDownMenu
-          menuBtn={<Avatar src={user?.photoURL ?? ''} alt={user?.displayName ?? ''} />}
-          menuItem={[
-            <MenuItem
-              key="logout"
-              onClick={handleLogout}
-              component={Button}
-              sx={{
-                textDecoration: 'none',
-                color: 'inherit',
-                py: { xs: 0, sm: 1.5 },
-              }}
-            >
+          menuBtn={
+            <IconButton>
+              <Avatar src={user?.photoURL ?? ''} alt={user?.displayName ?? ''} />
+            </IconButton>
+          }
+          menuItems={[
+            <MenuItem key="logout" onClick={handleLogout}>
               로그아웃
             </MenuItem>,
             <MenuItem
-              key="logout"
+              key="signout"
               onClick={() => {
                 deleteUser(user);
-              }}
-              component={Button}
-              sx={{
-                textDecoration: 'none',
-                color: 'inherit',
-                py: { xs: 0, sm: 1.5 },
               }}
             >
               회원탈퇴
