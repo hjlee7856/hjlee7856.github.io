@@ -1,13 +1,11 @@
-import KakaoDirectionMap from '@/components/KakaoDirectionMap';
+import NaverMap from '@/components/naverMap';
 import { Box } from '@mui/material';
 
 const TodayMenuRecommender = () => {
   return (
     <Box p={2}>
       <Box width={'500px'}>
-        <KakaoDirectionMap
-          destinationAddress={'서울특별시 강남구 강남대로 464'}
-        ></KakaoDirectionMap>
+        <NaverMap destinationAddress={'도곡길 27'} />
       </Box>
     </Box>
   );

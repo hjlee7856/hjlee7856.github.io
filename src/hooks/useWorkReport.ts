@@ -118,8 +118,7 @@ export const useWorkReport = () => {
     });
   };
 
-  const handleCopy = async () => {
-    const text = generateText();
+  const handleCopy = async (text: string) => {
     await navigator.clipboard.writeText(text);
     setOpenSnackbar(true);
   };
