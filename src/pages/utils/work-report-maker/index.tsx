@@ -20,6 +20,7 @@ const WorkReportMaker = () => {
     openSnackbar,
     text,
     setOpenSnackbar,
+    resetData,
   } = useWorkReport();
   return (
     <Box p={2}>
@@ -61,7 +62,7 @@ const WorkReportMaker = () => {
           />
           {/* Mobile */}
           <Divider sx={{ my: 3, display: { xs: 'block', sm: 'none' } }} />
-          <WorkReportPreview text={text} handleCopy={handleCopy} />
+          <WorkReportPreview text={text} handleCopy={handleCopy} resetData={resetData} />
         </Box>
       </Stack>
       <Snackbar

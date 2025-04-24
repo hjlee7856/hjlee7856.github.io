@@ -13,6 +13,10 @@ export const useWorkReport = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const { user: currentUser } = useUserStore();
 
+  const resetData = () => {
+    setReportData({});
+  };
+
   // ✅ Firestore 또는 LocalStorage에서 불러오기
   useEffect(() => {
     const loadData = async () => {
@@ -42,7 +46,7 @@ export const useWorkReport = () => {
     };
 
     saveData();
-  }, [reportData, currentUser]);
+  }, [reportData, currentUser, resetData]);
 
   const handleAdd = (section: string, category: string, content: string) => {
     if (!section || !category) return;
@@ -165,5 +169,6 @@ export const useWorkReport = () => {
     openSnackbar,
     text,
     setOpenSnackbar,
+    resetData,
   };
 };

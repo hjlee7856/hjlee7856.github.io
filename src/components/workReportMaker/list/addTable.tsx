@@ -1,8 +1,9 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import { IconButton, TableCell, TableRow, TextField, Tooltip } from '@mui/material';
 import { green } from '@mui/material/colors';
-import { useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
+
 interface Props {
   section: string;
   handleAdd: (section: string, category: string, content: string) => void;
@@ -25,6 +26,12 @@ export const AddWorkReportList = (props: Props) => {
     props.setIsAdding(false);
   };
 
+  const handleEnterSave = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      handleAddLocal();
+    }
+  };
+
   return (
     <TableRow
       sx={{
@@ -37,9 +44,9 @@ export const AddWorkReportList = (props: Props) => {
           label={localCategory === '' ? '필수' : '카테고리'}
           value={localCategory}
           onChange={(e) => setLocalCategory(e.target.value)}
-          multiline
           fullWidth
           size="small"
+          onKeyDown={handleEnterSave}
         />
       </TableCell>
       <TableCell>
@@ -47,20 +54,20 @@ export const AddWorkReportList = (props: Props) => {
           label="내용"
           value={localContent}
           onChange={(e) => setLocalContent(e.target.value)}
-          multiline
           fullWidth
           size="small"
+          onKeyDown={handleEnterSave}
         />
       </TableCell>
-      <TableCell align="center">
+      <TableCell align="right">
         <Tooltip title="저장">
           <IconButton onClick={handleAddLocal} size="small">
-            <SaveIcon fontSize="small" />
+            <CheckIcon fontSize="small" />
           </IconButton>
         </Tooltip>
         <Tooltip title="취소">
           <IconButton onClick={handleResetLocal} size="small">
-            <DeleteIcon fontSize="small" />
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       </TableCell>

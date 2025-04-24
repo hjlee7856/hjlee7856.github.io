@@ -6,6 +6,7 @@ import {
   Snackbar,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -110,15 +111,16 @@ const LocalMoneyConverter = () => {
           <Box
             display="flex"
             alignItems="center"
-            sx={{ borderRadius: 2, backgroundColor: '#f5f5f5', p: 1, cursor: 'pointer' }}
-            onClick={handleCopy}
+            sx={{ borderRadius: 2, backgroundColor: '#f5f5f5', p: 1, pl: 2 }}
           >
             <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
               {converted + ' 원'}
             </Typography>
-            <IconButton onClick={handleCopy}>
-              <ContentCopyIcon />
-            </IconButton>
+            <Tooltip title="클립보드에 복사">
+              <IconButton onClick={handleCopy}>
+                <ContentCopyIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         )}
       </Stack>
