@@ -14,9 +14,9 @@ const utilities = [
     path: '/utils/work-report-maker',
   },
   {
-    title: '미정2',
-    description: '미정',
-    path: '/utils/local-money-converter',
+    title: '타이틀',
+    description: '설명',
+    path: '/utils/today-menu-recommender',
   },
 ];
 
