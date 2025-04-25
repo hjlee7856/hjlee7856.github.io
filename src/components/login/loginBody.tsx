@@ -1,4 +1,4 @@
-import { LoginButton } from '@/components/login/LoginButton';
+import { LoginButton } from '@/components/login/loginButton';
 import useModalStore from '@/store/modalStore';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Card, IconButton, Typography } from '@mui/material';
