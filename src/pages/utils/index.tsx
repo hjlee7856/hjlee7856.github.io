@@ -13,8 +13,8 @@ const utilities = [
     path: '/utils/work-report-maker',
   },
   {
-    title: '타이틀',
-    description: '설명',
+    title: '점심 메뉴 추천기',
+    description: '간단한 문항을 통해 오늘 메뉴를 추천받아 보세요.',
     path: '/utils/today-menu-recommender',
   },
 ];
@@ -23,7 +23,7 @@ const UtilPage = () => {
   const router = useRouter();
   return (
     <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'100%'} pt={8}>
-      <Typography variant="h4" fontWeight={'bold'}>
+      <Typography variant="h4" fontWeight={'bold'} pb={2}>
         유틸리티
       </Typography>
       <Box p={2} width={'100%'}>

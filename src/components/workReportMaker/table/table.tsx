@@ -1,4 +1,4 @@
-import { AddWorkReportList } from '@/components/workReportMaker/list/addTable';
+import { AddWorkReportList } from '@/components/workReportMaker/table/addTable';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';

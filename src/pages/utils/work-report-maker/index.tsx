@@ -1,9 +1,14 @@
-import { WorkReportList } from '@/components/workReportMaker/list/list';
+import PageLayout from '@/components/util/pageLayout';
+import { PageTitle } from '@/components/util/pageTitle';
 import { WorkReportPreview } from '@/components/workReportMaker/preview';
-import { WorkReportTitle } from '@/components/workReportMaker/title';
+import { WorkReportList } from '@/components/workReportMaker/table/table';
 import { useWorkReport } from '@/hooks/useWorkReport';
 
-import { Box, Divider, Stack } from '@mui/material';
+import { Box, Divider } from '@mui/material';
+
+const TITLE = '업무 보고 생성기';
+const SUB_TITLE =
+  '업무 보고를 템플릿으로 자동으로 생성 해줍니다. \n 로그인하면 클라우드에 저장됩니다.';
 
 const WorkReportMaker = () => {
   const {
@@ -19,50 +24,49 @@ const WorkReportMaker = () => {
     text,
     resetData,
   } = useWorkReport();
+
   return (
-    <Box p={2}>
-      <Stack spacing={3}>
-        <WorkReportTitle />
-        <Divider />
-        <Box display="flex" sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
-          <Box display="flex" flexDirection="column" gap={8} flex={2}>
-            <WorkReportList
-              allContentItems={allContentItems.filter((item) => item.section === '금일 진행 사항')}
-              editingMap={editingMap}
-              setEditingMap={setEditingMap}
-              editingKey={editingKey}
-              setEditingKey={setEditingKey}
-              handleEditChange={handleEditChange}
-              handleSaveEdit={handleSaveEdit}
-              handleDelete={handleDelete}
-              section={'금일 진행 사항'}
-              handleAdd={handleAdd}
-            />
-            <WorkReportList
-              allContentItems={allContentItems.filter((item) => item.section === '익일 예정 사항')}
-              editingMap={editingMap}
-              setEditingMap={setEditingMap}
-              editingKey={editingKey}
-              setEditingKey={setEditingKey}
-              handleEditChange={handleEditChange}
-              handleSaveEdit={handleSaveEdit}
-              handleDelete={handleDelete}
-              section={'익일 예정 사항'}
-              handleAdd={handleAdd}
-            />
-          </Box>
-          {/* PC */}
-          <Divider
-            orientation="vertical"
-            flexItem
-            sx={{ mx: 3, display: { xs: 'none', sm: 'block' } }}
+    <PageLayout>
+      <PageTitle title={TITLE} subTitle={SUB_TITLE} />
+      <Divider />
+      <Box display="flex" sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
+        <Box display="flex" flexDirection="column" gap={8} flex={2}>
+          <WorkReportList
+            allContentItems={allContentItems.filter((item) => item.section === '금일 진행 사항')}
+            editingMap={editingMap}
+            setEditingMap={setEditingMap}
+            editingKey={editingKey}
+            setEditingKey={setEditingKey}
+            handleEditChange={handleEditChange}
+            handleSaveEdit={handleSaveEdit}
+            handleDelete={handleDelete}
+            section={'금일 진행 사항'}
+            handleAdd={handleAdd}
           />
-          {/* Mobile */}
-          <Divider sx={{ my: 3, display: { xs: 'block', sm: 'none' } }} />
-          <WorkReportPreview text={text} resetData={resetData} />
+          <WorkReportList
+            allContentItems={allContentItems.filter((item) => item.section === '익일 예정 사항')}
+            editingMap={editingMap}
+            setEditingMap={setEditingMap}
+            editingKey={editingKey}
+            setEditingKey={setEditingKey}
+            handleEditChange={handleEditChange}
+            handleSaveEdit={handleSaveEdit}
+            handleDelete={handleDelete}
+            section={'익일 예정 사항'}
+            handleAdd={handleAdd}
+          />
         </Box>
-      </Stack>
-    </Box>
+        {/* PC */}
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{ mx: 3, display: { xs: 'none', sm: 'block' } }}
+        />
+        {/* Mobile */}
+        <Divider sx={{ my: 3, display: { xs: 'block', sm: 'none' } }} />
+        <WorkReportPreview text={text} resetData={resetData} />
+      </Box>
+    </PageLayout>
   );
 };
 

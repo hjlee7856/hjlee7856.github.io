@@ -1,5 +1,5 @@
 import PostIndexAside from '@/components/app/appAside/appAside';
-import { CategoryTab } from '@/components/categoryTab';
+import { CategoryTab } from '@/components/postList/categoryTab';
 import LoadingOverlay from '@/components/loadingOverlay';
 import { PostCardList } from '@/components/postList/postCardList';
 import { ABOUT_TEXT } from '@/constants/about';

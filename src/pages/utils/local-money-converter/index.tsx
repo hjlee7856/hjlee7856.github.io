@@ -1,10 +1,11 @@
+import PageLayout from '@/components/util/pageLayout';
+import { PageTitle } from '@/components/util/pageTitle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {
   Box,
   IconButton,
   InputAdornment,
   Snackbar,
-  Stack,
   TextField,
   Tooltip,
   Typography,
@@ -48,6 +49,9 @@ const numberToKorean = (num: number): string => {
   return result;
 };
 
+const TITLE = '금액 한글 변환기';
+const SUB_TITLE = '숫자로 입력된 금액을 한글 금액으로 변환합니다. \n최대 1경까지 입력 가능합니다.';
+
 const LocalMoneyConverter = () => {
   const [input, setInput] = useState('');
   const [converted, setConverted] = useState('');
@@ -77,53 +81,43 @@ const LocalMoneyConverter = () => {
   };
 
   return (
-    <Box p={2}>
-      <Stack spacing={3}>
-        <Box>
-          <Typography variant="h5" fontWeight="bold">
-            금액 한글 변환기
+    <PageLayout>
+      <PageTitle title={TITLE} subTitle={SUB_TITLE} />
+      <TextField
+        label="금액을 입력하세요"
+        value={input}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        slotProps={{
+          htmlInput: {
+            inputMode: 'numeric',
+          },
+          input: {
+            endAdornment: (
+              <InputAdornment position="start">
+                <Typography>원</Typography>
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
+
+      {converted && (
+        <Box
+          display="flex"
+          alignItems="center"
+          sx={{ borderRadius: 2, backgroundColor: '#f5f5f5', p: 1, pl: 2 }}
+        >
+          <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
+            {converted + ' 원'}
           </Typography>
-          <Typography variant="body2" color="text.secondary" mt={0.5}>
-            숫자로 입력된 금액을 한글 금액으로 변환합니다. 최대 1경까지 입력 가능합니다.
-          </Typography>
+          <Tooltip title="클립보드에 복사">
+            <IconButton onClick={handleCopy}>
+              <ContentCopyIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
-
-        <TextField
-          label="금액을 입력하세요"
-          value={input}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          slotProps={{
-            htmlInput: {
-              inputMode: 'numeric',
-            },
-            input: {
-              endAdornment: (
-                <InputAdornment position="start">
-                  <Typography>원</Typography>
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
-
-        {converted && (
-          <Box
-            display="flex"
-            alignItems="center"
-            sx={{ borderRadius: 2, backgroundColor: '#f5f5f5', p: 1, pl: 2 }}
-          >
-            <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-              {converted + ' 원'}
-            </Typography>
-            <Tooltip title="클립보드에 복사">
-              <IconButton onClick={handleCopy}>
-                <ContentCopyIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        )}
-      </Stack>
+      )}
 
       <Snackbar
         open={toastOpen}
@@ -132,7 +126,7 @@ const LocalMoneyConverter = () => {
         message="금액이 클립보드에 복사되었습니다"
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       />
-    </Box>
+    </PageLayout>
   );
 };
 

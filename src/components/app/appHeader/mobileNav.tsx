@@ -1,4 +1,4 @@
-import { UserProfile } from '@/components/userProfile';
+import { UserProfile } from '@/components/app/appHeader/userProfile';
 import { categories } from '@/constants/categorys';
 import { useCategory } from '@/hooks/useCategory';
 import useModalStore from '@/store/modalStore';
