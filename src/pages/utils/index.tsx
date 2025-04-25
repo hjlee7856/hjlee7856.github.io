@@ -1,4 +1,3 @@
-import { PageLayout } from '@/components/pageLayout';
 import { Box, Card, CardActionArea, CardContent, Grid, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -23,7 +22,10 @@ const utilities = [
 const UtilPage = () => {
   const router = useRouter();
   return (
-    <PageLayout title="유틸리티">
+    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} width={'100%'} pt={8}>
+      <Typography variant="h4" fontWeight={'bold'}>
+        유틸리티
+      </Typography>
       <Box p={2} width={'100%'}>
         <Grid
           container
@@ -62,7 +64,7 @@ const UtilPage = () => {
           ))}
         </Grid>
       </Box>
-    </PageLayout>
+    </Box>
   );
 };
 

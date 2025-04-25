@@ -1,5 +1,6 @@
 import AppFooter from '@/components/app/appFooter';
 import { AppHeader } from '@/components/app/appHeader/appHeader';
+import LoginModal from '@/components/login/loginModal';
 import createEmotionCache from '@/createEmotionCache';
 import { useAuthListener } from '@/hooks/useAuthListener';
 import { pretendard } from '@/styles/fonts';
@@ -10,7 +11,6 @@ import { Container } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
-import Script from 'next/script';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -39,6 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
             }}
           >
             <Component {...pageProps} />
+            <LoginModal />
           </Container>
           <AppFooter />
         </Container>

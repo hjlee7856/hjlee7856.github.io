@@ -1,6 +1,7 @@
 import { UserProfile } from '@/components/userProfile';
 import { categories } from '@/constants/categorys';
 import { useCategory } from '@/hooks/useCategory';
+import useModalStore from '@/store/modalStore';
 import useUserStore from '@/store/userStore';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, Typography } from '@mui/material';
@@ -19,6 +20,7 @@ export default function MobileNav() {
   const { changeCategory } = useCategory();
   const { user } = useUserStore();
   const router = useRouter();
+  const { setLoginModalOpen } = useModalStore();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -39,7 +41,13 @@ export default function MobileNav() {
         <UserProfile handleDrawer={toggleDrawer(false)} />
         {user?.displayName && <Typography>{user?.displayName}님 안녕하세요.</Typography>}
         {!user && (
-          <Link href="/login" color="black" underline="hover">
+          <Link
+            component="button"
+            color="text.secondary"
+            underline="hover"
+            onClick={() => setLoginModalOpen(true)}
+            sx={{ cursor: 'pointer' }}
+          >
             로그인
           </Link>
         )}

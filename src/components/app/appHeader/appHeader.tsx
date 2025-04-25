@@ -2,11 +2,13 @@ import { AppLogo } from '@/components/app/appHeader/appLogo';
 import MobileNav from '@/components/app/appHeader/mobileNav';
 
 import { UserProfile } from '@/components/userProfile';
+import useModalStore from '@/store/modalStore';
 import useUserStore from '@/store/userStore';
 import { AppBar, Box, Container, Divider, Link, Toolbar } from '@mui/material';
 
 export const AppHeader = () => {
   const { isLoggedIn } = useUserStore();
+  const { setLoginModalOpen } = useModalStore();
   return (
     <AppBar color="inherit" sx={{ boxShadow: 'none' }}>
       <Toolbar>
@@ -34,7 +36,13 @@ export const AppHeader = () => {
               </Link>
               {/* 로그인 링크 */}
               {!isLoggedIn && (
-                <Link href="/login" color="text.secondary" underline="hover">
+                <Link
+                  component="button"
+                  color="text.secondary"
+                  underline="hover"
+                  onClick={() => setLoginModalOpen(true)}
+                  sx={{ cursor: 'pointer' }}
+                >
                   로그인
                 </Link>
               )}
