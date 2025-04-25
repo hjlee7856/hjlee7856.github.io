@@ -60,11 +60,33 @@ export default function MobileNav() {
         </Typography>
         {categories.map((category, idx) => (
           <ListItem key={idx} disablePadding>
-            <ListItemButton onClick={(e) => handleCategory(e, idx)}>
+            <ListItemButton onClick={(e) => handleCategory(e, idx)} sx={{ py: 0 }}>
               <ListItemText primary={category.categoryName} />
             </ListItemButton>
           </ListItem>
         ))}
+      </List>
+      <Divider />
+      {/* 유틸리티 */}
+      <List onClick={toggleDrawer(false)}>
+        <Typography ml={1} variant="subtitle1" fontWeight="bold">
+          카테고리
+        </Typography>
+        <ListItem disablePadding>
+          <Link href="/utils/local-money-converter" color="black" underline="hover" ml={2} mb={1}>
+            <ListItemText primary={'금액 한글 변환기'} />
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link href="/utils/work-report-maker" color="black" underline="hover" ml={2} mb={1}>
+            <ListItemText primary={'업무 보고 생성기'} />
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link href="/utils/today-menu-recommender" color="black" underline="hover" ml={2} mb={1}>
+            <ListItemText primary={'점심 메뉴 추천기'} />
+          </Link>
+        </ListItem>
       </List>
       <Divider />
       {/* 약관 */}
