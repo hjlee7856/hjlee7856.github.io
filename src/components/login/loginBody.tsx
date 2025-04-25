@@ -1,5 +1,4 @@
-import { GithubLoginButton } from '@/components/login/githubLoginButton';
-import { GoogleLoginButton } from '@/components/login/googleLoginButton';
+import { LoginButton } from '@/components/login/LoginButton';
 import useModalStore from '@/store/modalStore';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Card, IconButton, Typography } from '@mui/material';
@@ -34,8 +33,8 @@ const LoginBody = () => {
 
       {/* 로그인 버튼들 */}
       <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={2} mt={3}>
-        <GoogleLoginButton />
-        <GithubLoginButton />
+        <LoginButton title={'구글'} type={'google'} />
+        <LoginButton title={'깃헙'} type={'github'} />
       </Box>
     </Card>
   );
