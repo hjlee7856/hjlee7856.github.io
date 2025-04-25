@@ -3,7 +3,7 @@ import { WorkReportPreview } from '@/components/workReportMaker/preview';
 import { WorkReportTitle } from '@/components/workReportMaker/title';
 import { useWorkReport } from '@/hooks/useWorkReport';
 
-import { Box, Divider, Snackbar, Stack } from '@mui/material';
+import { Box, Divider, Stack } from '@mui/material';
 
 const WorkReportMaker = () => {
   const {
@@ -16,10 +16,7 @@ const WorkReportMaker = () => {
     setEditingMap,
     setEditingKey,
     handleDelete,
-    handleCopy,
-    openSnackbar,
     text,
-    setOpenSnackbar,
     resetData,
   } = useWorkReport();
   return (
@@ -62,16 +59,9 @@ const WorkReportMaker = () => {
           />
           {/* Mobile */}
           <Divider sx={{ my: 3, display: { xs: 'block', sm: 'none' } }} />
-          <WorkReportPreview text={text} handleCopy={handleCopy} resetData={resetData} />
+          <WorkReportPreview text={text} resetData={resetData} />
         </Box>
       </Stack>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={2000}
-        onClose={() => setOpenSnackbar(false)}
-        message="보고서가 클립보드에 복사되었습니다."
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      />
     </Box>
   );
 };

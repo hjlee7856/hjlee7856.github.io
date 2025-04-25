@@ -2,41 +2,61 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
+  Checkbox,
   FormControlLabel,
   IconButton,
-  Switch,
+  Snackbar,
   TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
-  handleCopy: (text: string) => {};
   resetData: () => void;
   text: string;
 }
 
 export const WorkReportPreview = (props: Props) => {
-  const [checked, setChecked] = useState(false);
-  const [report, setReport] = useState(props.text);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-    if (event.target.checked) setReport(props.text + '\n@devops');
-    if (!event.target.checked) setReport(report.replace('@devops', '').trim());
-  };
+  const [checkedDev, setCheckedDev] = useState(false);
+  const [checkedHalfDayOffAm, setCheckedHalfDayOffAm] = useState(false);
+  const [checkedHalfDayOffPm, setCheckedHalfDayOffPm] = useState(false);
+  const [report, setReport] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleReset = () => {
-    setChecked(false);
+    setCheckedDev(false);
     setReport('');
     props.resetData();
   };
 
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(report);
+    setOpenSnackbar(true);
+  };
+
   useEffect(() => {
-    if (checked) setReport(props.text + '\n@devops');
-    if (!checked && report) setReport(report.replace('@devops', '').trim());
-  }, [props.text]);
+    const lines = props.text.split('\n');
+    let firstLine = lines[0];
+
+    // 기존에 반차 문구가 포함되어 있을 수 있으므로 제거
+    firstLine = firstLine.replace(/\s*\(오전 반차\)/, '').replace(/\s*\(오후 반차\)/, '');
+
+    if (checkedHalfDayOffAm) {
+      firstLine += ' (오전 반차)';
+    } else if (checkedHalfDayOffPm) {
+      firstLine += ' (오후 반차)';
+    }
+
+    lines[0] = firstLine;
+    let result = lines.join('\n');
+
+    if (checkedDev) {
+      result += '\n@devops';
+    }
+
+    setReport(result);
+  }, [props.text, checkedDev, checkedHalfDayOffAm, checkedHalfDayOffPm]);
 
   return (
     <Box flex={1} flexDirection="column">
@@ -51,10 +71,6 @@ export const WorkReportPreview = (props: Props) => {
         <Typography variant="subtitle1" fontWeight="bold">
           미리보기
         </Typography>
-        <FormControlLabel
-          control={<Switch checked={checked} onChange={handleChange} />}
-          label="개발팀"
-        ></FormControlLabel>
       </Box>
       <Box position={'relative'}>
         <TextField
@@ -62,15 +78,11 @@ export const WorkReportPreview = (props: Props) => {
           fullWidth
           minRows={10}
           value={report}
-          sx={{ borderRadius: 2, backgroundColor: '#f5f5f5' }}
-          slotProps={{
-            input: {
-              readOnly: true,
-            },
-          }}
+          onChange={(e) => setReport(e.target.value)}
+          sx={{ borderRadius: 2 }}
         />
         <Tooltip title="클립보드에 복사" sx={{ position: 'absolute', right: 1, top: 1 }}>
-          <IconButton size="small" onClick={() => props.handleCopy(report)}>
+          <IconButton size="small" onClick={handleCopy}>
             <ContentCopyIcon fontSize="small" />
           </IconButton>
         </Tooltip>
@@ -80,6 +92,43 @@ export const WorkReportPreview = (props: Props) => {
           </IconButton>
         </Tooltip>
       </Box>
+      <FormControlLabel
+        control={
+          <Checkbox checked={checkedDev} onChange={(e) => setCheckedDev(e.target.checked)} />
+        }
+        label="개발팀"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={checkedHalfDayOffAm}
+            onChange={(e) => {
+              setCheckedHalfDayOffAm(e.target.checked);
+              setCheckedHalfDayOffPm(false);
+            }}
+          />
+        }
+        label="오전반차"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={checkedHalfDayOffPm}
+            onChange={(e) => {
+              setCheckedHalfDayOffAm(false);
+              setCheckedHalfDayOffPm(e.target.checked);
+            }}
+          />
+        }
+        label="오후반차"
+      />
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={() => setOpenSnackbar(false)}
+        message="보고서가 클립보드에 복사되었습니다."
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
     </Box>
   );
 };

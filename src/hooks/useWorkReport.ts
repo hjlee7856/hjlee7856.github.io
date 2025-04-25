@@ -10,7 +10,7 @@ export const useWorkReport = () => {
     Record<string, { section: string; category: string; content: string }>
   >({});
   const [editingKey, setEditingKey] = useState<string | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const { user: currentUser } = useUserStore();
 
   const resetData = () => {
@@ -118,11 +118,6 @@ export const useWorkReport = () => {
     });
   };
 
-  const handleCopy = async (text: string) => {
-    await navigator.clipboard.writeText(text);
-    setOpenSnackbar(true);
-  };
-
   const generateText = () => {
     return Object.entries(reportData)
       .sort(([a], [b]) => a.localeCompare(b))
@@ -164,10 +159,7 @@ export const useWorkReport = () => {
     setEditingMap,
     setEditingKey,
     handleDelete,
-    handleCopy,
-    openSnackbar,
     text,
-    setOpenSnackbar,
     resetData,
   };
 };
