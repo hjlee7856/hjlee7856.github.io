@@ -122,7 +122,7 @@ export const useWorkReport = () => {
     return Object.entries(reportData)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([section, categories]) => {
-        const sectionTitle = `*[${section}]*`;
+        const sectionTitle = `[${section}]`;
         const categoryText = Object.entries(categories)
           .map(([cat, items]) => {
             const validItems = items.filter((item) => item.trim() !== '');
