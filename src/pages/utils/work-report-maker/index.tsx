@@ -23,6 +23,7 @@ const WorkReportMaker = () => {
     handleDelete,
     text,
     resetData,
+    handleOrderChange,
   } = useWorkReport();
 
   return (
@@ -40,6 +41,7 @@ const WorkReportMaker = () => {
             handleEditChange={handleEditChange}
             handleSaveEdit={handleSaveEdit}
             handleDelete={handleDelete}
+            handleOrderChange={handleOrderChange}
             section={'금일 진행 사항'}
             handleAdd={handleAdd}
           />
@@ -52,6 +54,7 @@ const WorkReportMaker = () => {
             handleEditChange={handleEditChange}
             handleSaveEdit={handleSaveEdit}
             handleDelete={handleDelete}
+            handleOrderChange={handleOrderChange}
             section={'익일 예정 사항'}
             handleAdd={handleAdd}
           />

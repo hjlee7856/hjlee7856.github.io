@@ -4,6 +4,12 @@ import { useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'workReportData';
 
+type Report = {
+  section: string;
+  category: string;
+  content: string;
+};
+
 export const useWorkReport = () => {
   const [reportData, setReportData] = useState<Record<string, Record<string, string[]>>>({});
   const [editingMap, setEditingMap] = useState<
@@ -64,6 +70,25 @@ export const useWorkReport = () => {
       newData[section][category] = newData[section][category].filter((item) => item !== content);
       if (newData[section][category].length === 0) delete newData[section][category];
       if (Object.keys(newData[section]).length === 0) delete newData[section];
+      return newData;
+    });
+  };
+
+  const handleOrderChange = (newOrder: Report[]) => {
+    setReportData((prev) => {
+      const newData: Record<string, Record<string, string[]>> = {};
+
+      // 새로운 순서로 데이터 재구성
+      newOrder.forEach((item) => {
+        if (!newData[item.section]) {
+          newData[item.section] = {};
+        }
+        if (!newData[item.section][item.category]) {
+          newData[item.section][item.category] = [];
+        }
+        newData[item.section][item.category].push(item.content);
+      });
+
       return newData;
     });
   };
@@ -161,5 +186,6 @@ export const useWorkReport = () => {
     handleDelete,
     text,
     resetData,
+    handleOrderChange,
   };
 };
