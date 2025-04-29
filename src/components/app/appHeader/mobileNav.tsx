@@ -82,11 +82,11 @@ export default function MobileNav() {
             <ListItemText primary={'업무 보고 생성기'} />
           </Link>
         </ListItem>
-        <ListItem disablePadding>
+        {/* <ListItem disablePadding>
           <Link href="/utils/today-menu-recommender" color="black" underline="hover" ml={2} mb={1}>
             <ListItemText primary={'점심 메뉴 추천기'} />
           </Link>
-        </ListItem>
+        </ListItem> */}
       </List>
       <Divider />
       {/* 약관 */}

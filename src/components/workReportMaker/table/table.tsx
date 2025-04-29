@@ -2,7 +2,6 @@ import { AddWorkReportList } from '@/components/workReportMaker/table/addTable';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 import {
@@ -17,14 +16,12 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
 interface Props {
-  allContentItems: { section: string; category: string; content: string }[];
-  editingMap: Record<string, { section: string; category: string; content: string }>;
-  setEditingMap: React.Dispatch<
-    React.SetStateAction<Record<string, { section: string; category: string; content: string }>>
-  >;
+  allContentItems: Report[];
+  editingMap: Record<string, Report>;
+  setEditingMap: React.Dispatch<React.SetStateAction<Record<string, Report>>>;
   editingKey: string | null;
   setEditingKey: (key: string | null) => void;
   handleEditChange: (
@@ -41,15 +38,47 @@ interface Props {
   handleAdd: (section: string, category: string, content: string) => void;
 }
 
+type Report = { section: string; category: string; content: string };
+
 export const WorkReportList = (props: Props) => {
   const [isAdding, setIsAdding] = useState(false);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const rowRef = useRef<HTMLTableRowElement | null>(null);
+
+  const handleEdit = (item: Report) => {
+    props.setEditingMap((prev) => ({
+      ...prev,
+      [item.content]: {
+        section: item.section,
+        category: item.category,
+        content: item.content,
+      },
+    }));
+    props.setEditingKey(`${item.section}-${item.category}-${item.content}`);
+  };
 
   const handleEnterSave = (e: KeyboardEvent<HTMLDivElement>, content: string) => {
     if (e.key === 'Enter') {
       props.handleSaveEdit(content);
+      props.setEditingKey(null);
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (props.editingKey && rowRef.current && !rowRef.current.contains(event.target as Node)) {
+        props.setEditingKey(null);
+      }
+    };
+
+    if (props.editingKey) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [props.editingKey]);
 
   return (
     <Box sx={{ overflowX: 'auto', minHeight: '200px' }}>
@@ -89,19 +118,19 @@ export const WorkReportList = (props: Props) => {
             const key = `${item.section}-${item.category}-${item.content}`;
             const isEditing = props.editingKey === key;
             const isHover = hoverIndex === index;
-            return (
+
+            const rowContent = (
               <TableRow
+                ref={isEditing ? rowRef : null}
                 component="tr"
                 onMouseEnter={() => setHoverIndex(index)}
                 onMouseLeave={() => setHoverIndex(null)}
-                key={key}
-                sx={{
-                  cursor: 'pointer',
-                }}
+                sx={{ cursor: 'pointer' }}
                 hover={true}
                 selected={isEditing}
+                onClick={() => handleEdit(item)}
               >
-                <TableCell sx={{ wordBreak: 'break-all' }}>
+                <TableCell sx={{ wordBreak: 'break-all', paddingY: 1.1 }}>
                   {isEditing ? (
                     <TextField
                       error={props.editingMap[item.content]?.category === ''}
@@ -125,7 +154,6 @@ export const WorkReportList = (props: Props) => {
                       onChange={(e) =>
                         props.handleEditChange(item.content, 'content', e.target.value)
                       }
-                      disabled={!isEditing}
                       size="small"
                       onKeyDown={(e) => handleEnterSave(e, item.content)}
                     />
@@ -137,7 +165,8 @@ export const WorkReportList = (props: Props) => {
                   <TableCell align="right" sx={{ minWidth: '150px' }}>
                     <Tooltip title="저장">
                       <IconButton
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           props.handleSaveEdit(item.content);
                           props.setEditingKey(null);
                         }}
@@ -149,7 +178,8 @@ export const WorkReportList = (props: Props) => {
                     {item.section === '금일 진행 사항' && (
                       <Tooltip title="익일로 이동">
                         <IconButton
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             props.handleEditChange(item.content, 'section', '익일 예정 사항');
                             props.handleSaveEdit(item.content, '익일 예정 사항');
                             props.setEditingKey(null);
@@ -163,7 +193,8 @@ export const WorkReportList = (props: Props) => {
                     {item.section === '익일 예정 사항' && (
                       <Tooltip title="금일로 이동">
                         <IconButton
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             props.handleEditChange(item.content, 'section', '금일 진행 사항');
                             props.handleSaveEdit(item.content, '금일 진행 사항');
                             props.setEditingKey(null);
@@ -178,27 +209,10 @@ export const WorkReportList = (props: Props) => {
                 )}
                 {isHover && !isEditing && (
                   <TableCell align="right" sx={{ minWidth: '150px' }}>
-                    <Tooltip title="수정">
-                      <IconButton
-                        onClick={() => {
-                          props.setEditingMap((prev) => ({
-                            ...prev,
-                            [item.content]: {
-                              section: item.section,
-                              category: item.category,
-                              content: item.content,
-                            },
-                          }));
-                          props.setEditingKey(`${item.section}-${item.category}-${item.content}`);
-                        }}
-                        size="small"
-                      >
-                        <EditIcon fontSize="small" color="primary" />
-                      </IconButton>
-                    </Tooltip>
                     <Tooltip title="삭제">
                       <IconButton
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           props.handleDelete(item.section, item.category, item.content);
                           props.setEditingKey(null);
                         }}
@@ -211,6 +225,15 @@ export const WorkReportList = (props: Props) => {
                 )}
                 {!isHover && !isEditing && <TableCell sx={{ minWidth: '150px' }} />}
               </TableRow>
+            );
+
+            // 툴팁은 편집 중이 아닐 때만 감쌈
+            return isEditing ? (
+              rowContent
+            ) : (
+              <Tooltip title="클릭해서 수정" arrow key={key}>
+                {rowContent}
+              </Tooltip>
             );
           })}
         </TableBody>

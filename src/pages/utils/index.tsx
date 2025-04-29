@@ -12,11 +12,11 @@ const utilities = [
     description: '업무 보고를 템플릿으로 쉽게 만들어 보세요.',
     path: '/utils/work-report-maker',
   },
-  {
-    title: '점심 메뉴 추천기',
-    description: '간단한 문항을 통해 오늘 메뉴를 추천받아 보세요.',
-    path: '/utils/today-menu-recommender',
-  },
+  // {
+  //   title: '점심 메뉴 추천기',
+  //   description: '간단한 문항을 통해 오늘 메뉴를 추천받아 보세요.',
+  //   path: '/utils/today-menu-recommender',
+  // },
 ];
 
 const UtilPage = () => {
