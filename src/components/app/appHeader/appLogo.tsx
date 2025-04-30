@@ -1,6 +1,5 @@
 import { useCategory } from '@/hooks/useCategory';
-import { Box } from '@mui/material';
-import Image from 'next/image';
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 
 export const AppLogo = () => {
@@ -13,8 +12,28 @@ export const AppLogo = () => {
         changeCategory(e, 0);
       }}
     >
-      <Box sx={{ position: 'relative', width: '90px', height: '50px' }}>
-        <Image src="/image/img_Logo_B.png" alt="로고" fill />
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+          padding: '8px 16px',
+          borderRadius: 2,
+          backgroundColor: 'transparent',
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 'bold',
+            background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            letterSpacing: '0.5px',
+          }}
+        >
+          CodeDiver
+        </Typography>
       </Box>
     </Link>
   );
