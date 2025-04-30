@@ -285,6 +285,7 @@ const TodayMenuRecommender = () => {
               <>
                 <Box
                   sx={{
+                    width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -297,7 +298,9 @@ const TodayMenuRecommender = () => {
                   {result && (
                     <Box
                       sx={{
+                        width: '100%',
                         display: 'flex',
+                        flex: 1,
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -309,11 +312,8 @@ const TodayMenuRecommender = () => {
                       <Typography variant="body1" sx={{ mt: 1 }}>
                         2순위: {result.second.name}
                       </Typography>
-                      <Typography variant="body2" color="error" sx={{ mt: 1 }}>
-                        반대 메뉴: {result.opposite.name}
-                      </Typography>
 
-                      <Box sx={{ mt: 2, height: '300px' }}>
+                      <Box sx={{ mt: 2, width: '100%', height: '300px' }}>
                         <ResponsiveContainer width="100%" height="100%">
                           <RadarChart
                             cx="50%"
