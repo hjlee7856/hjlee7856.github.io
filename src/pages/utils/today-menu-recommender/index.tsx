@@ -1,10 +1,11 @@
 import PageLayout from '@/components/util/pageLayout';
 import { PageTitle } from '@/components/util/pageTitle';
-import { Box, Card, CardContent, Snackbar } from '@mui/material';
-import QuestionCard from './components/QuestionCard';
-import ResultCard from './components/ResultCard';
-import { useMenuRecommender } from './hooks/useMenuRecommender';
-import { questions } from './questions';
+import QuestionCard from '@/utils/today-menu-recommender/components/QuestionCard';
+import ResultCard from '@/utils/today-menu-recommender/components/ResultCard';
+import Toast from '@/utils/today-menu-recommender/components/Toast';
+import { useMenuRecommender } from '@/utils/today-menu-recommender/hooks/useMenuRecommender';
+import { questions } from '@/utils/today-menu-recommender/questions';
+import { Box, Card, CardContent } from '@mui/material';
 
 const TITLE = '메뉴 추천기';
 const SUB_TITLE = '간단한 문항을 통해 오늘 메뉴를 추천받아 보세요.';
@@ -12,6 +13,7 @@ const SUB_TITLE = '간단한 문항을 통해 오늘 메뉴를 추천받아 보�
 const TodayMenuRecommender = () => {
   const {
     currentQuestionIndex,
+    answers,
     showResult,
     showAllRankings,
     showToast,
@@ -72,12 +74,11 @@ const TodayMenuRecommender = () => {
           </CardContent>
         </Card>
       </Box>
-      <Snackbar
+
+      <Toast
         open={showToast}
-        autoHideDuration={3000}
         onClose={() => setShowToast(false)}
         message="결과가 클립보드에 복사되었습니다!"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       />
     </PageLayout>
   );
