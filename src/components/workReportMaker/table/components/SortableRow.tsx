@@ -51,14 +51,20 @@ export const SortableRow = ({
       }}
       {...attributes}
     >
-      <TableCell sx={{ width: '40px', padding: '0 8px' }}>
+      <TableCell sx={{ width: { xs: '32px', sm: '40px' } }}>
         <Tooltip title="드래그로 순서 변경">
           <IconButton size="small" sx={{ cursor: 'grab' }} {...listeners}>
             <DragIndicatorIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       </TableCell>
-      <TableCell sx={{ wordBreak: 'break-all', paddingY: 1.1 }}>
+      <TableCell
+        sx={{
+          wordBreak: 'break-all',
+          minWidth: { xs: '120px', sm: '160px', md: '200px' },
+          maxWidth: { xs: '200px', sm: '250px', md: '300px' },
+        }}
+      >
         {isEditing ? (
           <EditableCell
             item={item}
@@ -69,11 +75,19 @@ export const SortableRow = ({
           />
         ) : (
           <Tooltip title="클릭해서 수정">
-            <Typography>{item.category}</Typography>
+            <Typography sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
+              {item.category}
+            </Typography>
           </Tooltip>
         )}
       </TableCell>
-      <TableCell sx={{ wordBreak: 'break-all' }}>
+      <TableCell
+        sx={{
+          wordBreak: 'break-all',
+          minWidth: { xs: '200px', sm: '300px', md: '400px' },
+          maxWidth: { xs: '300px', sm: '400px', md: '600px' },
+        }}
+      >
         {isEditing ? (
           <EditableCell
             item={item}
@@ -84,11 +98,13 @@ export const SortableRow = ({
           />
         ) : (
           <Tooltip title="클릭해서 수정">
-            <Typography>{item.content}</Typography>
+            <Typography sx={{ whiteSpace: 'pre-wrap', fontSize: { xs: '0.875rem', sm: '1rem' } }}>
+              {item.content}
+            </Typography>
           </Tooltip>
         )}
       </TableCell>
-      <TableCell sx={{ minWidth: '150px' }} align="right">
+      <TableCell sx={{ minWidth: { xs: '80px', sm: '100px' } }} align="right">
         {isEditing ? (
           <ActionButtons
             item={item}
