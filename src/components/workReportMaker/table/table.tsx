@@ -81,9 +81,7 @@ export const WorkReportList = (props: Props) => {
 
   const handleMoveSection = (e: React.MouseEvent, content: string, targetSection: string) => {
     e.stopPropagation();
-    props.handleEditChange(content, 'section', targetSection);
     props.handleSaveEdit(content, targetSection);
-    props.setEditingKey(null);
   };
 
   const handleDelete = (e: React.MouseEvent, item: Report) => {
@@ -136,6 +134,7 @@ export const WorkReportList = (props: Props) => {
                 section={props.section}
                 handleAdd={props.handleAdd}
                 setIsAdding={setIsAdding}
+                allContentItems={props.allContentItems}
               />
             )}
             <SortableContext

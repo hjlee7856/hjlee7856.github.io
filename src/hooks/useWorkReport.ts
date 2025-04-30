@@ -56,6 +56,14 @@ export const useWorkReport = () => {
 
   const handleAdd = (section: string, category: string, content: string) => {
     if (!section || !category) return;
+
+    // 중복 체크
+    const isDuplicate = allContentItems.some(
+      (item) => item.section === section && item.category === category && item.content === content
+    );
+
+    if (isDuplicate) return;
+
     setReportData((prev) => {
       const newData = { ...prev };
       newData[section] = newData[section] || {};
@@ -108,15 +116,13 @@ export const useWorkReport = () => {
   };
 
   const handleSaveEdit = (originalContent: string, overrideSection?: string) => {
-    const newValues = editingMap[originalContent];
-    if (!newValues) return;
-
     const original = allContentItems.find((item) => item.content === originalContent);
     if (!original) return;
 
-    const newSection = overrideSection || newValues.section;
-    const newCategory = newValues.category;
-    const newContent = newValues.content;
+    const newValues = editingMap[originalContent];
+    const newSection = overrideSection || newValues?.section || original.section;
+    const newCategory = newValues?.category || original.category;
+    const newContent = newValues?.content || original.content;
 
     setReportData((prev) => {
       const newData = { ...prev };
@@ -174,6 +180,14 @@ export const useWorkReport = () => {
     )
   );
 
+  const handleMoveSection = (e: React.MouseEvent, content: string, targetSection: string) => {
+    e.stopPropagation();
+    const item = allContentItems.find((item) => item.content === content);
+    if (!item) return;
+
+    handleSaveEdit(content, targetSection);
+  };
+
   return {
     handleAdd,
     allContentItems,
@@ -187,5 +201,6 @@ export const useWorkReport = () => {
     text,
     resetData,
     handleOrderChange,
+    handleMoveSection,
   };
 };

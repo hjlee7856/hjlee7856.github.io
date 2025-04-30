@@ -1,5 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { IconButton, TableCell, TableRow, TextField, Tooltip } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { KeyboardEvent, useState } from 'react';
@@ -8,13 +9,22 @@ interface Props {
   section: string;
   handleAdd: (section: string, category: string, content: string) => void;
   setIsAdding: (isAdding: boolean) => void;
+  allContentItems: { section: string; category: string; content: string }[];
 }
 
 export const AddWorkReportList = (props: Props) => {
   const [localCategory, setLocalCategory] = useState('');
   const [localContent, setLocalContent] = useState('');
 
+  const isDuplicate = props.allContentItems.some(
+    (item) =>
+      item.section === props.section &&
+      item.category === localCategory &&
+      item.content === localContent
+  );
+
   const handleAddLocal = () => {
+    if (isDuplicate) return;
     props.handleAdd(props.section, localCategory, localContent);
     handleResetLocal();
     props.setIsAdding(false);
@@ -39,6 +49,9 @@ export const AddWorkReportList = (props: Props) => {
       }}
     >
       <TableCell>
+        <DragIndicatorIcon fontSize="small" color="disabled" />
+      </TableCell>
+      <TableCell>
         <TextField
           error={localCategory === ''}
           label={localCategory === '' ? '필수' : '카테고리'}
@@ -51,7 +64,8 @@ export const AddWorkReportList = (props: Props) => {
       </TableCell>
       <TableCell>
         <TextField
-          label="내용"
+          error={isDuplicate}
+          label={isDuplicate ? '중복된 항목입니다' : '내용'}
           value={localContent}
           onChange={(e) => setLocalContent(e.target.value)}
           fullWidth
@@ -60,14 +74,14 @@ export const AddWorkReportList = (props: Props) => {
         />
       </TableCell>
       <TableCell align="right">
-        <Tooltip title="저장">
-          <IconButton onClick={handleAddLocal} size="small">
-            <CheckIcon fontSize="small" />
+        <Tooltip title={isDuplicate ? '중복된 항목은 저장할 수 없습니다' : '저장'}>
+          <IconButton onClick={handleAddLocal} size="small" disabled={isDuplicate}>
+            <CheckIcon fontSize="small" color="success" />
           </IconButton>
         </Tooltip>
         <Tooltip title="취소">
           <IconButton onClick={handleResetLocal} size="small">
-            <CloseIcon fontSize="small" />
+            <CloseIcon fontSize="small" color="error" />
           </IconButton>
         </Tooltip>
       </TableCell>

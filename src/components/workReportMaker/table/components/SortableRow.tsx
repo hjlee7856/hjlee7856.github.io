@@ -1,8 +1,10 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { IconButton, TableCell, TableRow } from '@mui/material';
-import { SortableRowProps } from '../types';
+import { Box, IconButton, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
+import { SECTION_TYPES, SortableRowProps } from '../types';
 import { ActionButtons } from './ActionButtons';
 import { DeleteButton } from './DeleteButton';
 import { EditableCell } from './EditableCell';
@@ -43,13 +45,18 @@ export const SortableRow = ({
       sx={{ cursor: 'pointer', ...style }}
       hover={true}
       selected={isEditing}
-      onClick={() => handleEdit(item)}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleEdit(item);
+      }}
       {...attributes}
     >
       <TableCell sx={{ width: '40px', padding: '0 8px' }}>
-        <IconButton size="small" sx={{ cursor: 'grab' }} {...listeners}>
-          <DragIndicatorIcon fontSize="small" />
-        </IconButton>
+        <Tooltip title="드래그로 순서 변경">
+          <IconButton size="small" sx={{ cursor: 'grab' }} {...listeners}>
+            <DragIndicatorIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       </TableCell>
       <TableCell sx={{ wordBreak: 'break-all', paddingY: 1.1 }}>
         {isEditing ? (
@@ -61,7 +68,9 @@ export const SortableRow = ({
             handleEnterSave={handleEnterSave}
           />
         ) : (
-          item.category
+          <Tooltip title="클릭해서 수정">
+            <Typography>{item.category}</Typography>
+          </Tooltip>
         )}
       </TableCell>
       <TableCell sx={{ wordBreak: 'break-all' }}>
@@ -74,22 +83,46 @@ export const SortableRow = ({
             handleEnterSave={handleEnterSave}
           />
         ) : (
-          item.content
+          <Tooltip title="클릭해서 수정">
+            <Typography>{item.content}</Typography>
+          </Tooltip>
         )}
       </TableCell>
-      {isEditing ? (
-        <ActionButtons
-          item={item}
-          editingKey={editingKey}
-          handleSaveEdit={handleSaveEdit}
-          setEditingKey={setEditingKey}
-          handleMoveSection={handleMoveSection}
-        />
-      ) : isHover ? (
-        <DeleteButton item={item} editingKey={editingKey} handleDelete={handleDelete} />
-      ) : (
-        <TableCell sx={{ minWidth: '150px' }} />
-      )}
+      <TableCell sx={{ minWidth: '150px' }} align="right">
+        {isEditing ? (
+          <ActionButtons
+            item={item}
+            editingKey={editingKey}
+            handleSaveEdit={handleSaveEdit}
+            setEditingKey={setEditingKey}
+            handleMoveSection={handleMoveSection}
+          />
+        ) : (
+          <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'}>
+            {item.section === SECTION_TYPES.TODAY && (
+              <Tooltip title="익일로 이동">
+                <IconButton
+                  onClick={(e) => handleMoveSection(e, item.content, SECTION_TYPES.TOMORROW)}
+                  size="small"
+                >
+                  <ArrowDownwardIcon fontSize="small" color="primary" />
+                </IconButton>
+              </Tooltip>
+            )}
+            {item.section === SECTION_TYPES.TOMORROW && (
+              <Tooltip title="금일로 이동">
+                <IconButton
+                  onClick={(e) => handleMoveSection(e, item.content, SECTION_TYPES.TODAY)}
+                  size="small"
+                >
+                  <ArrowUpwardIcon fontSize="small" color="primary" />
+                </IconButton>
+              </Tooltip>
+            )}
+            <DeleteButton item={item} editingKey={editingKey} handleDelete={handleDelete} />
+          </Box>
+        )}
+      </TableCell>
     </TableRow>
   );
 };
