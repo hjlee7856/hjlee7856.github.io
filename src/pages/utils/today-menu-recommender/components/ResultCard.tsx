@@ -67,27 +67,18 @@ const ResultCard: React.FC<ResultCardProps> = ({
         }}
       >
         <Typography variant="h6" color="primary">
-          1순위: {result.first.name}
+          1순위: {result.first.name} ({result.allRankings[0].score.toFixed(1)}%)
         </Typography>
         <Typography variant="body2" sx={{ mt: 1, textAlign: 'center', color: 'text.secondary' }}>
           {result.first.description}
         </Typography>
-        <Typography variant="body2" sx={{ mt: 1, color: 'primary.main' }}>
-          적합도: {result.allRankings[0].score.toFixed(1)}%
-        </Typography>
 
         <Typography variant="body1" sx={{ mt: 2 }}>
-          2순위: {result.second.name}
-        </Typography>
-        <Typography variant="body2" sx={{ mt: 1, color: 'primary.main' }}>
-          적합도: {result.allRankings[1].score.toFixed(1)}%
+          2순위: {result.second.name} ({result.allRankings[0].score.toFixed(1)}%)
         </Typography>
 
         <Typography variant="body1" sx={{ mt: 1 }}>
-          3순위: {result.third.name}
-        </Typography>
-        <Typography variant="body2" sx={{ mt: 1, color: 'primary.main' }}>
-          적합도: {result.allRankings[2].score.toFixed(1)}%
+          3순위: {result.third.name} ({result.allRankings[0].score.toFixed(1)}%)
         </Typography>
 
         <Box sx={{ mt: 2, width: '100%', height: '300px' }}>
