@@ -1,3 +1,21 @@
+export interface MenuResult {
+  id: number;
+  name: string;
+  category: '한식' | '중식' | '일식' | '양식';
+  mainIngredient: '면' | '밥' | '고기' | '해산물' | '기타';
+  description: string;
+  weights: {
+    meat: number;
+    vegetable: number;
+    temperature: number;
+    spicy: number;
+    sweet: number;
+    salty: number;
+    sour: number;
+    oily: number;
+  };
+}
+
 export const menuResults: MenuResult[] = [
   // 한식
   {
