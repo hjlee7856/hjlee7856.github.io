@@ -308,6 +308,134 @@ const questions: Question[] = [
       },
     ],
   },
+  {
+    id: 9,
+    text: '오늘 식사는 어떤 분위기로 하고 싶으신가요?',
+    options: [
+      {
+        text: '가볍고 간단하게',
+        weights: {
+          meat: 0.4,
+          vegetable: 0.6,
+          temperature: 0.4,
+          spicy: 0.3,
+          sweet: 0.4,
+          salty: 0.3,
+          sour: 0.4,
+          oily: 0.3,
+        },
+      },
+      {
+        text: '푸짐하고 든든하게',
+        weights: {
+          meat: 0.7,
+          vegetable: 0.5,
+          temperature: 0.7,
+          spicy: 0.5,
+          sweet: 0.3,
+          salty: 0.5,
+          sour: 0.3,
+          oily: 0.6,
+        },
+      },
+    ],
+  },
+  {
+    id: 10,
+    text: '오늘 식사는 어떤 맛을 선호하시나요?',
+    options: [
+      {
+        text: '담백하고 깔끔한 맛',
+        weights: {
+          meat: 0.4,
+          vegetable: 0.6,
+          temperature: 0.5,
+          spicy: 0.2,
+          sweet: 0.3,
+          salty: 0.3,
+          sour: 0.3,
+          oily: 0.3,
+        },
+      },
+      {
+        text: '진하고 풍부한 맛',
+        weights: {
+          meat: 0.7,
+          vegetable: 0.4,
+          temperature: 0.6,
+          spicy: 0.5,
+          sweet: 0.4,
+          salty: 0.6,
+          sour: 0.4,
+          oily: 0.7,
+        },
+      },
+    ],
+  },
+  {
+    id: 11,
+    text: '오늘 식사는 어떤 식사량을 원하시나요?',
+    options: [
+      {
+        text: '적당한 양',
+        weights: {
+          meat: 0.5,
+          vegetable: 0.5,
+          temperature: 0.5,
+          spicy: 0.4,
+          sweet: 0.4,
+          salty: 0.4,
+          sour: 0.4,
+          oily: 0.4,
+        },
+      },
+      {
+        text: '푸짐한 양',
+        weights: {
+          meat: 0.7,
+          vegetable: 0.6,
+          temperature: 0.6,
+          spicy: 0.5,
+          sweet: 0.4,
+          salty: 0.5,
+          sour: 0.4,
+          oily: 0.6,
+        },
+      },
+    ],
+  },
+  {
+    id: 12,
+    text: '오늘 식사는 어떤 식사 스타일을 선호하시나요?',
+    options: [
+      {
+        text: '한식',
+        weights: {
+          meat: 0.5,
+          vegetable: 0.6,
+          temperature: 0.6,
+          spicy: 0.4,
+          sweet: 0.3,
+          salty: 0.5,
+          sour: 0.4,
+          oily: 0.4,
+        },
+      },
+      {
+        text: '양식/일식/중식',
+        weights: {
+          meat: 0.6,
+          vegetable: 0.4,
+          temperature: 0.5,
+          spicy: 0.3,
+          sweet: 0.4,
+          salty: 0.4,
+          sour: 0.3,
+          oily: 0.5,
+        },
+      },
+    ],
+  },
 ];
 
 const menuResults: MenuResult[] = [
