@@ -42,6 +42,7 @@ export const useMenuRecommender = () => {
       oily: 0,
     };
 
+    // 사용자 응답의 가중치 계산
     Object.entries(answers).forEach(([questionIndex, optionIndex]) => {
       const question = questions[parseInt(questionIndex)];
       const option = question.options[optionIndex];
@@ -51,20 +52,32 @@ export const useMenuRecommender = () => {
       });
     });
 
+    // 평균 가중치 계산
     const questionCount = questions.length;
     Object.keys(totalWeights).forEach((key) => {
       totalWeights[key as keyof typeof totalWeights] /= questionCount;
     });
 
+    // 각 메뉴의 점수 계산
     const menuScores = menuResults.map((menu) => {
       let score = 0;
+      let attributeCount = 0;
+
+      // 속성별 점수 계산
       Object.entries(menu.weights).forEach(([key, value]) => {
-        score += Math.abs(value - totalWeights[key as keyof typeof totalWeights]);
+        const similarity = 1 - Math.abs(value - totalWeights[key as keyof typeof totalWeights]);
+        score += similarity;
+        attributeCount++;
       });
-      return { menu, score };
+
+      // 최종 점수 계산 (0-100)
+      const finalScore = (score / attributeCount) * 100;
+
+      return { menu, score: finalScore };
     });
 
-    menuScores.sort((a, b) => a.score - b.score);
+    // 점수순으로 정렬
+    menuScores.sort((a, b) => b.score - a.score);
 
     setResult({
       first: menuScores[0].menu,

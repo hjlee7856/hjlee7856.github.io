@@ -1,4 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
+import React from 'react';
 import {
   PolarAngleAxis,
   PolarGrid,
@@ -23,13 +24,13 @@ interface ResultCardProps {
   onToggleRankings: () => void;
 }
 
-const ResultCard = ({
+const ResultCard: React.FC<ResultCardProps> = ({
   result,
   showAllRankings,
   onReset,
   onShare,
   onToggleRankings,
-}: ResultCardProps) => {
+}) => {
   const getRadarData = (weights: { [key: string]: number }) => {
     return [
       { subject: '육류', value: weights.meat * 100 },
@@ -41,13 +42,6 @@ const ResultCard = ({
       { subject: '신맛', value: weights.sour * 100 },
       { subject: '기름기', value: weights.oily * 100 },
     ];
-  };
-
-  const calculateMatchPercentage = (score: number) => {
-    // 최대 점수는 8 (8개의 특성 * 최대 차이 1)
-    const maxScore = 8;
-    const matchPercentage = ((maxScore - score) / maxScore) * 100;
-    return Math.round(matchPercentage);
   };
 
   return (
@@ -73,17 +67,27 @@ const ResultCard = ({
         }}
       >
         <Typography variant="h6" color="primary">
-          1순위: {result.first.name} ({calculateMatchPercentage(result.allRankings[0].score)}%)
+          1순위: {result.first.name}
         </Typography>
         <Typography variant="body2" sx={{ mt: 1, textAlign: 'center', color: 'text.secondary' }}>
           {result.first.description}
         </Typography>
+        <Typography variant="body2" sx={{ mt: 1, color: 'primary.main' }}>
+          적합도: {result.allRankings[0].score.toFixed(1)}%
+        </Typography>
 
         <Typography variant="body1" sx={{ mt: 2 }}>
-          2순위: {result.second.name} ({calculateMatchPercentage(result.allRankings[1].score)}%)
+          2순위: {result.second.name}
         </Typography>
+        <Typography variant="body2" sx={{ mt: 1, color: 'primary.main' }}>
+          적합도: {result.allRankings[1].score.toFixed(1)}%
+        </Typography>
+
         <Typography variant="body1" sx={{ mt: 1 }}>
-          3순위: {result.third.name} ({calculateMatchPercentage(result.allRankings[2].score)}%)
+          3순위: {result.third.name}
+        </Typography>
+        <Typography variant="body2" sx={{ mt: 1, color: 'primary.main' }}>
+          적합도: {result.allRankings[2].score.toFixed(1)}%
         </Typography>
 
         <Box sx={{ mt: 2, width: '100%', height: '300px' }}>
@@ -145,7 +149,7 @@ const ResultCard = ({
                     fontWeight: index < 3 ? 'bold' : 'normal',
                   }}
                 >
-                  {index + 1}위: {item.menu.name} ({calculateMatchPercentage(item.score)}%)
+                  {index + 1}위: {item.menu.name} ({item.score.toFixed(1)}%)
                 </Typography>
               ))}
             </Box>
