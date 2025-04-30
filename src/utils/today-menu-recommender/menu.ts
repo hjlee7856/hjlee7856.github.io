@@ -1,21 +1,3 @@
-export interface MenuResult {
-  id: number;
-  name: string;
-  category: '한식' | '중식' | '일식' | '양식';
-  mainIngredient: '면' | '밥' | '고기' | '해산물' | '기타';
-  description: string;
-  weights: {
-    meat: number;
-    vegetable: number;
-    temperature: number;
-    spicy: number;
-    sweet: number;
-    salty: number;
-    sour: number;
-    oily: number;
-  };
-}
-
 export const menuResults: MenuResult[] = [
   // 한식
   {
@@ -56,38 +38,38 @@ export const menuResults: MenuResult[] = [
   },
   {
     id: 3,
-    name: '불고기',
+    name: '된장찌개',
     category: '한식',
     mainIngredient: '고기',
     description:
-      '달콤짭짤한 맛이 특징인 고기 요리로, 고기를 좋아하시는 분께 추천드립니다. 따뜻한 밥과 함께 즐기면 더욱 좋습니다.',
+      '구수한 된장 맛이 특징인 국물 요리로, 담백한 맛을 선호하시는 분께 추천드립니다. 뜨거운 국물이 있어 추운 날씨에 특히 좋습니다.',
     weights: {
-      meat: 0.9,
-      vegetable: 0.3,
-      temperature: 0.7,
+      meat: 0.5,
+      vegetable: 0.6,
+      temperature: 0.9,
       spicy: 0.2,
-      sweet: 0.7,
-      salty: 0.6,
-      sour: 0.1,
-      oily: 0.5,
+      sweet: 0.2,
+      salty: 0.5,
+      sour: 0.3,
+      oily: 0.3,
     },
   },
   {
     id: 4,
-    name: '볶음밥',
-    category: '중식',
+    name: '비빔밥',
+    category: '한식',
     mainIngredient: '밥',
     description:
-      '밥을 좋아하시는 분께 추천드립니다. 다양한 재료와 함께 볶아낸 밥으로, 고소한 맛이 특징입니다.',
+      '다양한 채소와 고기가 골고루 들어간 건강식으로, 담백한 맛을 선호하시는 분께 추천드립니다. 상온에서 즐길 수 있어 여름철에 특히 좋습니다.',
     weights: {
       meat: 0.4,
-      vegetable: 0.5,
-      temperature: 0.3,
+      vegetable: 0.8,
+      temperature: 0.5,
       spicy: 0.3,
       sweet: 0.2,
       salty: 0.5,
-      sour: 0.1,
-      oily: 0.6,
+      sour: 0.4,
+      oily: 0.2,
     },
   },
   {
@@ -183,20 +165,20 @@ export const menuResults: MenuResult[] = [
   },
   {
     id: 10,
-    name: '마파두부',
+    name: '볶음밥',
     category: '중식',
     mainIngredient: '밥',
     description:
-      '매콤한 두부 요리로, 매운 맛을 선호하시는 분께 추천드립니다. 부드러운 두부와 매콤한 소스가 어우러져 밥과 함께 즐기기 좋습니다.',
+      '고슬고슬하게 볶아낸 밥 요리로, 담백하면서도 고소한 맛을 선호하시는 분께 추천드립니다. 다양한 재료와 함께 즐길 수 있습니다.',
     weights: {
-      meat: 0.3,
-      vegetable: 0.7,
+      meat: 0.4,
+      vegetable: 0.5,
       temperature: 0.7,
-      spicy: 0.7,
-      sweet: 0.2,
-      salty: 0.5,
-      sour: 0.2,
-      oily: 0.5,
+      spicy: 0.3,
+      sweet: 0.3,
+      salty: 0.6,
+      sour: 0.1,
+      oily: 0.6,
     },
   },
   // 일식
@@ -293,14 +275,14 @@ export const menuResults: MenuResult[] = [
   // 양식
   {
     id: 16,
-    name: '스테이크',
+    name: '리조또',
     category: '양식',
-    mainIngredient: '고기',
+    mainIngredient: '밥',
     description:
-      '고급스러운 소고기 요리로, 고기를 좋아하시는 분께 추천드립니다. 다양한 소스와 함께 즐길 수 있어 특별한 날에 좋습니다.',
+      '부드럽고 진한 식감이 특징인 이탈리아식 밥 요리입니다. 치즈와 육수로 고소한 맛을 내며, 크리미한 식감을 선호하시는 분께 추천드립니다.',
     weights: {
-      meat: 0.9,
-      vegetable: 0.2,
+      meat: 0.5,
+      vegetable: 0.4,
       temperature: 0.7,
       spicy: 0.1,
       sweet: 0.2,
@@ -347,20 +329,20 @@ export const menuResults: MenuResult[] = [
   },
   {
     id: 19,
-    name: '햄버거',
+    name: '피자',
     category: '양식',
-    mainIngredient: '고기',
+    mainIngredient: '기타',
     description:
-      '고기를 좋아하시는 분께 추천드립니다. 육즙이 풍부한 패티와 신선한 야채가 어우러진 클래식한 맛을 선사합니다.',
+      '다양한 토핑이 올라간 이탈리아 전통 요리로, 기름진 음식을 선호하시는 분께 추천드립니다. 함께 나누어 먹으면 더욱 좋습니다.',
     weights: {
-      meat: 0.8,
+      meat: 0.6,
       vegetable: 0.4,
-      temperature: 0.3,
-      spicy: 0.2,
-      sweet: 0.3,
+      temperature: 0.7,
+      spicy: 0.3,
+      sweet: 0.2,
       salty: 0.5,
-      sour: 0.1,
-      oily: 0.6,
+      sour: 0.2,
+      oily: 0.8,
     },
   },
   {
