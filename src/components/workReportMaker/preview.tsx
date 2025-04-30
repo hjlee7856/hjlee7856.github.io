@@ -25,9 +25,13 @@ export const WorkReportPreview = (props: Props) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const handleReset = () => {
-    setCheckedDev(false);
-    setReport('');
-    props.resetData();
+    if (window.confirm('정말 초기화하시겠습니까?')) {
+      setCheckedDev(false);
+      setCheckedHalfDayOffAm(false);
+      setCheckedHalfDayOffPm(false);
+      setReport('');
+      props.resetData();
+    }
   };
 
   const handleCopy = async () => {
