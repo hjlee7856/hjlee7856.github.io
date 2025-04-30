@@ -1,6 +1,14 @@
 import PageLayout from '@/components/util/pageLayout';
 import { PageTitle } from '@/components/util/pageTitle';
-import { Box, Button, Card, CardContent, LinearProgress, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  LinearProgress,
+  Snackbar,
+  Typography,
+} from '@mui/material';
 import { useState } from 'react';
 import {
   PolarAngleAxis,
@@ -19,9 +27,12 @@ interface Question {
     weights: {
       meat: number;
       vegetable: number;
-      hot: number;
-      cold: number;
+      temperature: number;
       spicy: number;
+      sweet: number;
+      salty: number;
+      sour: number;
+      oily: number;
     };
   }[];
 }
@@ -31,9 +42,12 @@ interface MenuResult {
   weights: {
     meat: number;
     vegetable: number;
-    hot: number;
-    cold: number;
+    temperature: number;
     spicy: number;
+    sweet: number;
+    salty: number;
+    sour: number;
+    oily: number;
   };
 }
 
@@ -44,11 +58,29 @@ const questions: Question[] = [
     options: [
       {
         text: '활기찬 하루를 보내고 싶어요',
-        weights: { meat: 0.8, vegetable: 0.2, hot: 0.6, cold: 0.4, spicy: 0.7 },
+        weights: {
+          meat: 0.8,
+          vegetable: 0.2,
+          temperature: 0.7,
+          spicy: 0.7,
+          sweet: 0.3,
+          salty: 0.5,
+          sour: 0.3,
+          oily: 0.6,
+        },
       },
       {
         text: '평온한 하루를 보내고 싶어요',
-        weights: { meat: 0.3, vegetable: 0.7, hot: 0.4, cold: 0.6, spicy: 0.2 },
+        weights: {
+          meat: 0.3,
+          vegetable: 0.7,
+          temperature: 0.4,
+          spicy: 0.2,
+          sweet: 0.5,
+          salty: 0.3,
+          sour: 0.4,
+          oily: 0.3,
+        },
       },
     ],
   },
@@ -58,11 +90,29 @@ const questions: Question[] = [
     options: [
       {
         text: '따뜻하고 맑아요',
-        weights: { meat: 0.4, vegetable: 0.6, hot: 0.3, cold: 0.7, spicy: 0.2 },
+        weights: {
+          meat: 0.4,
+          vegetable: 0.6,
+          temperature: 0.3,
+          spicy: 0.2,
+          sweet: 0.4,
+          salty: 0.3,
+          sour: 0.5,
+          oily: 0.3,
+        },
       },
       {
         text: '추워요',
-        weights: { meat: 0.7, vegetable: 0.3, hot: 0.8, cold: 0.2, spicy: 0.6 },
+        weights: {
+          meat: 0.7,
+          vegetable: 0.3,
+          temperature: 0.8,
+          spicy: 0.6,
+          sweet: 0.3,
+          salty: 0.5,
+          sour: 0.2,
+          oily: 0.6,
+        },
       },
     ],
   },
@@ -72,11 +122,29 @@ const questions: Question[] = [
     options: [
       {
         text: '바쁘게 먹어야 해요',
-        weights: { meat: 0.6, vegetable: 0.4, hot: 0.5, cold: 0.5, spicy: 0.4 },
+        weights: {
+          meat: 0.6,
+          vegetable: 0.4,
+          temperature: 0.5,
+          spicy: 0.4,
+          sweet: 0.3,
+          salty: 0.4,
+          sour: 0.3,
+          oily: 0.5,
+        },
       },
       {
         text: '여유롭게 먹을 수 있어요',
-        weights: { meat: 0.5, vegetable: 0.5, hot: 0.7, cold: 0.3, spicy: 0.5 },
+        weights: {
+          meat: 0.5,
+          vegetable: 0.5,
+          temperature: 0.7,
+          spicy: 0.5,
+          sweet: 0.4,
+          salty: 0.5,
+          sour: 0.4,
+          oily: 0.4,
+        },
       },
     ],
   },
@@ -86,11 +154,157 @@ const questions: Question[] = [
     options: [
       {
         text: '네, 운동할 예정이에요',
-        weights: { meat: 0.7, vegetable: 0.3, hot: 0.6, cold: 0.4, spicy: 0.3 },
+        weights: {
+          meat: 0.7,
+          vegetable: 0.3,
+          temperature: 0.6,
+          spicy: 0.3,
+          sweet: 0.2,
+          salty: 0.4,
+          sour: 0.3,
+          oily: 0.5,
+        },
       },
       {
         text: '아니요, 쉴 예정이에요',
-        weights: { meat: 0.4, vegetable: 0.6, hot: 0.4, cold: 0.6, spicy: 0.5 },
+        weights: {
+          meat: 0.4,
+          vegetable: 0.6,
+          temperature: 0.4,
+          spicy: 0.5,
+          sweet: 0.6,
+          salty: 0.3,
+          sour: 0.5,
+          oily: 0.3,
+        },
+      },
+    ],
+  },
+  {
+    id: 5,
+    text: '오늘 식사는 몇 명이서 하시나요?',
+    options: [
+      {
+        text: '혼자 먹어요',
+        weights: {
+          meat: 0.5,
+          vegetable: 0.5,
+          temperature: 0.5,
+          spicy: 0.4,
+          sweet: 0.4,
+          salty: 0.4,
+          sour: 0.4,
+          oily: 0.4,
+        },
+      },
+      {
+        text: '여러 명이서 먹어요',
+        weights: {
+          meat: 0.7,
+          vegetable: 0.6,
+          temperature: 0.6,
+          spicy: 0.5,
+          sweet: 0.5,
+          salty: 0.5,
+          sour: 0.5,
+          oily: 0.6,
+        },
+      },
+    ],
+  },
+  {
+    id: 6,
+    text: '오늘 식사 예산은 어떻게 되나요?',
+    options: [
+      {
+        text: '저렴하게 먹고 싶어요',
+        weights: {
+          meat: 0.4,
+          vegetable: 0.6,
+          temperature: 0.5,
+          spicy: 0.4,
+          sweet: 0.3,
+          salty: 0.4,
+          sour: 0.4,
+          oily: 0.3,
+        },
+      },
+      {
+        text: '좀 더 비싸도 괜찮아요',
+        weights: {
+          meat: 0.7,
+          vegetable: 0.5,
+          temperature: 0.6,
+          spicy: 0.5,
+          sweet: 0.5,
+          salty: 0.5,
+          sour: 0.5,
+          oily: 0.6,
+        },
+      },
+    ],
+  },
+  {
+    id: 7,
+    text: '오늘 식사는 어떤 시간대에 하시나요?',
+    options: [
+      {
+        text: '아침이나 점심이에요',
+        weights: {
+          meat: 0.5,
+          vegetable: 0.5,
+          temperature: 0.5,
+          spicy: 0.3,
+          sweet: 0.4,
+          salty: 0.4,
+          sour: 0.3,
+          oily: 0.4,
+        },
+      },
+      {
+        text: '저녁이에요',
+        weights: {
+          meat: 0.6,
+          vegetable: 0.4,
+          temperature: 0.6,
+          spicy: 0.5,
+          sweet: 0.3,
+          salty: 0.5,
+          sour: 0.4,
+          oily: 0.5,
+        },
+      },
+    ],
+  },
+  {
+    id: 8,
+    text: '오늘 식사는 어떤 장소에서 하시나요?',
+    options: [
+      {
+        text: '집에서 먹어요',
+        weights: {
+          meat: 0.5,
+          vegetable: 0.5,
+          temperature: 0.5,
+          spicy: 0.4,
+          sweet: 0.4,
+          salty: 0.4,
+          sour: 0.4,
+          oily: 0.4,
+        },
+      },
+      {
+        text: '외식할 거예요',
+        weights: {
+          meat: 0.6,
+          vegetable: 0.4,
+          temperature: 0.6,
+          spicy: 0.5,
+          sweet: 0.3,
+          salty: 0.5,
+          sour: 0.3,
+          oily: 0.5,
+        },
       },
     ],
   },
@@ -99,31 +313,159 @@ const questions: Question[] = [
 const menuResults: MenuResult[] = [
   {
     name: '떡볶이',
-    weights: { meat: 0.2, vegetable: 0.3, hot: 0.9, cold: 0.1, spicy: 0.8 },
+    weights: {
+      meat: 0.2,
+      vegetable: 0.3,
+      temperature: 0.9,
+      spicy: 0.8,
+      sweet: 0.7,
+      salty: 0.6,
+      sour: 0.2,
+      oily: 0.4,
+    },
   },
   {
     name: '피자',
-    weights: { meat: 0.8, vegetable: 0.4, hot: 0.7, cold: 0.3, spicy: 0.2 },
+    weights: {
+      meat: 0.8,
+      vegetable: 0.4,
+      temperature: 0.7,
+      spicy: 0.2,
+      sweet: 0.3,
+      salty: 0.5,
+      sour: 0.1,
+      oily: 0.8,
+    },
   },
   {
     name: '샐러드',
-    weights: { meat: 0.1, vegetable: 0.9, hot: 0.2, cold: 0.8, spicy: 0.1 },
+    weights: {
+      meat: 0.1,
+      vegetable: 0.9,
+      temperature: 0.2,
+      spicy: 0.1,
+      sweet: 0.2,
+      salty: 0.2,
+      sour: 0.3,
+      oily: 0.1,
+    },
   },
   {
     name: '삼겹살',
-    weights: { meat: 0.9, vegetable: 0.2, hot: 0.8, cold: 0.2, spicy: 0.3 },
+    weights: {
+      meat: 0.9,
+      vegetable: 0.2,
+      temperature: 0.8,
+      spicy: 0.3,
+      sweet: 0.2,
+      salty: 0.4,
+      sour: 0.1,
+      oily: 0.9,
+    },
   },
   {
     name: '초밥',
-    weights: { meat: 0.6, vegetable: 0.4, hot: 0.3, cold: 0.7, spicy: 0.2 },
+    weights: {
+      meat: 0.6,
+      vegetable: 0.4,
+      temperature: 0.3,
+      spicy: 0.2,
+      sweet: 0.3,
+      salty: 0.4,
+      sour: 0.3,
+      oily: 0.3,
+    },
   },
   {
     name: '라면',
-    weights: { meat: 0.3, vegetable: 0.3, hot: 0.9, cold: 0.1, spicy: 0.7 },
+    weights: {
+      meat: 0.3,
+      vegetable: 0.3,
+      temperature: 0.9,
+      spicy: 0.7,
+      sweet: 0.2,
+      salty: 0.8,
+      sour: 0.1,
+      oily: 0.5,
+    },
   },
   {
     name: '비빔밥',
-    weights: { meat: 0.4, vegetable: 0.7, hot: 0.5, cold: 0.5, spicy: 0.4 },
+    weights: {
+      meat: 0.4,
+      vegetable: 0.7,
+      temperature: 0.5,
+      spicy: 0.4,
+      sweet: 0.3,
+      salty: 0.5,
+      sour: 0.4,
+      oily: 0.3,
+    },
+  },
+  {
+    name: '치킨',
+    weights: {
+      meat: 0.8,
+      vegetable: 0.2,
+      temperature: 0.6,
+      spicy: 0.5,
+      sweet: 0.4,
+      salty: 0.6,
+      sour: 0.2,
+      oily: 0.8,
+    },
+  },
+  {
+    name: '파스타',
+    weights: {
+      meat: 0.5,
+      vegetable: 0.5,
+      temperature: 0.4,
+      spicy: 0.2,
+      sweet: 0.3,
+      salty: 0.4,
+      sour: 0.2,
+      oily: 0.5,
+    },
+  },
+  {
+    name: '김치찌개',
+    weights: {
+      meat: 0.6,
+      vegetable: 0.6,
+      temperature: 0.8,
+      spicy: 0.7,
+      sweet: 0.1,
+      salty: 0.7,
+      sour: 0.6,
+      oily: 0.4,
+    },
+  },
+  {
+    name: '된장찌개',
+    weights: {
+      meat: 0.4,
+      vegetable: 0.7,
+      temperature: 0.7,
+      spicy: 0.2,
+      sweet: 0.2,
+      salty: 0.6,
+      sour: 0.3,
+      oily: 0.3,
+    },
+  },
+  {
+    name: '제육볶음',
+    weights: {
+      meat: 0.8,
+      vegetable: 0.4,
+      temperature: 0.6,
+      spicy: 0.6,
+      sweet: 0.4,
+      salty: 0.5,
+      sour: 0.2,
+      oily: 0.7,
+    },
   },
 ];
 
@@ -134,10 +476,13 @@ const TodayMenuRecommender = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ [key: number]: number }>({});
   const [showResult, setShowResult] = useState(false);
+  const [showAllRankings, setShowAllRankings] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const [result, setResult] = useState<{
     first: MenuResult;
     second: MenuResult;
-    opposite: MenuResult;
+    third: MenuResult;
+    allRankings: { menu: MenuResult; score: number }[];
     userWeights: { [key: string]: number };
   } | null>(null);
 
@@ -154,7 +499,16 @@ const TodayMenuRecommender = () => {
   };
 
   const calculateResult = (answers: { [key: number]: number }) => {
-    const totalWeights = { meat: 0, vegetable: 0, hot: 0, cold: 0, spicy: 0 };
+    const totalWeights = {
+      meat: 0,
+      vegetable: 0,
+      temperature: 0,
+      spicy: 0,
+      sweet: 0,
+      salty: 0,
+      sour: 0,
+      oily: 0,
+    };
 
     Object.entries(answers).forEach(([questionIndex, optionIndex]) => {
       const question = questions[parseInt(questionIndex)];
@@ -180,21 +534,11 @@ const TodayMenuRecommender = () => {
 
     menuScores.sort((a, b) => a.score - b.score);
 
-    const oppositeMenu = menuResults.reduce(
-      (opposite, menu) => {
-        let score = 0;
-        Object.entries(menu.weights).forEach(([key, value]) => {
-          score += Math.abs(value - totalWeights[key as keyof typeof totalWeights]);
-        });
-        return score > opposite.score ? { menu, score } : opposite;
-      },
-      { menu: menuResults[0], score: 0 }
-    );
-
     setResult({
       first: menuScores[0].menu,
       second: menuScores[1].menu,
-      opposite: oppositeMenu.menu,
+      third: menuScores[2].menu,
+      allRankings: menuScores,
       userWeights: totalWeights,
     });
   };
@@ -203,6 +547,7 @@ const TodayMenuRecommender = () => {
     setCurrentQuestionIndex(0);
     setAnswers({});
     setShowResult(false);
+    setShowAllRankings(false);
     setResult(null);
   };
 
@@ -210,10 +555,20 @@ const TodayMenuRecommender = () => {
     return [
       { subject: '육류', value: weights.meat * 100 },
       { subject: '채소', value: weights.vegetable * 100 },
-      { subject: '따뜻함', value: weights.hot * 100 },
-      { subject: '차가움', value: weights.cold * 100 },
+      { subject: '온도', value: weights.temperature * 100 },
       { subject: '매운맛', value: weights.spicy * 100 },
+      { subject: '단맛', value: weights.sweet * 100 },
+      { subject: '짠맛', value: weights.salty * 100 },
+      { subject: '신맛', value: weights.sour * 100 },
+      { subject: '기름기', value: weights.oily * 100 },
     ];
+  };
+
+  const handleShare = () => {
+    const textToCopy = `오늘의 추천 메뉴는 ${result?.first.name}입니다!\n\n1위: ${result?.first.name}\n2위: ${result?.second.name}\n3위: ${result?.third.name}\n\n나의 취향 분석 결과를 확인해보세요!\n${window.location.href}`;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setShowToast(true);
+    });
   };
 
   return (
@@ -232,7 +587,7 @@ const TodayMenuRecommender = () => {
         <Card
           sx={{
             width: { xs: '100%', sm: '400px' },
-            minHeight: { xs: '400px', sm: '500px' },
+            minHeight: { xs: '100%', sm: '500px' },
           }}
         >
           <CardContent
@@ -285,11 +640,11 @@ const TodayMenuRecommender = () => {
               <>
                 <Box
                   sx={{
-                    width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    width: '100%',
                   }}
                 >
                   <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -298,12 +653,11 @@ const TodayMenuRecommender = () => {
                   {result && (
                     <Box
                       sx={{
-                        width: '100%',
                         display: 'flex',
-                        flex: 1,
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
+                        width: '100%',
                       }}
                     >
                       <Typography variant="h6" color="primary">
@@ -311,6 +665,9 @@ const TodayMenuRecommender = () => {
                       </Typography>
                       <Typography variant="body1" sx={{ mt: 1 }}>
                         2순위: {result.second.name}
+                      </Typography>
+                      <Typography variant="body1" sx={{ mt: 1 }}>
+                        3순위: {result.third.name}
                       </Typography>
 
                       <Box sx={{ mt: 2, width: '100%', height: '300px' }}>
@@ -334,17 +691,74 @@ const TodayMenuRecommender = () => {
                           </RadarChart>
                         </ResponsiveContainer>
                       </Box>
+                      <Box
+                        width={'100%'}
+                        display={'flex'}
+                        flexDirection={'column'}
+                        gap={1}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                      >
+                        <Button variant="contained" onClick={resetTest} sx={{ width: '40%' }}>
+                          다시하기
+                        </Button>
+
+                        <Button variant="contained" onClick={handleShare} sx={{ width: '40%' }}>
+                          공유하기
+                        </Button>
+
+                        <Button
+                          variant="outlined"
+                          onClick={() => setShowAllRankings(!showAllRankings)}
+                          sx={{ width: '40%' }}
+                        >
+                          {showAllRankings ? '전체 순위 닫기' : '전체 순위 보기'}
+                        </Button>
+
+                        {showAllRankings && (
+                          <Box
+                            sx={{
+                              mt: 2,
+                              width: '100%',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                              전체 순위
+                            </Typography>
+                            {result.allRankings.map((item, index) => (
+                              <Typography
+                                key={index}
+                                variant="body2"
+                                sx={{
+                                  mt: 1,
+                                  color: index < 3 ? 'primary.main' : 'text.secondary',
+                                  fontWeight: index < 3 ? 'bold' : 'normal',
+                                }}
+                              >
+                                {index + 1}위: {item.menu.name}
+                              </Typography>
+                            ))}
+                          </Box>
+                        )}
+                      </Box>
                     </Box>
                   )}
                 </Box>
-                <Button variant="contained" onClick={resetTest} sx={{ mt: 1 }}>
-                  다시하기
-                </Button>
               </>
             )}
           </CardContent>
         </Card>
       </Box>
+      <Snackbar
+        open={showToast}
+        autoHideDuration={3000}
+        onClose={() => setShowToast(false)}
+        message="결과가 클립보드에 복사되었습니다!"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
     </PageLayout>
   );
 };
