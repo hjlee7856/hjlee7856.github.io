@@ -12,18 +12,26 @@ export const AppHeader = () => {
   return (
     <AppBar color="inherit" sx={{ boxShadow: 'none' }}>
       <Toolbar>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ padding: 0 }}>
           <Box
-            position="sticky"
             display={'flex'}
             alignItems={'center'}
             justifyContent={'space-between'}
             width={'100%'}
+            position="relative"
           >
             {/* 모바일 네비게이션 */}
             <MobileNav />
             {/* 로고 */}
-            <AppLogo />
+            <Box
+              sx={{
+                position: { xs: 'absolute', sm: 'static' },
+                left: { xs: '50%', sm: 'auto' },
+                transform: { xs: 'translateX(-50%)', sm: 'none' },
+              }}
+            >
+              <AppLogo />
+            </Box>
             <Box display={'flex'} gap={2} alignItems={'center'}>
               {/* 유틸리티 링크 */}
               <Link
