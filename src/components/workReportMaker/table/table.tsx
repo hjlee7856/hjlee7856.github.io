@@ -29,8 +29,9 @@ import {
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { SortableRow } from './components/SortableRow';
 import { Props, Report } from './types';
+import WorkReportListSkeleton from './WorkReportListSkeleton';
 
-export const WorkReportList = (props: Props) => {
+export const WorkReportList = (props: Props & { isLoading?: boolean }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const rowRef = useRef<HTMLTableRowElement>(null);
@@ -105,6 +106,8 @@ export const WorkReportList = (props: Props) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [props.editingKey]);
+
+  if (props.isLoading) return <WorkReportListSkeleton />;
 
   return (
     <Box sx={{ overflowX: 'auto', minHeight: '200px' }}>

@@ -24,6 +24,7 @@ const WorkReportMaker = () => {
     text,
     resetData,
     handleOrderChange,
+    isLoading,
   } = useWorkReport();
 
   return (
@@ -44,6 +45,7 @@ const WorkReportMaker = () => {
             handleOrderChange={handleOrderChange}
             section={'금일 진행 사항'}
             handleAdd={handleAdd}
+            isLoading={isLoading}
           />
           <WorkReportList
             allContentItems={allContentItems.filter((item) => item.section === '익일 예정 사항')}
@@ -57,6 +59,7 @@ const WorkReportMaker = () => {
             handleOrderChange={handleOrderChange}
             section={'익일 예정 사항'}
             handleAdd={handleAdd}
+            isLoading={isLoading}
           />
         </Box>
         {/* PC */}
@@ -67,7 +70,7 @@ const WorkReportMaker = () => {
         />
         {/* Mobile */}
         <Divider sx={{ my: 3, display: { xs: 'block', sm: 'none' } }} />
-        <WorkReportPreview text={text} resetData={resetData} />
+        <WorkReportPreview text={text} resetData={resetData} isLoading={isLoading} />
       </Box>
     </PageLayout>
   );

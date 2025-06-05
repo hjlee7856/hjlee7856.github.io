@@ -11,10 +11,12 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import WorkReportPreviewSkeleton from './WorkReportPreviewSkeleton';
 
 interface Props {
   resetData: () => void;
   text: string;
+  isLoading?: boolean;
 }
 
 export const WorkReportPreview = (props: Props) => {
@@ -61,6 +63,8 @@ export const WorkReportPreview = (props: Props) => {
 
     setReport(result);
   }, [props.text, checkedDev, checkedHalfDayOffAm, checkedHalfDayOffPm]);
+
+  if (props.isLoading) return <WorkReportPreviewSkeleton />;
 
   return (
     <Box flex={1} flexDirection="column">

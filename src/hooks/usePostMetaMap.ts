@@ -5,10 +5,15 @@ import { useEffect, useState } from 'react';
 
 export const usePostMetaMap = (posts: PostMeta[], currentPage: number, perPage: number = 10) => {
   const [postWithMeta, setPostWithMeta] = useState<PostMeta[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!posts.length) return;
+    if (!posts.length) {
+      setIsLoading(false);
+      return;
+    }
 
+    setIsLoading(true);
     initPostMeta(posts);
 
     const postsMetaRef = collection(db, 'posts');
@@ -42,9 +47,13 @@ export const usePostMetaMap = (posts: PostMeta[], currentPage: number, perPage: 
             });
 
           setPostWithMeta(updated);
-        } catch (error) {}
+          setIsLoading(false);
+        } catch (error) {
+          setIsLoading(false);
+        }
       },
       (error) => {
+        setIsLoading(false);
         // onSnapshot 자체 에러 처리
       }
     );
@@ -52,5 +61,5 @@ export const usePostMetaMap = (posts: PostMeta[], currentPage: number, perPage: 
     return () => unsubscribe();
   }, [posts, currentPage]);
 
-  return { postWithMeta };
+  return { postWithMeta, isLoading };
 };

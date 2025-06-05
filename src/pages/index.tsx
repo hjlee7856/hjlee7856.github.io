@@ -1,7 +1,8 @@
 import PostIndexAside from '@/components/app/appAside/appAside';
-import { CategoryTab } from '@/components/postList/categoryTab';
 import LoadingOverlay from '@/components/loadingOverlay';
+import { CategoryTab } from '@/components/postList/categoryTab';
 import { PostCardList } from '@/components/postList/postCardList';
+import PostListSkeleton from '@/components/postList/postListSkeleton';
 import { ABOUT_TEXT } from '@/constants/about';
 import { files, postsDirectory } from '@/constants/files';
 import { useCategory } from '@/hooks/useCategory';
@@ -48,15 +49,15 @@ export default function Blog({ posts }: { posts: PostMeta[] }) {
   // 페이지네이션 필터 훅
   const { currentPage, setCurrentPage, totalPages, perPage } = usePagination(posts.length);
   // 메타정보들 가져오는 훅
-  const { postWithMeta } = usePostMetaMap(posts, currentPage, perPage);
+  const { postWithMeta, isLoading } = usePostMetaMap(posts, currentPage, perPage);
   // 카테고리 필터 훅
   const { filteredPosts, changeCategory, selectIdx } = useCategory(postWithMeta);
   // 인기 작성글
-  const { popularPosts } = usePopularPosts();
+  const { popularPosts, isLoading: popularPostsLoading } = usePopularPosts();
   // 최근 작성글
-  const { recentPosts } = useRecentPosts();
+  const { recentPosts, isLoading: recentPostsLoading } = useRecentPosts();
   // 최다 조회글
-  const { mostViewPosts } = useMostViewPosts();
+  const { mostViewPosts, isLoading: mostViewPostsLoading } = useMostViewPosts();
 
   if (!posts) return <LoadingOverlay />;
 
@@ -69,8 +70,7 @@ export default function Blog({ posts }: { posts: PostMeta[] }) {
           setCurrentPage={setCurrentPage}
           value={selectIdx}
         />
-        {/* 포스트 리스트 */}
-        <PostCardList filteredPosts={filteredPosts} />
+        {isLoading ? <PostListSkeleton /> : <PostCardList filteredPosts={filteredPosts} />}
         {/* 페이지네이션 */}
         <Box display="flex" justifyContent="center" my={3}>
           <Pagination
@@ -91,8 +91,11 @@ export default function Blog({ posts }: { posts: PostMeta[] }) {
       {/* Aside */}
       <PostIndexAside
         popularPosts={popularPosts}
+        popularPostsLoading={popularPostsLoading}
         mostViewPosts={mostViewPosts}
+        mostViewPostsLoading={mostViewPostsLoading}
         recentPosts={recentPosts}
+        recentPostsLoading={recentPostsLoading}
         about={ABOUT_TEXT}
       />
     </Box>

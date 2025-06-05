@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 
 export const usePopularPosts = () => {
   const [popularPosts, setPopularPosts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const postsRef = collection(db, 'posts');
 
     // 최다 조회 포스트 5개
@@ -20,8 +22,10 @@ export const usePopularPosts = () => {
           };
         });
         setPopularPosts(data);
+        setIsLoading(false);
       },
       (error) => {
+        setIsLoading(false);
         console.error('Error fetching most viewed posts:', error);
       }
     );
@@ -31,5 +35,5 @@ export const usePopularPosts = () => {
     };
   }, []);
 
-  return { popularPosts };
+  return { popularPosts, isLoading };
 };

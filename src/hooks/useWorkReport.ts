@@ -16,6 +16,7 @@ export const useWorkReport = () => {
     Record<string, { section: string; category: string; content: string }>
   >({});
   const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { user: currentUser } = useUserStore();
 
@@ -26,6 +27,7 @@ export const useWorkReport = () => {
   // ✅ Firestore 또는 LocalStorage에서 불러오기
   useEffect(() => {
     const loadData = async () => {
+      setIsLoading(true);
       if (currentUser) {
         const data = await getWorkReport(currentUser);
         if (data) {
@@ -37,6 +39,7 @@ export const useWorkReport = () => {
           setReportData(JSON.parse(saved));
         }
       }
+      setIsLoading(false);
     };
 
     loadData();
@@ -201,6 +204,7 @@ export const useWorkReport = () => {
     text,
     resetData,
     handleOrderChange,
+    isLoading,
     handleMoveSection,
   };
 };

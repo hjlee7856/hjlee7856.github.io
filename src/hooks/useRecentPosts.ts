@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 
 export const useRecentPosts = () => {
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const postsRef = collection(db, 'posts');
 
     // 최근 포스트 5개
@@ -20,8 +22,10 @@ export const useRecentPosts = () => {
           };
         });
         setRecentPosts(data);
+        setIsLoading(false);
       },
       (error) => {
+        setIsLoading(false);
         console.error('Error fetching most viewed posts:', error);
       }
     );
@@ -31,5 +35,5 @@ export const useRecentPosts = () => {
     };
   }, []);
 
-  return { recentPosts };
+  return { recentPosts, isLoading };
 };

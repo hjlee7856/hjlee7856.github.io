@@ -2,14 +2,18 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box, Card, CardContent, Divider, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import AsidePostListSkeleton from './AsidePostListSkeleton';
+
 export const PostList = ({
   title,
   posts,
   type,
+  isLoading = false,
 }: {
   title: string;
   posts: PostMeta[];
   type: string;
+  isLoading?: boolean;
 }) => {
   const router = useRouter();
   return (
@@ -19,7 +23,10 @@ export const PostList = ({
           {title}
         </Typography>
         <Box gap={1} display={'flex'} flexDirection={'column'}>
-          {posts &&
+          {isLoading ? (
+            <AsidePostListSkeleton />
+          ) : (
+            posts &&
             posts.map((post) => (
               <Box key={post.slug}>
                 <Box
@@ -69,7 +76,8 @@ export const PostList = ({
                 </Box>
                 <Divider />
               </Box>
-            ))}
+            ))
+          )}
         </Box>
       </CardContent>
     </Card>
