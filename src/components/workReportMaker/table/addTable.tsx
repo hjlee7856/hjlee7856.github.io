@@ -1,6 +1,5 @@
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { IconButton, TableCell, TableRow, TextField, Tooltip } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { KeyboardEvent, useState } from 'react';
@@ -48,9 +47,6 @@ export const AddWorkReportList = (props: Props) => {
         backgroundColor: green[50],
       }}
     >
-      <TableCell>
-        <DragIndicatorIcon fontSize="small" color="disabled" />
-      </TableCell>
       <TableCell>
         <TextField
           error={localCategory === ''}
