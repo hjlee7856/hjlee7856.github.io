@@ -2,7 +2,6 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { Box, IconButton, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
 import { SECTION_TYPES, SortableRowProps } from '../types';
 import { ActionButtons } from './ActionButtons';
@@ -51,13 +50,6 @@ export const SortableRow = ({
       }}
       {...attributes}
     >
-      <TableCell sx={{ width: { xs: '32px', sm: '40px' } }}>
-        <Tooltip title="드래그로 순서 변경">
-          <IconButton size="small" sx={{ cursor: 'grab' }} {...listeners}>
-            <DragIndicatorIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      </TableCell>
       <TableCell
         sx={{
           wordBreak: 'break-all',

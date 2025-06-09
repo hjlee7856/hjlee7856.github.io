@@ -1,19 +1,4 @@
 import { AddWorkReportList } from '@/components/workReportMaker/table/addTable';
-import {
-  closestCenter,
-  DndContext,
-  DragEndEvent,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
 import AddIcon from '@mui/icons-material/Add';
 import {
   Box,
@@ -35,35 +20,6 @@ export const WorkReportList = (props: Props & { isLoading?: boolean }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const rowRef = useRef<HTMLTableRowElement>(null);
-  const [items, setItems] = useState<Report[]>(props.allContentItems);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  useEffect(() => {
-    setItems(props.allContentItems);
-  }, [props.allContentItems]);
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = items.findIndex((item) => item.content === active.id);
-      const newIndex = items.findIndex((item) => item.content === over.id);
-      const newItems = arrayMove(items, oldIndex, newIndex);
-      setItems(newItems);
-      props.handleOrderChange(
-        newItems.map((item) => ({
-          section: item.section,
-          category: item.category,
-          content: item.content,
-        }))
-      );
-    }
-  };
 
   const handleEdit = (item: Report) => {
     props.setEditingMap((prev) => ({
@@ -121,59 +77,50 @@ export const WorkReportList = (props: Props & { isLoading?: boolean }) => {
           </IconButton>
         </Tooltip>
       </Box>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <Table size="small" sx={{ minWidth: 300 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ width: '40px' }}></TableCell>
-              <TableCell>카테고리</TableCell>
-              <TableCell>내용</TableCell>
-              <TableCell align="right"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {isAdding && (
-              <AddWorkReportList
-                section={props.section}
-                handleAdd={props.handleAdd}
-                setIsAdding={setIsAdding}
-                allContentItems={props.allContentItems}
+      <Table size="small" sx={{ minWidth: 300 }}>
+        <TableHead>
+          <TableRow>
+            <TableCell>카테고리</TableCell>
+            <TableCell>내용</TableCell>
+            <TableCell align="right"></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {isAdding && (
+            <AddWorkReportList
+              section={props.section}
+              handleAdd={props.handleAdd}
+              setIsAdding={setIsAdding}
+              allContentItems={props.allContentItems}
+            />
+          )}
+          {props.allContentItems.map((item, index) => {
+            const key = `${item.section}-${item.category}-${item.content}`;
+            const isEditing = props.editingKey === key;
+            const isHover = hoverIndex === index;
+            return (
+              <SortableRow
+                key={key}
+                item={item}
+                index={index}
+                isEditing={isEditing}
+                isHover={isHover}
+                rowRef={rowRef}
+                setHoverIndex={setHoverIndex}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                handleMoveSection={handleMoveSection}
+                editingMap={props.editingMap}
+                handleEditChange={props.handleEditChange}
+                handleSaveEdit={props.handleSaveEdit}
+                handleEnterSave={handleEnterSave}
+                editingKey={props.editingKey}
+                setEditingKey={props.setEditingKey}
               />
-            )}
-            <SortableContext
-              items={items.map((item) => item.content)}
-              strategy={verticalListSortingStrategy}
-            >
-              {items.map((item, index) => {
-                const key = `${item.section}-${item.category}-${item.content}`;
-                const isEditing = props.editingKey === key;
-                const isHover = hoverIndex === index;
-
-                return (
-                  <SortableRow
-                    key={key}
-                    item={item}
-                    index={index}
-                    isEditing={isEditing}
-                    isHover={isHover}
-                    rowRef={rowRef}
-                    setHoverIndex={setHoverIndex}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
-                    handleMoveSection={handleMoveSection}
-                    editingMap={props.editingMap}
-                    handleEditChange={props.handleEditChange}
-                    handleSaveEdit={props.handleSaveEdit}
-                    handleEnterSave={handleEnterSave}
-                    editingKey={props.editingKey}
-                    setEditingKey={props.setEditingKey}
-                  />
-                );
-              })}
-            </SortableContext>
-          </TableBody>
-        </Table>
-      </DndContext>
+            );
+          })}
+        </TableBody>
+      </Table>
     </Box>
   );
 };

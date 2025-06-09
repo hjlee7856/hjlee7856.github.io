@@ -1,15 +1,8 @@
+import Toast from '@/components/Toast';
 import PageLayout from '@/components/util/pageLayout';
 import { PageTitle } from '@/components/util/pageTitle';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-  Snackbar,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, IconButton, InputAdornment, TextField, Tooltip, Typography } from '@mui/material';
 import { useState } from 'react';
 
 const MAX_ALLOWED = 10_000_000_000_000_000; // 1경
@@ -119,12 +112,10 @@ const LocalMoneyConverter = () => {
         </Box>
       )}
 
-      <Snackbar
+      <Toast
         open={toastOpen}
-        autoHideDuration={2000}
         onClose={() => setToastOpen(false)}
-        message="금액이 클립보드에 복사되었습니다"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        message="금액이 클립보드에 복사되었습니다!"
       />
     </PageLayout>
   );

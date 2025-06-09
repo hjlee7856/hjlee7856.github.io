@@ -1,3 +1,4 @@
+import Toast from '@/components/Toast';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -5,7 +6,6 @@ import {
   Checkbox,
   FormControlLabel,
   IconButton,
-  Snackbar,
   TextField,
   Tooltip,
   Typography,
@@ -130,12 +130,10 @@ export const WorkReportPreview = (props: Props) => {
         }
         label="오후반차"
       />
-      <Snackbar
+      <Toast
         open={openSnackbar}
-        autoHideDuration={2000}
         onClose={() => setOpenSnackbar(false)}
-        message="보고서가 클립보드에 복사되었습니다."
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        message="보고서가 클립보드에 복사되었습니다!"
       />
     </Box>
   );

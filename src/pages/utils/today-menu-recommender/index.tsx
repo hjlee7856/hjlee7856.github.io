@@ -2,7 +2,7 @@ import PageLayout from '@/components/util/pageLayout';
 import { PageTitle } from '@/components/util/pageTitle';
 import QuestionCard from '@/utils/today-menu-recommender/components/QuestionCard';
 import ResultCard from '@/utils/today-menu-recommender/components/ResultCard';
-import Toast from '@/utils/today-menu-recommender/components/Toast';
+import Toast from '@/components/Toast';
 import { useMenuRecommender } from '@/utils/today-menu-recommender/hooks/useMenuRecommender';
 import { questions } from '@/utils/today-menu-recommender/questions';
 import { Box, Card, CardContent } from '@mui/material';
@@ -15,13 +15,11 @@ const TodayMenuRecommender = () => {
     currentQuestionIndex,
     answers,
     showResult,
-    showAllRankings,
     showToast,
     result,
     handleAnswer,
     resetTest,
     handleShare,
-    toggleRankings,
     setShowToast,
   } = useMenuRecommender();
 
@@ -61,15 +59,7 @@ const TodayMenuRecommender = () => {
                 onAnswer={handleAnswer}
               />
             ) : (
-              result && (
-                <ResultCard
-                  result={result}
-                  showAllRankings={showAllRankings}
-                  onReset={resetTest}
-                  onShare={handleShare}
-                  onToggleRankings={toggleRankings}
-                />
-              )
+              result && <ResultCard result={result} onReset={resetTest} onShare={handleShare} />
             )}
           </CardContent>
         </Card>
