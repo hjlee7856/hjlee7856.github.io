@@ -7,7 +7,7 @@ export const PostHeader = ({ postMeta }: { postMeta: PostMeta }) => {
       {/* 썸네일 16:9 */}
       <Box
         width="100%"
-        paddingTop="56.25%"
+        height="300px"
         position={'relative'}
         borderRadius={'16px'}
         overflow={'hidden'}

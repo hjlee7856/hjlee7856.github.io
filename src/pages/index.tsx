@@ -3,7 +3,6 @@ import LoadingOverlay from '@/components/loadingOverlay';
 import { CategoryTab } from '@/components/postList/categoryTab';
 import { PostCardList } from '@/components/postList/postCardList';
 import PostListSkeleton from '@/components/postList/postListSkeleton';
-import { ABOUT_TEXT } from '@/constants/about';
 import { files, postsDirectory } from '@/constants/files';
 import { useCategory } from '@/hooks/useCategory';
 import { useMostViewPosts } from '@/hooks/useMostViewPosts';
@@ -37,21 +36,26 @@ export async function getStaticProps() {
     };
   });
 
+  // 카테고리 추출 (중복 제거)
+  const categorySet = new Set(posts.map((post) => post.category || '기타'));
+  const categories = ['전체', ...Array.from(categorySet)];
+
   // 포스트 반환
   return {
     props: {
       posts,
+      categories,
     },
   };
 }
 
-export default function Blog({ posts }: { posts: PostMeta[] }) {
+export default function Blog({ posts, categories }: { posts: PostMeta[]; categories: string[] }) {
   // 페이지네이션 필터 훅
   const { currentPage, setCurrentPage, totalPages, perPage } = usePagination(posts.length);
   // 메타정보들 가져오는 훅
   const { postWithMeta, isLoading } = usePostMetaMap(posts, currentPage, perPage);
   // 카테고리 필터 훅
-  const { filteredPosts, changeCategory, selectIdx } = useCategory(postWithMeta);
+  const { filteredPosts, changeCategory, selectIdx } = useCategory(postWithMeta, categories);
   // 인기 작성글
   const { popularPosts, isLoading: popularPostsLoading } = usePopularPosts();
   // 최근 작성글
@@ -66,6 +70,7 @@ export default function Blog({ posts }: { posts: PostMeta[] }) {
       <Box flex={1}>
         {/* 카테고리 */}
         <CategoryTab
+          categories={categories}
           changeCategory={changeCategory}
           setCurrentPage={setCurrentPage}
           value={selectIdx}
@@ -96,7 +101,6 @@ export default function Blog({ posts }: { posts: PostMeta[] }) {
         mostViewPostsLoading={mostViewPostsLoading}
         recentPosts={recentPosts}
         recentPostsLoading={recentPostsLoading}
-        about={ABOUT_TEXT}
       />
     </Box>
   );

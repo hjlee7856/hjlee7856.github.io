@@ -1,5 +1,6 @@
 import CommentSection from '@/components/comment/commentSection';
 import LoadingOverlay from '@/components/loadingOverlay';
+import { MDXComponents } from '@/components/MDXComponents';
 import { PostHeader } from '@/components/post/postHeader';
 import { files, postsDirectory } from '@/constants/files';
 import { usePostMeta } from '@/hooks/usePostMeta';
@@ -9,6 +10,7 @@ import fs from 'fs';
 import matter from 'gray-matter';
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
+import Head from 'next/head';
 import path from 'path';
 
 export async function getStaticPaths() {
@@ -45,13 +47,28 @@ export default function PostPage({ mdxSource, meta, slug }: any) {
   if (!postMeta) return <LoadingOverlay />;
 
   return (
-    <Box paddingInline={2} paddingTop={'1px'}>
-      {/* 포스트 헤더 */}
-      <PostHeader postMeta={postMeta} />
-      {/* 컨텐츠 */}
-      <MDXRemote {...mdxSource} />
-      {/* 댓글 */}
-      <CommentSection slug={slug} postMeta={postMeta} />
-    </Box>
+    <>
+      <Head>
+        <title>{postMeta.title}</title>
+        <meta name="description" content={postMeta.subTitle || postMeta.title} />
+        {/* Open Graph */}
+        <meta property="og:title" content={postMeta.title} />
+        <meta property="og:description" content={postMeta.subTitle || postMeta.title} />
+        {postMeta.thumbnail && <meta property="og:image" content={postMeta.thumbnail} />}
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={postMeta.title} />
+        <meta name="twitter:description" content={postMeta.subTitle || postMeta.title} />
+        {postMeta.thumbnail && <meta name="twitter:image" content={postMeta.thumbnail} />}
+      </Head>
+      <Box paddingInline={2} paddingTop={'1px'}>
+        {/* 포스트 헤더 */}
+        <PostHeader postMeta={postMeta} />
+        {/* 컨텐츠 */}
+        <MDXRemote {...mdxSource} components={MDXComponents} />
+        {/* 댓글 */}
+        <CommentSection slug={slug} postMeta={postMeta} />
+      </Box>
+    </>
   );
 }

@@ -1,0 +1,102 @@
+---
+title: 'Next.js 렌더링'
+subTitle: 'Next.js 렌더링 방식 정리'
+author: '이형준'
+category: 'Next.js'
+thumbnail: '/image/img_Nextjs.png'
+tags: '#Next.js, #렌더링, #정리'
+---
+
+# Next.js 렌더링 방식 정리
+
+## 1. SSR (Server-Side Rendering)
+
+- 설명: 매 요청마다 서버에서 HTML을 생성하여 클라이언트에 전달
+- 장점:
+  - 항상 최신 데이터를 제공
+  - SEO에 유리
+- 단점:
+
+  - 매 요청마다 렌더링되므로 성능에 부담
+
+- 사용 예시:
+
+```tsx
+export async function getServerSideProps(context) {
+  const res = await fetch('https://api.example.com/data');
+  const data = await res.json();
+  return { props: { data } };
+}
+```
+
+---
+
+## 2. SSG (Static Site Generation)
+
+- 설명: 빌드 시점에 HTML을 생성하여 정적으로 제공
+- 장점:
+  - 빠른 응답 속도 (CDN 캐싱 가능)
+  - 서버 부하 없음
+- 단점:
+
+  - 실시간 데이터 반영 어려움
+
+- 사용 예시:
+
+```tsx
+export async function getStaticProps() {
+  const res = await fetch('https://api.example.com/data');
+  const data = await res.json();
+  return { props: { data } };
+}
+```
+
+---
+
+## 3. ISR (Incremental Static Regeneration)
+
+- 설명: SSG와 유사하지만, 일정 시간마다 정적 페이지를 백그라운드에서 갱신
+- 장점:
+  - 정적 페이지 성능 + 최신 데이터 반영 가능
+- 단점:
+  - 업데이트 타이밍 제어가 필요
+- 사용 예시:
+
+```tsx
+export async function getStaticProps() {
+  const res = await fetch('https://api.example.com/data');
+  const data = await res.json();
+  return {
+    props: { data },
+    revalidate: 60, // 60초마다 페이지 갱신
+  };
+}
+```
+
+---
+
+## 4. CSR (Client-Side Rendering)
+
+- 설명: 클라이언트에서 데이터를 받아와 렌더링
+- 장점:
+  - 초기 로딩은 가볍고 빠름
+- 단점:
+  - SEO 불리
+  - 초기 데이터 로딩 시 깜빡임(Flickering) 가능
+- 사용 예시:
+
+```tsx
+import { useEffect, useState } from 'react';
+
+export default function Page() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/data')
+      .then((res) => res.json())
+      .then(setData);
+  }, []);
+
+  return <div>{data ? data.title : 'Loading...'}</div>;
+}
+```

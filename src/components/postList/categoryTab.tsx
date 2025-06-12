@@ -1,13 +1,13 @@
-import { categories } from '@/constants/categorys';
 import { Box, Tab, Tabs } from '@mui/material';
 
 interface Props {
+  categories: string[];
   changeCategory: (e: React.SyntheticEvent, idx: number) => void;
   setCurrentPage: (page: number) => void;
   value: number;
 }
 
-export const CategoryTab = ({ changeCategory, value, setCurrentPage }: Props) => {
+export const CategoryTab = ({ categories, changeCategory, value, setCurrentPage }: Props) => {
   return (
     <Box
       display="flex"
@@ -23,7 +23,7 @@ export const CategoryTab = ({ changeCategory, value, setCurrentPage }: Props) =>
         variant="scrollable"
       >
         {categories.map((category, idx) => (
-          <Tab key={idx} label={category.categoryName} />
+          <Tab key={idx} label={category} sx={{ textTransform: 'none' }} />
         ))}
       </Tabs>
     </Box>

@@ -1,0 +1,48 @@
+---
+title: 'Next.js 프로젝트 빌드'
+subTitle: 'NextJS 프로젝트를 빌드하는 방법들'
+author: '이형준'
+category: 'Next.js'
+thumbnail: '/image/img_Nextjs.png'
+tags: '#Next.js, #프로젝트, #빌드'
+---
+
+# Next.js 프로젝트 빌드
+
+## 1. 프로젝트 기본 빌드
+
+```bash
+yarn build
+```
+
+풀기능 지원 (SSR+SSG+CSR 모두 지원)
+
+---
+
+## 2. 프로젝트 정적 파일로 빌드
+
+```ts
+// nextjs.config.ts
+const nextConfig: NextConfig = {
+  output: 'export',
+};
+
+export default nextConfig;
+```
+
+정적 HTML 파일로 빌드(SSG)
+
+---
+
+## 3. 프로젝트 최소 구성으로 빌드
+
+```ts
+// nextjs.config.ts
+const nextConfig: NextConfig = {
+  output: 'standalone',
+};
+
+export default nextConfig;
+```
+
+최소 구성으로 빌드되며 리소스 파일은 별도로 넣어줘야함

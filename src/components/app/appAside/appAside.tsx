@@ -9,7 +9,6 @@ interface AsideProps {
   popularPostsLoading?: boolean;
   recentPosts: PostMeta[];
   recentPostsLoading?: boolean;
-  about: string;
 }
 
 const PostIndexAside = ({
@@ -19,7 +18,6 @@ const PostIndexAside = ({
   popularPostsLoading,
   recentPosts,
   recentPostsLoading,
-  about,
 }: AsideProps) => {
   return (
     <Box
@@ -27,7 +25,7 @@ const PostIndexAside = ({
       sx={{ width: 400, pt: 1, gap: 1, display: { xs: 'none', sm: 'flex' } }}
       flexDirection={'column'}
     >
-      <AboutSection about={about} />
+      <AboutSection />
       <PostList
         title="인기 포스트"
         posts={popularPosts}
