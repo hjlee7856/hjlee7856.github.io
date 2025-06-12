@@ -1,5 +1,3 @@
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { Box, IconButton, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
@@ -25,30 +23,18 @@ export const SortableRow = ({
   editingKey,
   setEditingKey,
 }: SortableRowProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: item.content,
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
   return (
     <TableRow
-      ref={isEditing ? rowRef : setNodeRef}
       component="tr"
       onMouseEnter={() => setHoverIndex(index)}
       onMouseLeave={() => setHoverIndex(null)}
-      sx={{ cursor: 'pointer', ...style }}
+      sx={{ cursor: 'pointer' }}
       hover={true}
       selected={isEditing}
       onClick={(e) => {
         e.stopPropagation();
         handleEdit(item);
       }}
-      {...attributes}
     >
       <TableCell
         sx={{
